@@ -1,0 +1,72 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
+import type { Prisma, Review } from '../../../generated/prisma/client';
+
+const reviewerSelect = {
+  id: true,
+  username: true,
+  fullName: true,
+} as const;
+
+@Injectable()
+export class ReviewRepository {
+  constructor(private readonly prisma: PrismaService) {}
+
+  findById(id: string): Promise<Review | null> {
+    return this.prisma.review.findUnique({ where: { id, deletedAt: null } });
+  }
+
+  findByUserAndPlace(userId: string, placeId: string): Promise<Review | null> {
+    return this.prisma.review.findFirst({
+      where: { userId, placeId, deletedAt: null },
+    });
+  }
+
+  async findManyByPlace(placeId: string, page: number, limit: number) {
+    const where: Prisma.ReviewWhereInput = { placeId, deletedAt: null };
+    const [items, total] = await Promise.all([
+      this.prisma.review.findMany({
+        where,
+        include: { user: { select: reviewerSelect } },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+    return { items, total };
+  }
+
+  create(data: Prisma.ReviewCreateInput) {
+    return this.prisma.review.create({
+      data,
+      include: { user: { select: reviewerSelect } },
+    });
+  }
+
+  update(id: string, data: Prisma.ReviewUpdateInput) {
+    return this.prisma.review.update({
+      where: { id },
+      data,
+      include: { user: { select: reviewerSelect } },
+    });
+  }
+
+  softDelete(id: string): Promise<Review> {
+    return this.prisma.review.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+  }
+
+  // Read-only existence check against `places` — kept minimal and local to
+  // this module rather than importing PlaceModule/PlaceService, per
+  // CLAUDE.md's module-independence principle (same approach Search uses).
+  async placeExists(placeId: string): Promise<boolean> {
+    const place = await this.prisma.place.findUnique({
+      where: { id: placeId, deletedAt: null },
+      select: { id: true },
+    });
+    return place !== null;
+  }
+}

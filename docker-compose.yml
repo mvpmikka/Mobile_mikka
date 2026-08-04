@@ -1,0 +1,22 @@
+# Local development only: spins up Postgres for the app (run natively via
+# `npm run start:dev`) to connect to. Not used for deployment — Railway
+# builds/runs the app from the Dockerfile directly.
+services:
+  postgres:
+    # postgis/postgis (not plain postgres) — bundles the PostGIS extension
+    # the schema requires (Place.location, Region.boundary, ST_DWithin, etc).
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mikka
+      POSTGRES_PASSWORD: mikka
+      POSTGRES_DB: mikka
+    ports:
+      # Host port 5433 (not 5432) so this doesn't collide with a native
+      # Postgres install already bound to 5432 on the host.
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
