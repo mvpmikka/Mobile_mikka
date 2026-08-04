@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/auth_provider.dart';
 import 'screens/explore_screen.dart';
+import 'screens/verify_email_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'theme/app_colors.dart';
 
@@ -10,8 +14,50 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  final _appLinks = AppLinks();
+  StreamSubscription<Uri>? _linkSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _initDeepLinks();
+  }
+
+  Future<void> _initDeepLinks() async {
+    final initialUri = await _appLinks.getInitialLink();
+    if (initialUri != null) {
+      await _handleLink(initialUri);
+    }
+    _linkSubscription = _appLinks.uriLinkStream.listen(_handleLink);
+  }
+
+  // mikka://verify-email?token=... — sent as the confirmation link in the
+  // verification email. Silently ignored if invalid/expired; the user just
+  // stays on VerifyEmailScreen and can tap "resend".
+  Future<void> _handleLink(Uri uri) async {
+    if (uri.scheme != 'mikka' || uri.host != 'verify-email') return;
+    final token = uri.queryParameters['token'];
+    if (token == null) return;
+    try {
+      await ref.read(authControllerProvider.notifier).verifyEmail(token);
+    } catch (_) {
+      // Invalid/expired token — nothing to recover here automatically.
+    }
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +75,8 @@ class MyApp extends StatelessWidget {
 }
 
 /// Waits for the stored session (if any) to be validated against the
-/// backend, then routes to the signed-in or signed-out entry point.
+/// backend, then routes to the signed-in, unverified, or signed-out entry
+/// point.
 class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
 
@@ -40,8 +87,13 @@ class AuthGate extends ConsumerWidget {
     return authState.when(
       loading: () => const _SplashScreen(),
       error: (_, _) => const WelcomeScreen(),
-      data: (state) =>
-          state.isAuthenticated ? const ExploreScreen() : const WelcomeScreen(),
+      data: (state) {
+        final user = state.user;
+        if (user == null) return const WelcomeScreen();
+        return user.isEmailVerified
+            ? const ExploreScreen()
+            : VerifyEmailScreen(email: user.email);
+      },
     );
   }
 }

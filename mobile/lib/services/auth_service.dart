@@ -78,4 +78,23 @@ class AuthService {
   Future<bool> hasStoredSession() async {
     return await _tokenStorage.readRefreshToken() != null;
   }
+
+  Future<void> verifyEmail(String token) async {
+    try {
+      await _apiClient.dio.post('/auth/verify-email', data: {'token': token});
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<void> resendVerification(String email) async {
+    try {
+      await _apiClient.dio.post(
+        '/auth/resend-verification',
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 }

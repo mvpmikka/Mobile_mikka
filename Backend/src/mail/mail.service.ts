@@ -1,5 +1,4 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { MAIL_PROVIDER } from './mail.interface';
 import type { IMailProvider, MailMessage } from './mail.interface';
 import { verificationTemplate } from './templates/verification.template';
@@ -12,16 +11,15 @@ export class MailService {
 
   constructor(
     @Inject(MAIL_PROVIDER) private readonly provider: IMailProvider,
-    private readonly configService: ConfigService,
   ) {}
 
   async sendVerificationEmail(to: string, token: string): Promise<void> {
-    const link = `${this.configService.get<string>('FRONTEND_URL')}/verify-email?token=${token}`;
+    const link = `mikka://verify-email?token=${token}`;
     await this.safeSend({ to, ...verificationTemplate({ link }) });
   }
 
   async sendForgotPasswordEmail(to: string, token: string): Promise<void> {
-    const link = `${this.configService.get<string>('FRONTEND_URL')}/reset-password?token=${token}`;
+    const link = `mikka://reset-password?token=${token}`;
     await this.safeSend({ to, ...forgotPasswordTemplate({ link }) });
   }
 

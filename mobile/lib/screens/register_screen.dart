@@ -7,6 +7,7 @@ import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import 'explore_screen.dart';
 import 'login_screen.dart';
+import 'verify_email_screen.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -46,8 +47,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           .read(authControllerProvider.notifier)
           .register(email: email, username: username, password: password);
       if (!mounted) return;
+      final user = ref.read(authControllerProvider).value?.user;
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const ExploreScreen()),
+        MaterialPageRoute(
+          builder: (_) => user != null && !user.isEmailVerified
+              ? VerifyEmailScreen(email: user.email)
+              : const ExploreScreen(),
+        ),
         (route) => false,
       );
     } on ApiException catch (e) {

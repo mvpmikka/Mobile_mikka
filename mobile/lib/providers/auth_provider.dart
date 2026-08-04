@@ -85,4 +85,18 @@ class AuthController extends AsyncNotifier<AuthState> {
     await authService.logout();
     state = const AsyncData(AuthState.unauthenticated());
   }
+
+  Future<void> verifyEmail(String token) async {
+    final authService = ref.read(authServiceProvider);
+    await authService.verifyEmail(token);
+    final user = await authService.fetchCurrentUser();
+    state = AsyncData(AuthState.authenticated(user));
+  }
+
+  Future<void> resendVerification() async {
+    final currentUser = state.value?.user;
+    if (currentUser == null) return;
+    final authService = ref.read(authServiceProvider);
+    await authService.resendVerification(currentUser.email);
+  }
 }
