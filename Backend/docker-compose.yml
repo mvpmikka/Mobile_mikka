@@ -12,9 +12,9 @@ services:
       POSTGRES_PASSWORD: mikka
       POSTGRES_DB: mikka
     ports:
-      # Host port 5433 (not 5432) so this doesn't collide with a native
-      # Postgres install already bound to 5432 on the host.
-      - '5433:5432'
+      # Host port 5442 — 5432/5433 were already taken by other local
+      # projects' Postgres containers on this machine.
+      - '5442:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

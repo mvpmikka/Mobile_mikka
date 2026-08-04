@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
@@ -7,14 +9,14 @@ import 'explore_screen.dart';
 import 'friends_screen.dart';
 import 'welcome_screen.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _selectedNavIndex = 4;
 
   @override
@@ -109,7 +111,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: Icons.logout,
                 label: 'Log out',
                 destructive: true,
-                onTap: () {
+                onTap: () async {
+                  await ref.read(authControllerProvider.notifier).logout();
+                  if (!context.mounted) return;
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (_) => const WelcomeScreen()),
                     (route) => false,
