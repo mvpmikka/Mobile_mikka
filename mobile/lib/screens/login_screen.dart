@@ -21,6 +21,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isSubmitting = false;
+  bool _isGoogleSubmitting = false;
 
   @override
   void dispose() {
@@ -57,6 +58,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _showError(e.message);
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    setState(() => _isGoogleSubmitting = true);
+    try {
+      await ref.read(authControllerProvider.notifier).loginWithGoogle();
+      if (!mounted) return;
+      final user = ref.read(authControllerProvider).value?.user;
+      if (user == null) return; // foydalanuvchi Google oynasini yopdi
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => user.isEmailVerified
+              ? const ExploreScreen()
+              : VerifyEmailScreen(email: user.email),
+        ),
+        (route) => false,
+      );
+    } on ApiException catch (e) {
+      _showError(e.message);
+    } finally {
+      if (mounted) setState(() => _isGoogleSubmitting = false);
     }
   }
 
@@ -180,15 +203,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _SocialButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'G',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF4285F4),
-                      ),
-                    ),
+                    onPressed: _isGoogleSubmitting ? null : _loginWithGoogle,
+                    child: _isGoogleSubmitting
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.4,
+                              color: Color(0xFF4285F4),
+                            ),
+                          )
+                        : const Text(
+                            'G',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF4285F4),
+                            ),
+                          ),
                   ),
                   const SizedBox(width: 16),
                   _SocialButton(
@@ -276,7 +308,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 class _SocialButton extends StatelessWidget {
   const _SocialButton({required this.onPressed, required this.child});
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget child;
 
   @override

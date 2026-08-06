@@ -1,6 +1,10 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../core/api_client.dart';
+import '../core/api_exception.dart';
+import '../core/google_auth_config.dart';
 import '../core/token_storage.dart';
 import '../models/user.dart';
 import '../services/auth_service.dart';
@@ -76,6 +80,36 @@ class AuthController extends AsyncNotifier<AuthState> {
   }) async {
     final authService = ref.read(authServiceProvider);
     await authService.register(email: email, username: username, password: password);
+    final user = await authService.fetchCurrentUser();
+    state = AsyncData(AuthState.authenticated(user));
+  }
+
+  // Native Google Sign-In returns null when the user dismisses the account
+  // picker (not an error) — the caller should treat that as a silent no-op,
+  // same as if they'd tapped "back" from the email form.
+  Future<void> loginWithGoogle() async {
+    final googleSignIn = GoogleSignIn(
+      serverClientId: GoogleAuthConfig.serverClientId,
+    );
+
+    GoogleSignInAccount? account;
+    try {
+      account = await googleSignIn.signIn();
+    } on PlatformException catch (e) {
+      throw ApiException(
+        e.message ?? 'Google orqali kirishda xatolik yuz berdi',
+      );
+    }
+    if (account == null) return;
+
+    final googleAuth = await account.authentication;
+    final idToken = googleAuth.idToken;
+    if (idToken == null) {
+      throw const ApiException('Google tokenini olib bo\'lmadi');
+    }
+
+    final authService = ref.read(authServiceProvider);
+    await authService.loginWithGoogle(idToken);
     final user = await authService.fetchCurrentUser();
     state = AsyncData(AuthState.authenticated(user));
   }

@@ -35,6 +35,12 @@ class AuthService {
     );
   }
 
+  Future<void> loginWithGoogle(String idToken) {
+    return _issueAndStoreTokens(
+      () => _apiClient.dio.post('/auth/google', data: {'idToken': idToken}),
+    );
+  }
+
   Future<void> _issueAndStoreTokens(
     Future<Response> Function() request,
   ) async {
