@@ -35,6 +35,22 @@ export class AdminController {
     return this.adminService.getStats();
   }
 
+  // Operational dashboard — SUPER_ADMIN can see it too since that role is
+  // a superset of ADMIN, not a separate silo.
+  @Get('dashboard')
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  getDashboard() {
+    return this.adminService.getDashboard();
+  }
+
+  // Platform-oversight dashboard (role/moderation counts, growth, regional
+  // spread) — SUPER_ADMIN only, unlike the route above.
+  @Get('super-dashboard')
+  @Roles(Role.SUPER_ADMIN)
+  getSuperDashboard() {
+    return this.adminService.getSuperDashboard();
+  }
+
   // Static route before the dynamic :id routes below — same ordering
   // reason as UserController.
   @Get('users')

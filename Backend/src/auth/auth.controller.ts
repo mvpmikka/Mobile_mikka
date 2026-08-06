@@ -1,9 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
+  Header,
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
@@ -103,5 +106,50 @@ export class AuthController {
     @Body(new ZodValidationPipe(resetPasswordSchema)) dto: ResetPasswordDto,
   ) {
     return this.authService.resetPassword(dto.token, dto.newPassword);
+  }
+
+  // Gmail (and most mail clients) strip or refuse to linkify non-http(s)
+  // href schemes like "mikka://" inside emails, so the verification/reset
+  // emails link here instead — this page's button navigates into the app
+  // via the mikka:// deep link. No auto-redirect (meta refresh): browsers
+  // only show the "Open in Mikka?" permission prompt for a real user
+  // click, and an automatic attempt on page load can suppress it entirely.
+  @Get('verify-email')
+  @Header('Content-Type', 'text/html')
+  verifyEmailPage(@Query('token') token?: string) {
+    return this.buildDeepLinkPage('verify-email', token);
+  }
+
+  @Get('reset-password')
+  @Header('Content-Type', 'text/html')
+  resetPasswordPage(@Query('token') token?: string) {
+    return this.buildDeepLinkPage('reset-password', token);
+  }
+
+  private buildDeepLinkPage(host: string, token?: string): string {
+    // encodeURIComponent also neutralizes any HTML-special characters
+    // (<, >, ", ', &) the token might contain, so the result is safe to
+    // embed directly into the href/meta-refresh attributes below.
+    const deepLink = token
+      ? `mikka://${host}?token=${encodeURIComponent(token)}`
+      : `mikka://${host}`;
+
+    return `<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mikka</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #FBEEE0; color: #2b2b2b; text-align: center; padding: 72px 24px; }
+  a.btn { display: inline-block; margin-top: 24px; padding: 14px 32px; background: #E97A3C; color: #fff; border-radius: 28px; text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+  <h2>Emailingiz tasdiqlanmoqda</h2>
+  <p>Davom etish uchun quyidagi tugmani bosing:</p>
+  <a class="btn" href="${deepLink}">Ilovada ochish</a>
+</body>
+</html>`;
   }
 }
