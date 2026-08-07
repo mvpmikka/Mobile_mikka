@@ -21,6 +21,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authControllerProvider).value?.user;
+    final avatarUrl = user?.avatarUrl;
+    final displayName = user?.fullName ?? user?.username ?? '';
+    final username = user?.username ?? '';
+
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: SafeArea(
@@ -56,21 +61,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         color: AppColors.orange,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.person, color: Colors.white, size: 46),
+                      clipBehavior: Clip.antiAlias,
+                      child: avatarUrl != null && avatarUrl.isNotEmpty
+                          ? Image.network(
+                              avatarUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, _, _) => const Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 46,
+                              ),
+                            )
+                          : const Icon(Icons.person, color: Colors.white, size: 46),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Jamshid Baxtiyorov',
-                      style: TextStyle(
+                    Text(
+                      displayName,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                         color: AppColors.darkText,
                       ),
                     ),
                     const SizedBox(height: 2),
-                    const Text(
-                      '@jamshid',
-                      style: TextStyle(fontSize: 13, color: AppColors.mutedText),
+                    Text(
+                      '@$username',
+                      style: const TextStyle(fontSize: 13, color: AppColors.mutedText),
                     ),
                   ],
                 ),

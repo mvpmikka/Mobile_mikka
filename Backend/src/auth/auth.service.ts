@@ -126,6 +126,7 @@ export class AuthService {
       user = await this.userService.create({
         email: profile.email,
         fullName: profile.fullName,
+        avatarUrl: profile.avatarUrl,
         isEmailVerified: profile.emailVerified,
       });
     }

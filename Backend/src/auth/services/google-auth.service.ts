@@ -11,6 +11,7 @@ export interface GoogleProfile {
   email: string;
   emailVerified: boolean;
   fullName?: string;
+  avatarUrl?: string;
 }
 
 @Injectable()
@@ -47,6 +48,7 @@ export class GoogleAuthService {
       email: payload.email,
       emailVerified: payload.email_verified ?? false,
       fullName: payload.name,
+      avatarUrl: payload.picture,
     };
   }
 }
