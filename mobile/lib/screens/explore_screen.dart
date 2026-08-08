@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/place_summary.dart';
+import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
@@ -22,14 +24,14 @@ const _categories = [
   (label: 'More', icon: Icons.more_horiz),
 ];
 
-class ExploreScreen extends StatefulWidget {
+class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
 
   @override
-  State<ExploreScreen> createState() => _ExploreScreenState();
+  ConsumerState<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen> {
+class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   int _selectedCategory = 0;
   final _selectedNavIndex = 0;
   bool _nearbyPanelVisible = true;
@@ -104,6 +106,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 
   Widget _buildHeader() {
+    final avatarUrl = ref.watch(authControllerProvider).value?.user?.avatarUrl;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
       child: Row(
@@ -122,17 +126,35 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ),
           const Icon(Icons.keyboard_arrow_down, color: AppColors.darkText),
           const SizedBox(width: 12),
-          Container(
-            width: 36,
-            height: 36,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.person_outline,
-              color: AppColors.darkText,
-              size: 20,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            },
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: avatarUrl != null && avatarUrl.isNotEmpty
+                  ? Image.network(
+                      avatarUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => const Icon(
+                        Icons.person_outline,
+                        color: AppColors.darkText,
+                        size: 20,
+                      ),
+                    )
+                  : const Icon(
+                      Icons.person_outline,
+                      color: AppColors.darkText,
+                      size: 20,
+                    ),
             ),
           ),
         ],
