@@ -93,16 +93,17 @@ class AuthController extends AsyncNotifier<AuthState> {
     );
 
     GoogleSignInAccount? account;
+    GoogleSignInAuthentication googleAuth;
     try {
       account = await googleSignIn.signIn();
+      if (account == null) return;
+      googleAuth = await account.authentication;
     } on PlatformException catch (e) {
       throw ApiException(
-        e.message ?? 'Google orqali kirishda xatolik yuz berdi',
+        e.message ?? 'Google orqali kirishda xatolik yuz berdi (${e.code})',
       );
     }
-    if (account == null) return;
 
-    final googleAuth = await account.authentication;
     final idToken = googleAuth.idToken;
     if (idToken == null) {
       throw const ApiException('Google tokenini olib bo\'lmadi');

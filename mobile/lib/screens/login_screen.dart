@@ -98,6 +98,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       );
     } on ApiException catch (e) {
       _showError(e.message);
+    } catch (e) {
+      debugPrint('Google sign-in failed: $e');
+      _showError('Google orqali kirishda kutilmagan xatolik yuz berdi');
     } finally {
       if (mounted) setState(() => _isGoogleSubmitting = false);
     }

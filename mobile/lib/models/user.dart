@@ -14,7 +14,7 @@ class AppUser {
   final String id;
   final String email;
   final bool isEmailVerified;
-  final String username;
+  final String? username;
   final String? fullName;
   final String? avatarUrl;
   final bool profileCompleted;
@@ -25,7 +25,7 @@ class AppUser {
       id: json['id'] as String,
       email: json['email'] as String,
       isEmailVerified: json['isEmailVerified'] as bool,
-      username: json['username'] as String,
+      username: json['username'] as String?,
       fullName: json['fullName'] as String?,
       avatarUrl: json['avatarUrl'] as String?,
       profileCompleted: json['profileCompleted'] as bool,
