@@ -55,6 +55,10 @@ export const envSchema = z.object({
   // rather than the app failing to boot.
   GOOGLE_CLIENT_ID: z.string().default(''),
 
+  // iOS issues ID tokens with `aud` set to the iOS OAuth client, not the
+  // web client above — GoogleAuthService accepts either as a valid audience.
+  GOOGLE_IOS_CLIENT_ID: z.string().default(''),
+
   // Nominatim usage policy requires a descriptive User-Agent identifying
   // the app (with contact info) — not a secret, but required to be a real
   // value before geocoding calls are made.

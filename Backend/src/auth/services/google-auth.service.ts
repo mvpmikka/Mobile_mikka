@@ -18,9 +18,12 @@ export interface GoogleProfile {
 export class GoogleAuthService {
   private readonly client: OAuth2Client;
   private readonly clientId: string;
+  private readonly audiences: string[];
 
   constructor(configService: ConfigService) {
     this.clientId = configService.get<string>('GOOGLE_CLIENT_ID', '');
+    const iosClientId = configService.get<string>('GOOGLE_IOS_CLIENT_ID', '');
+    this.audiences = [this.clientId, iosClientId].filter(Boolean);
     this.client = new OAuth2Client(this.clientId);
   }
 
@@ -28,12 +31,12 @@ export class GoogleAuthService {
   // claims from the verified payload only — never trust client-supplied
   // profile JSON directly (see docs/foundation.md security notes).
   async verifyIdToken(idToken: string): Promise<GoogleProfile> {
-    if (!this.clientId) {
+    if (!this.audiences.length) {
       throw new BadRequestException('Google sign-in is not configured yet');
     }
 
     const ticket = await this.client
-      .verifyIdToken({ idToken, audience: this.clientId })
+      .verifyIdToken({ idToken, audience: this.audiences })
       .catch(() => {
         throw new UnauthorizedException('Invalid Google ID token');
       });
