@@ -1,69 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../core/api_exception.dart';
+import '../models/friend.dart';
+import '../providers/chat_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
+import 'conversations_screen.dart';
 import 'explore_screen.dart';
+import 'message_thread_screen.dart';
 import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
 
-class _Friend {
-  const _Friend({
-    required this.name,
-    required this.status,
-    required this.distance,
-    required this.color,
-    this.online = false,
-  });
-
-  final String name;
-  final String status;
-  final String distance;
-  final Color color;
-  final bool online;
-}
-
-const _friends = [
-  _Friend(
-    name: 'Aziza Karimova',
-    status: 'At Coffee 21',
-    distance: '300 m',
-    color: Color(0xFFCB4B4B),
-    online: true,
-  ),
-  _Friend(
-    name: 'Bekzod Yusupov',
-    status: 'Last seen 2h ago',
-    distance: '1.2 km',
-    color: Color(0xFF4A5A8A),
-  ),
-  _Friend(
-    name: 'Dilnoza Rashidova',
-    status: 'At Central Park',
-    distance: '900 m',
-    color: Color(0xFF3E6B5C),
-    online: true,
-  ),
-  _Friend(
-    name: 'Farrux Toshev',
-    status: 'Last seen yesterday',
-    distance: '4.5 km',
-    color: Color(0xFF4F8A5C),
-  ),
-];
-
-class FriendsScreen extends StatefulWidget {
+class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
 
   @override
-  State<FriendsScreen> createState() => _FriendsScreenState();
+  ConsumerState<FriendsScreen> createState() => _FriendsScreenState();
 }
 
-class _FriendsScreenState extends State<FriendsScreen> {
-  bool _mapView = true;
+class _FriendsScreenState extends ConsumerState<FriendsScreen> {
+  bool _mapView = false;
   final _selectedNavIndex = 1;
   final _searchController = TextEditingController();
   String _searchQuery = '';
@@ -74,27 +35,41 @@ class _FriendsScreenState extends State<FriendsScreen> {
     super.dispose();
   }
 
-  List<_Friend> get _filteredFriends {
-    if (_searchQuery.isEmpty) return _friends;
-    return _friends
-        .where((friend) => friend.name.toLowerCase().contains(_searchQuery))
+  List<Friend> _filtered(List<Friend> friends) {
+    if (_searchQuery.isEmpty) return friends;
+    return friends
+        .where(
+          (friend) => friend.profile.displayName.toLowerCase().contains(_searchQuery),
+        )
         .toList();
   }
 
-  static final _markers = <Marker>{
-    for (var i = 0; i < _friends.length; i++)
-      Marker(
-        markerId: MarkerId('friend-$i'),
-        position: LatLng(
-          _tashkentCenter.latitude + (i - 1.5) * 0.003,
-          _tashkentCenter.longitude + (i - 1.5) * 0.003,
+  Future<void> _openChat(Friend friend) async {
+    try {
+      final conversation = await ref
+          .read(chatServiceProvider)
+          .openPrivateConversation(friend.profile.id);
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MessageThreadScreen(
+            conversationId: conversation.id,
+            title: friend.profile.displayName,
+          ),
         ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      ),
-  };
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final friendsAsync = ref.watch(friendsProvider);
+
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: SafeArea(
@@ -105,7 +80,39 @@ class _FriendsScreenState extends State<FriendsScreen> {
             const SizedBox(height: 12),
             _buildSearchBar(),
             const SizedBox(height: 12),
-            Expanded(child: _mapView ? _buildMap() : _buildList()),
+            Expanded(
+              child: friendsAsync.when(
+                loading: () => const Center(
+                  child: CircularProgressIndicator(color: AppColors.orange),
+                ),
+                error: (error, _) => const Center(
+                  child: Text(
+                    'Do\'stlar ro\'yxatini yuklab bo\'lmadi',
+                    style: TextStyle(color: AppColors.mutedText),
+                  ),
+                ),
+                data: (friends) {
+                  final filtered = _filtered(friends);
+                  if (friends.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Hali do\'stlaringiz yo\'q',
+                        style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                      ),
+                    );
+                  }
+                  if (filtered.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Hech kim topilmadi',
+                        style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                      ),
+                    );
+                  }
+                  return _mapView ? _buildMap(filtered) : _buildList(filtered);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -136,6 +143,24 @@ class _FriendsScreenState extends State<FriendsScreen> {
               ),
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ConversationsScreen()),
+              );
+            },
+            child: Container(
+              width: 38,
+              height: 38,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.fromBorderSide(BorderSide(color: AppColors.fieldBorder)),
+              ),
+              child: const Icon(Icons.chat_bubble_outline, color: AppColors.darkText, size: 18),
+            ),
+          ),
+          const SizedBox(width: 8),
           _ToggleIconButton(
             icon: Icons.map_outlined,
             selected: _mapView,
@@ -201,34 +226,37 @@ class _FriendsScreenState extends State<FriendsScreen> {
     );
   }
 
-  Widget _buildMap() {
+  Widget _buildMap(List<Friend> friends) {
+    final markers = <Marker>{
+      for (var i = 0; i < friends.length; i++)
+        Marker(
+          markerId: MarkerId(friends[i].profile.id),
+          position: LatLng(
+            _tashkentCenter.latitude + (i - friends.length / 2) * 0.003,
+            _tashkentCenter.longitude + (i - friends.length / 2) * 0.003,
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+          infoWindow: InfoWindow(title: friends[i].profile.displayName),
+        ),
+    };
     return GoogleMap(
-      initialCameraPosition: const CameraPosition(
-        target: _tashkentCenter,
-        zoom: 14.5,
-      ),
-      markers: _markers,
+      initialCameraPosition: const CameraPosition(target: _tashkentCenter, zoom: 14.5),
+      markers: markers,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       mapToolbarEnabled: false,
     );
   }
 
-  Widget _buildList() {
-    final friends = _filteredFriends;
-    if (friends.isEmpty) {
-      return const Center(
-        child: Text(
-          'Hech kim topilmadi',
-          style: TextStyle(color: AppColors.mutedText, fontSize: 13),
-        ),
-      );
-    }
+  Widget _buildList(List<Friend> friends) {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
       itemCount: friends.length,
       separatorBuilder: (_, _) => const SizedBox(height: 14),
-      itemBuilder: (context, index) => _FriendListItem(friend: friends[index]),
+      itemBuilder: (context, index) => _FriendListItem(
+        friend: friends[index],
+        onTap: () => _openChat(friends[index]),
+      ),
     );
   }
 
@@ -285,64 +313,59 @@ class _ToggleIconButton extends StatelessWidget {
 }
 
 class _FriendListItem extends StatelessWidget {
-  const _FriendListItem({required this.friend});
+  const _FriendListItem({required this.friend, required this.onTap});
 
-  final _Friend friend;
+  final Friend friend;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Stack(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(color: friend.color, shape: BoxShape.circle),
-              child: const Icon(Icons.person, color: Colors.white, size: 26),
-            ),
-            if (friend.online)
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF4F8A5C),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.cream, width: 2),
+    final profile = friend.profile;
+    final avatarUrl = profile.avatarUrl;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+            clipBehavior: Clip.antiAlias,
+            child: avatarUrl != null && avatarUrl.isNotEmpty
+                ? Image.network(
+                    avatarUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) =>
+                        const Icon(Icons.person, color: Colors.white, size: 26),
+                  )
+                : const Icon(Icons.person, color: Colors.white, size: 26),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  profile.displayName,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.darkText,
                   ),
                 ),
-              ),
-          ],
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                friend.name,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                friend.status,
-                style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
-              ),
-            ],
+                const SizedBox(height: 2),
+                if (profile.username != null)
+                  Text(
+                    '@${profile.username}',
+                    style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                  ),
+              ],
+            ),
           ),
-        ),
-        Text(
-          friend.distance,
-          style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
-        ),
-      ],
+          const Icon(Icons.chat_bubble_outline, color: AppColors.orange, size: 20),
+        ],
+      ),
     );
   }
 }

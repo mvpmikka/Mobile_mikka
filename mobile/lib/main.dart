@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/auth_provider.dart';
+import 'providers/chat_provider.dart';
 import 'screens/explore_screen.dart';
 import 'screens/verify_email_screen.dart';
 import 'screens/welcome_screen.dart';
@@ -83,6 +84,20 @@ class AuthGate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authControllerProvider);
+
+    // Keeps the chat WebSocket connected for the lifetime of the signed-in
+    // session (not just while a chat screen happens to be open), so
+    // real-time messages/badges work app-wide — and torn down on logout.
+    ref.listen(authControllerProvider, (previous, next) async {
+      final socket = ref.read(chatSocketServiceProvider);
+      final isAuthenticated = next.value?.isAuthenticated ?? false;
+      if (!isAuthenticated) {
+        socket.disconnect();
+        return;
+      }
+      final token = await ref.read(tokenStorageProvider).readAccessToken();
+      if (token != null) socket.connect(token);
+    });
 
     return authState.when(
       loading: () => const _SplashScreen(),
