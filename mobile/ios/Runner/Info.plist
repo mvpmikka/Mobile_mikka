@@ -76,6 +76,16 @@
 				<string>mikka</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.mikka.mobile.googlesignin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>YOUR_IOS_REVERSED_CLIENT_ID</string>
+			</array>
+		</dict>
 	</array>
+	<key>GIDClientID</key>
+	<string>com.googleusercontent.apps.850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc</string>
 </dict>
 </plist>
