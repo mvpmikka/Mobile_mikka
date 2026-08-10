@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -16,6 +17,7 @@ export interface GoogleProfile {
 
 @Injectable()
 export class GoogleAuthService {
+  private readonly logger = new Logger(GoogleAuthService.name);
   private readonly client: OAuth2Client;
   private readonly clientId: string;
   private readonly audiences: string[];
@@ -37,7 +39,8 @@ export class GoogleAuthService {
 
     const ticket = await this.client
       .verifyIdToken({ idToken, audience: this.audiences })
-      .catch(() => {
+      .catch((err: Error) => {
+        this.logger.warn(`Google ID token rejected: ${err.message}`);
         throw new UnauthorizedException('Invalid Google ID token');
       });
 
