@@ -1,4 +1,4 @@
-import type { Gender } from '../../../generated/prisma/client';
+import type { Gender, Role } from '../../../generated/prisma/client';
 
 // Never merge this with PublicProfile — email/isEmailVerified/profileCompleted
 // must only ever be reachable through GET /users/me. See docs/foundation.md.
@@ -12,6 +12,7 @@ export interface PrivateProfile {
   birthDate: Date | null;
   avatarUrl: string | null;
   profileCompleted: boolean;
+  role: Role;
   createdAt: Date;
 }
 

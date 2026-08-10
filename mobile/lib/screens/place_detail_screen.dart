@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/place_summary.dart';
+import '../models/place.dart';
+import '../providers/place_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/place_category_icon.dart';
 import 'check_in_screen.dart';
 
-class PlaceDetailScreen extends StatefulWidget {
+class PlaceDetailScreen extends ConsumerStatefulWidget {
   const PlaceDetailScreen({super.key, required this.place});
 
-  final PlaceSummary place;
+  final Place place;
 
   @override
-  State<PlaceDetailScreen> createState() => _PlaceDetailScreenState();
+  ConsumerState<PlaceDetailScreen> createState() => _PlaceDetailScreenState();
 }
 
-class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
+class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
   bool _saved = false;
 
   @override
   Widget build(BuildContext context) {
     final place = widget.place;
-    final description = place.description.isNotEmpty
-        ? place.description
-        : 'A nice ${place.category.toLowerCase()} worth visiting.';
-    final openHours = place.openHours.isNotEmpty
-        ? place.openHours
-        : '9:00 – 21:00';
-    final reviewCount = place.reviewCount > 0 ? place.reviewCount : 42;
+    final detailAsync = ref.watch(placeDetailProvider(place.id));
+    final ratingAsync = ref.watch(placeRatingProvider(place.id));
 
     return Scaffold(
       backgroundColor: AppColors.cream,
@@ -33,7 +31,16 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
         children: [
           Stack(
             children: [
-              Container(height: 240, color: place.color),
+              Container(
+                height: 240,
+                color: AppColors.orange.withValues(alpha: 0.12),
+                alignment: Alignment.center,
+                child: Icon(
+                  placeCategoryIcon(place.category.name),
+                  color: AppColors.orange,
+                  size: 64,
+                ),
+              ),
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -86,7 +93,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   Row(
                     children: [
                       Text(
-                        place.category,
+                        place.category.name,
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.orange,
@@ -94,75 +101,88 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Icon(Icons.star, color: AppColors.orange, size: 14),
-                      const SizedBox(width: 2),
-                      Text(
-                        '${place.rating} ($reviewCount reviews)',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.mutedText,
+                      ratingAsync.when(
+                        loading: () => const SizedBox(
+                          width: 12,
+                          height: 12,
+                          child: CircularProgressIndicator(strokeWidth: 1.5),
                         ),
+                        error: (_, _) => const SizedBox.shrink(),
+                        data: (rating) => rating.reviewCount == 0
+                            ? const Text(
+                                'Hali baholanmagan',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: AppColors.mutedText,
+                                ),
+                              )
+                            : Row(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: AppColors.orange,
+                                    size: 14,
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    '${rating.averageRating.toStringAsFixed(1)} (${rating.reviewCount})',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: AppColors.mutedText,
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      _InfoPill(icon: Icons.access_time, label: 'Open now', sub: openHours),
-                      const SizedBox(width: 10),
-                      _InfoPill(
-                        icon: Icons.location_on_outlined,
-                        label: place.distance,
-                        sub: 'from you',
+                      if (place.distanceLabel != null)
+                        _InfoPill(
+                          icon: Icons.location_on_outlined,
+                          label: place.distanceLabel!,
+                          sub: 'sizdan',
+                        ),
+                      detailAsync.maybeWhen(
+                        data: (detail) => detail.address != null
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                  left: place.distanceLabel != null ? 10 : 0,
+                                ),
+                                child: _InfoPill(
+                                  icon: Icons.map_outlined,
+                                  label: 'Manzil',
+                                  sub: detail.address!,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        orElse: () => const SizedBox.shrink(),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.darkText,
-                      height: 1.5,
+                  detailAsync.when(
+                    loading: () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: CircularProgressIndicator(color: AppColors.orange),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      const Text(
-                        'Photos',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.darkText,
-                        ),
+                    error: (_, _) => const Text(
+                      'Ma\'lumotni yuklab bo\'lmadi',
+                      style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                    ),
+                    data: (detail) => Text(
+                      detail.description?.isNotEmpty == true
+                          ? detail.description!
+                          : '${place.category.name} haqida hali tavsif qo\'shilmagan.',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.darkText,
+                        height: 1.5,
                       ),
-                      const Spacer(),
-                      const Text(
-                        'See all',
-                        style: TextStyle(fontSize: 13, color: AppColors.orange),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 70,
-                    child: Row(
-                      children: List.generate(3, (index) {
-                        return Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: index < 2 ? 8 : 0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: place.color.withValues(
-                                  alpha: 0.6 + index * 0.15,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
                     ),
                   ),
                 ],
@@ -261,6 +281,8 @@ class _InfoPill extends StatelessWidget {
                   ),
                   Text(
                     sub,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 11,
                       color: AppColors.mutedText,

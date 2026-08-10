@@ -1,28 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/place_summary.dart';
+import '../core/api_exception.dart';
+import '../models/place.dart';
+import '../providers/place_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/place_category_icon.dart';
+import 'already_checked_in_screen.dart';
 import 'checked_in_success_screen.dart';
 
 const _moods = ['😀', '😊', '😄', '😁'];
 
-class CheckInScreen extends StatefulWidget {
+class CheckInScreen extends ConsumerStatefulWidget {
   const CheckInScreen({super.key, required this.place});
 
-  final PlaceSummary place;
+  final Place place;
 
   @override
-  State<CheckInScreen> createState() => _CheckInScreenState();
+  ConsumerState<CheckInScreen> createState() => _CheckInScreenState();
 }
 
-class _CheckInScreenState extends State<CheckInScreen> {
+class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   final _noteController = TextEditingController();
   int _selectedMood = -1;
+  bool _isSubmitting = false;
 
   @override
   void dispose() {
     _noteController.dispose();
     super.dispose();
+  }
+
+  Future<void> _submitCheckIn() async {
+    if (_isSubmitting) return;
+    setState(() => _isSubmitting = true);
+
+    final position = await ref.read(locationServiceProvider).getCurrentPosition();
+    if (position == null) {
+      if (!mounted) return;
+      setState(() => _isSubmitting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Check-in uchun joylashuvga ruxsat kerak.'),
+          backgroundColor: Color(0xFFCB4B4B),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await ref
+          .read(placeServiceProvider)
+          .checkIn(
+            widget.place.id,
+            latitude: position.latitude,
+            longitude: position.longitude,
+          );
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => CheckedInSuccessScreen(place: widget.place),
+        ),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      if (e.statusCode == 409) {
+        final cooldownEndsAt = _parseCooldownEndsAt(e.message);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => AlreadyCheckedInScreen(
+              place: widget.place,
+              cooldownEndsAt: cooldownEndsAt ?? DateTime.now().add(const Duration(minutes: 15)),
+            ),
+          ),
+        );
+        return;
+      }
+      setState(() => _isSubmitting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
+      );
+    }
+  }
+
+  DateTime? _parseCooldownEndsAt(String message) {
+    final match = RegExp(r'after (.+)$').firstMatch(message);
+    if (match == null) return null;
+    return DateTime.tryParse(match.group(1) ?? '');
   }
 
   @override
@@ -62,8 +126,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: place.color,
+                      color: AppColors.orange.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      placeCategoryIcon(place.category.name),
+                      color: AppColors.orange,
+                      size: 22,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -78,22 +147,23 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           color: AppColors.darkText,
                         ),
                       ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: AppColors.mutedText,
-                            size: 14,
-                          ),
-                          Text(
-                            place.distance,
-                            style: const TextStyle(
-                              fontSize: 12,
+                      if (place.distanceLabel != null)
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
                               color: AppColors.mutedText,
+                              size: 14,
                             ),
-                          ),
-                        ],
-                      ),
+                            Text(
+                              place.distanceLabel!,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.mutedText,
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ],
@@ -195,13 +265,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => CheckedInSuccessScreen(place: place),
-                      ),
-                    );
-                  },
+                  onPressed: _isSubmitting ? null : _submitCheckIn,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orange,
                     foregroundColor: Colors.white,
@@ -210,10 +274,19 @@ class _CheckInScreenState extends State<CheckInScreen> {
                       borderRadius: BorderRadius.circular(28),
                     ),
                   ),
-                  child: const Text(
-                    'Check-in',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  child: _isSubmitting
+                      ? const SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          'Check-in',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
                 ),
               ),
               const SizedBox(height: 8),

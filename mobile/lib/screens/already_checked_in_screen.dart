@@ -2,21 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/place_summary.dart';
+import '../models/place.dart';
 import '../theme/app_colors.dart';
 import 'place_detail_screen.dart';
-
-const _cooldownSeconds = 15 * 60;
 
 class AlreadyCheckedInScreen extends StatefulWidget {
   const AlreadyCheckedInScreen({
     super.key,
     required this.place,
-    this.remainingSeconds = _cooldownSeconds,
+    required this.cooldownEndsAt,
   });
 
-  final PlaceSummary place;
-  final int remainingSeconds;
+  final Place place;
+  final DateTime cooldownEndsAt;
 
   @override
   State<AlreadyCheckedInScreen> createState() =>
@@ -24,18 +22,25 @@ class AlreadyCheckedInScreen extends StatefulWidget {
 }
 
 class _AlreadyCheckedInScreenState extends State<AlreadyCheckedInScreen> {
-  late int _secondsLeft = widget.remainingSeconds;
+  late int _secondsLeft = _computeSecondsLeft();
   Timer? _timer;
+
+  int _computeSecondsLeft() {
+    final diff = widget.cooldownEndsAt.difference(DateTime.now()).inSeconds;
+    return diff > 0 ? diff : 0;
+  }
 
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (_secondsLeft <= 0) {
+      final secondsLeft = _computeSecondsLeft();
+      if (secondsLeft <= 0) {
         _timer?.cancel();
+        setState(() => _secondsLeft = 0);
         return;
       }
-      setState(() => _secondsLeft--);
+      setState(() => _secondsLeft = secondsLeft);
     });
   }
 

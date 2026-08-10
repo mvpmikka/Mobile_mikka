@@ -12,6 +12,7 @@ export function toPrivateProfile(user: User): PrivateProfile {
     birthDate: user.birthDate,
     avatarUrl: user.avatarUrl,
     profileCompleted: user.profileCompleted,
+    role: user.role,
     createdAt: user.createdAt,
   };
 }

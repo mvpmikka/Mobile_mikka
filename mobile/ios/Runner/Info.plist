@@ -87,5 +87,7 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc.apps.googleusercontent.com</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Mikka sizga yaqin joylarni va masofani ko'rsatish uchun joylashuvingizdan foydalanadi.</string>
 </dict>
 </plist>

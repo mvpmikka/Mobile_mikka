@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/place_summary.dart';
+import '../models/place.dart';
 import '../theme/app_colors.dart';
 import 'explore_screen.dart';
 import 'place_detail_screen.dart';
@@ -8,7 +8,7 @@ import 'place_detail_screen.dart';
 class CheckedInSuccessScreen extends StatelessWidget {
   const CheckedInSuccessScreen({super.key, required this.place});
 
-  final PlaceSummary place;
+  final Place place;
 
   @override
   Widget build(BuildContext context) {
@@ -45,42 +45,6 @@ class CheckedInSuccessScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.mutedText,
-                ),
-              ),
-              const SizedBox(height: 28),
-              const Text(
-                'Shared with your friends',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.darkText,
-                ),
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 44,
-                child: Stack(
-                  children: List.generate(4, (index) {
-                    return Positioned(
-                      left: index * 28.0,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: AppColors.orange.withValues(
-                            alpha: 0.35 + index * 0.15,
-                          ),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.cream, width: 2),
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                    );
-                  }),
                 ),
               ),
               const Spacer(),

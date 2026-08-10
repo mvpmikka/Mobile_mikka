@@ -4,10 +4,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../core/api_exception.dart';
 import '../models/friend.dart';
-import '../models/place_summary.dart';
+import '../models/place.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
+import '../providers/place_provider.dart';
 import '../theme/app_colors.dart';
+import '../theme/place_category_icon.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'filters_screen.dart';
@@ -339,13 +341,15 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   }
 
   Widget _buildNearbyPanel() {
+    final placesAsync = ref.watch(nearbyPlacesProvider);
+    final allPlaces = placesAsync.value ?? const <Place>[];
     final places = _searchQuery.isEmpty
-        ? kNearbyPlaces
-        : kNearbyPlaces
+        ? allPlaces
+        : allPlaces
               .where(
                 (place) =>
                     place.name.toLowerCase().contains(_searchQuery) ||
-                    place.category.toLowerCase().contains(_searchQuery),
+                    place.category.name.toLowerCase().contains(_searchQuery),
               )
               .toList();
 
@@ -387,7 +391,14 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          if (places.isEmpty)
+          if (placesAsync.isLoading)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: Center(
+                child: CircularProgressIndicator(color: AppColors.orange),
+              ),
+            )
+          else if (places.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
               child: Text(
@@ -477,10 +488,12 @@ class _RoundIconButton extends StatelessWidget {
 class _NearbyPlaceCard extends StatelessWidget {
   const _NearbyPlaceCard({required this.place});
 
-  final PlaceSummary place;
+  final Place place;
 
   @override
   Widget build(BuildContext context) {
+    final distanceLabel = place.distanceLabel;
+
     return SizedBox(
       width: 130,
       child: Column(
@@ -489,9 +502,15 @@ class _NearbyPlaceCard extends StatelessWidget {
           Container(
             height: 84,
             width: double.infinity,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: place.color,
+              color: AppColors.orange.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              placeCategoryIcon(place.category.name),
+              color: AppColors.orange,
+              size: 30,
             ),
           ),
           const SizedBox(height: 6),
@@ -506,20 +525,26 @@ class _NearbyPlaceCard extends StatelessWidget {
             ),
           ),
           Text(
-            place.category,
+            place.category.name,
             style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
           ),
-          const SizedBox(height: 2),
-          Row(
-            children: [
-              const Icon(Icons.star, color: AppColors.orange, size: 12),
-              const SizedBox(width: 2),
-              Text(
-                '${place.distance} · ${place.rating}',
-                style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
-              ),
-            ],
-          ),
+          if (distanceLabel != null) ...[
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  color: AppColors.mutedText,
+                  size: 12,
+                ),
+                const SizedBox(width: 2),
+                Text(
+                  distanceLabel,
+                  style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
