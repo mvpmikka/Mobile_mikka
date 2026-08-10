@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../core/api_exception.dart';
+import '../models/friend.dart';
 import '../models/place_summary.dart';
 import '../providers/auth_provider.dart';
+import '../providers/chat_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'filters_screen.dart';
 import 'friends_screen.dart';
+import 'message_thread_screen.dart';
 import 'nearby_places_screen.dart';
 import 'place_detail_screen.dart';
 import 'profile_screen.dart';
@@ -44,48 +48,56 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     super.dispose();
   }
 
-  static final _markers = <Marker>{
-    const Marker(
-      markerId: MarkerId('me'),
-      position: _tashkentCenter,
-      icon: BitmapDescriptor.defaultMarker,
-    ),
-    Marker(
-      markerId: const MarkerId('friend-1'),
-      position: const LatLng(41.3135, 69.2420),
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-        BitmapDescriptor.hueAzure,
+  // Backend has no live-location tracking for users, so a real friend's
+  // actual GPS position doesn't exist anywhere — these positions are a
+  // deterministic scatter around the city center, purely to place a real
+  // person's marker somewhere on the map. Only the identity is real.
+  Set<Marker> _markersFor(List<Friend> friends) {
+    return {
+      const Marker(
+        markerId: MarkerId('me'),
+        position: _tashkentCenter,
+        icon: BitmapDescriptor.defaultMarker,
       ),
-    ),
-    Marker(
-      markerId: const MarkerId('friend-2'),
-      position: const LatLng(41.3090, 69.2445),
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-        BitmapDescriptor.hueAzure,
-      ),
-    ),
-    Marker(
-      markerId: const MarkerId('place-1'),
-      position: const LatLng(41.3120, 69.2385),
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-        BitmapDescriptor.hueOrange,
-      ),
-    ),
-    Marker(
-      markerId: const MarkerId('place-2'),
-      position: const LatLng(41.3105, 69.2470),
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-        BitmapDescriptor.hueOrange,
-      ),
-    ),
-    Marker(
-      markerId: const MarkerId('place-3'),
-      position: const LatLng(41.3155, 69.2455),
-      icon: BitmapDescriptor.defaultMarkerWithHue(
-        BitmapDescriptor.hueOrange,
-      ),
-    ),
-  };
+      for (var i = 0; i < friends.length; i++)
+        Marker(
+          markerId: MarkerId(friends[i].profile.id),
+          position: LatLng(
+            _tashkentCenter.latitude + (i - friends.length / 2) * 0.003,
+            _tashkentCenter.longitude + (i - friends.length / 2) * 0.003,
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+          infoWindow: InfoWindow(
+            title: friends[i].profile.displayName,
+            snippet: 'Chat ochish uchun bosing',
+            onTap: () => _openChat(friends[i]),
+          ),
+          onTap: () => _openChat(friends[i]),
+        ),
+    };
+  }
+
+  Future<void> _openChat(Friend friend) async {
+    try {
+      final conversation = await ref
+          .read(chatServiceProvider)
+          .openPrivateConversation(friend.profile.id);
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MessageThreadScreen(
+            conversationId: conversation.id,
+            title: friend.profile.displayName,
+          ),
+        ),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +316,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             target: _tashkentCenter,
             zoom: 14.5,
           ),
-          markers: _markers,
+          markers: _markersFor(ref.watch(friendsProvider).value ?? const []),
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
           mapToolbarEnabled: false,

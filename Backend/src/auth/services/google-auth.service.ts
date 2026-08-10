@@ -40,7 +40,9 @@ export class GoogleAuthService {
     const ticket = await this.client
       .verifyIdToken({ idToken, audience: this.audiences })
       .catch((err: Error) => {
-        this.logger.warn(`Google ID token rejected: ${err.message}`);
+        this.logger.warn(
+          `Google ID token rejected: ${err.message} | token aud=${this.decodeAudienceForLogging(idToken)} | expected=[${this.audiences.join(', ')}]`,
+        );
         throw new UnauthorizedException('Invalid Google ID token');
       });
 
@@ -56,5 +58,19 @@ export class GoogleAuthService {
       fullName: payload.name,
       avatarUrl: payload.picture,
     };
+  }
+
+  // Diagnostic-only: reads the `aud` claim straight out of the JWT body
+  // without verifying the signature, purely so a rejection log line shows
+  // what audience the client actually sent instead of just "invalid".
+  private decodeAudienceForLogging(idToken: string): string {
+    try {
+      const payloadSegment = idToken.split('.')[1];
+      const json = Buffer.from(payloadSegment, 'base64url').toString('utf8');
+      const payload = JSON.parse(json) as { aud?: string };
+      return payload.aud ?? 'unknown';
+    } catch {
+      return 'unparseable';
+    }
   }
 }
