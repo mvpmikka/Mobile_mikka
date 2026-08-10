@@ -81,11 +81,11 @@
 			<string>com.mikka.mobile.googlesignin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>YOUR_IOS_REVERSED_CLIENT_ID</string>
+				<string>com.googleusercontent.apps.850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc</string>
 			</array>
 		</dict>
 	</array>
 	<key>GIDClientID</key>
-	<string>com.googleusercontent.apps.850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc</string>
+	<string>850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc.apps.googleusercontent.com</string>
 </dict>
 </plist>
