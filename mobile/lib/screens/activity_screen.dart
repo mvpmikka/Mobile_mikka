@@ -4,6 +4,7 @@ import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
+import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
 
 class _ActivityItem {
@@ -107,7 +108,11 @@ class _ActivityScreenState extends State<ActivityScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {},
+        onAddTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
+          );
+        },
       ),
     );
   }

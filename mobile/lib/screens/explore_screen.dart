@@ -35,6 +35,14 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   int _selectedCategory = 0;
   final _selectedNavIndex = 0;
   bool _nearbyPanelVisible = true;
+  final _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   static final _markers = <Marker>{
     const Marker(
@@ -100,7 +108,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {},
+        onAddTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
+          );
+        },
       ),
     );
   }
@@ -176,16 +188,38 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: AppColors.fieldBorder),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.search, color: AppColors.mutedText, size: 20),
-                  SizedBox(width: 8),
+                  const Icon(Icons.search, color: AppColors.mutedText, size: 20),
+                  const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      'Search places, people...',
-                      style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.trim().toLowerCase();
+                          _nearbyPanelVisible = true;
+                        });
+                      },
+                      style: const TextStyle(color: AppColors.darkText, fontSize: 14),
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        hintText: 'Search places, people...',
+                        hintStyle: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                      ),
                     ),
                   ),
+                  if (_searchQuery.isNotEmpty)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _searchController.clear();
+                          _searchQuery = '';
+                        });
+                      },
+                      child: const Icon(Icons.close, color: AppColors.mutedText, size: 18),
+                    ),
                 ],
               ),
             ),
@@ -293,6 +327,16 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   }
 
   Widget _buildNearbyPanel() {
+    final places = _searchQuery.isEmpty
+        ? kNearbyPlaces
+        : kNearbyPlaces
+              .where(
+                (place) =>
+                    place.name.toLowerCase().contains(_searchQuery) ||
+                    place.category.toLowerCase().contains(_searchQuery),
+              )
+              .toList();
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -314,9 +358,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                       ),
                     );
                   },
-                  child: const Text(
-                    'Nearby places',
-                    style: TextStyle(
+                  child: Text(
+                    _searchQuery.isEmpty ? 'Nearby places' : 'Search results',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.darkText,
@@ -331,27 +375,36 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            height: 150,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: kNearbyPlaces.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                final place = kNearbyPlaces[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => PlaceDetailScreen(place: place),
-                      ),
-                    );
-                  },
-                  child: _NearbyPlaceCard(place: place),
-                );
-              },
+          if (places.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: Text(
+                'Hech narsa topilmadi',
+                style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+              ),
+            )
+          else
+            SizedBox(
+              height: 150,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: places.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
+                itemBuilder: (context, index) {
+                  final place = places[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => PlaceDetailScreen(place: place),
+                        ),
+                      );
+                    },
+                    child: _NearbyPlaceCard(place: place),
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
     );

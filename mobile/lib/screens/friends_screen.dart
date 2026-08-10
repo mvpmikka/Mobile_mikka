@@ -5,6 +5,7 @@ import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'explore_screen.dart';
+import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
@@ -64,6 +65,21 @@ class FriendsScreen extends StatefulWidget {
 class _FriendsScreenState extends State<FriendsScreen> {
   bool _mapView = true;
   final _selectedNavIndex = 1;
+  final _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<_Friend> get _filteredFriends {
+    if (_searchQuery.isEmpty) return _friends;
+    return _friends
+        .where((friend) => friend.name.toLowerCase().contains(_searchQuery))
+        .toList();
+  }
 
   static final _markers = <Marker>{
     for (var i = 0; i < _friends.length; i++)
@@ -96,7 +112,11 @@ class _FriendsScreenState extends State<FriendsScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {},
+        onAddTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
+          );
+        },
       ),
     );
   }
@@ -143,16 +163,38 @@ class _FriendsScreenState extends State<FriendsScreen> {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.fieldBorder),
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Icon(Icons.search, color: AppColors.mutedText, size: 20),
-            SizedBox(width: 8),
+            const Icon(Icons.search, color: AppColors.mutedText, size: 20),
+            const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                'Search friends...',
-                style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value.trim().toLowerCase();
+                    _mapView = false;
+                  });
+                },
+                style: const TextStyle(color: AppColors.darkText, fontSize: 14),
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: InputBorder.none,
+                  hintText: 'Search friends...',
+                  hintStyle: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                ),
               ),
             ),
+            if (_searchQuery.isNotEmpty)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _searchController.clear();
+                    _searchQuery = '';
+                  });
+                },
+                child: const Icon(Icons.close, color: AppColors.mutedText, size: 18),
+              ),
           ],
         ),
       ),
@@ -173,11 +215,20 @@ class _FriendsScreenState extends State<FriendsScreen> {
   }
 
   Widget _buildList() {
+    final friends = _filteredFriends;
+    if (friends.isEmpty) {
+      return const Center(
+        child: Text(
+          'Hech kim topilmadi',
+          style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+        ),
+      );
+    }
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
-      itemCount: _friends.length,
+      itemCount: friends.length,
       separatorBuilder: (_, _) => const SizedBox(height: 14),
-      itemBuilder: (context, index) => _FriendListItem(friend: _friends[index]),
+      itemBuilder: (context, index) => _FriendListItem(friend: friends[index]),
     );
   }
 

@@ -65,6 +65,21 @@ class AuthService {
     }
   }
 
+  Future<AppUser> updateProfile({String? fullName, String? username}) async {
+    try {
+      final response = await _apiClient.dio.patch(
+        '/users/me',
+        data: {
+          'fullName': ?fullName,
+          'username': ?username,
+        },
+      );
+      return AppUser.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
   Future<void> logout() async {
     final refreshToken = await _tokenStorage.readRefreshToken();
     if (refreshToken != null) {

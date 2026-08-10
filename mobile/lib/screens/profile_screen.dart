@@ -5,8 +5,10 @@ import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
+import 'edit_profile_screen.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
+import 'nearby_places_screen.dart';
 import 'welcome_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -104,7 +106,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 width: double.infinity,
                 height: 48,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.darkText,
                     side: const BorderSide(color: AppColors.fieldBorder),
@@ -143,7 +149,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {},
+        onAddTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
+          );
+        },
       ),
     );
   }
