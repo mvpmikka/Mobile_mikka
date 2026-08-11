@@ -11,7 +11,7 @@ import {
   AuthProvider,
   VerificationTokenPurpose,
 } from '../../generated/prisma/client';
-import type { VerificationToken } from '../../generated/prisma/client';
+import type { User, VerificationToken } from '../../generated/prisma/client';
 import { hashToken } from '../common/crypto/hash-token';
 import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
@@ -23,6 +23,7 @@ import { GoogleAuthService } from './services/google-auth.service';
 import { IssuedTokens } from './types/auth-tokens.type';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { outranks, resolveEnvRole } from './utils/env-role.util';
 
 @Injectable()
 export class AuthService {
@@ -65,6 +66,7 @@ export class AuthService {
     });
 
     await this.sendVerificationEmail(user.id, user.email);
+    await this.syncRoleFromEnv(user);
 
     return this.tokenService.issueTokenPair(user.id);
   }
@@ -94,7 +96,24 @@ export class AuthService {
       throw new ForbiddenException('Your account has been banned');
     }
 
+    await this.syncRoleFromEnv(user);
+
     return this.tokenService.issueTokenPair(user.id);
+  }
+
+  // ADMIN_EMAILS / SUPER_ADMIN_EMAILS bootstrap: promotes on every
+  // successful register/login rather than only once at creation, so
+  // adding an email to env config later still takes effect on that
+  // person's next login — no manual DB write required. Never demotes.
+  private async syncRoleFromEnv(user: User): Promise<void> {
+    const envRole = resolveEnvRole(
+      user.email,
+      this.configService.get<string>('ADMIN_EMAILS', ''),
+      this.configService.get<string>('SUPER_ADMIN_EMAILS', ''),
+    );
+    if (outranks(envRole, user.role)) {
+      await this.userService.update(user.id, { role: envRole });
+    }
   }
 
   async loginWithGoogle(idToken: string): Promise<IssuedTokens> {
@@ -110,6 +129,9 @@ export class AuthService {
       );
       if (existingUser?.isBanned) {
         throw new ForbiddenException('Your account has been banned');
+      }
+      if (existingUser) {
+        await this.syncRoleFromEnv(existingUser);
       }
       return this.tokenService.issueTokenPair(existingIdentity.userId);
     }
@@ -145,6 +167,8 @@ export class AuthService {
     if (user.isBanned) {
       throw new ForbiddenException('Your account has been banned');
     }
+
+    await this.syncRoleFromEnv(user);
 
     return this.tokenService.issueTokenPair(user.id);
   }

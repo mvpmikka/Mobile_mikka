@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
+import 'admin/admin_panel_screen.dart';
 import 'edit_profile_screen.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
@@ -129,6 +130,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               _MenuTile(icon: Icons.notifications_none, label: 'Notifications', onTap: () {}),
               _MenuTile(icon: Icons.privacy_tip_outlined, label: 'Privacy', onTap: () {}),
               _MenuTile(icon: Icons.help_outline, label: 'Help & Support', onTap: () {}),
+              if (user?.isAdmin == true)
+                _MenuTile(
+                  icon: Icons.admin_panel_settings_outlined,
+                  label: 'Admin panel',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const AdminPanelScreen()),
+                    );
+                  },
+                ),
               _MenuTile(
                 icon: Icons.logout,
                 label: 'Log out',

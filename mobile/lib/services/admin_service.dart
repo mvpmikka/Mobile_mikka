@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../core/api_client.dart';
 import '../core/api_exception.dart';
+import '../models/admin_stats.dart';
 import '../models/admin_user.dart';
 import '../models/place.dart';
 
@@ -9,6 +10,15 @@ class AdminService {
   AdminService({required ApiClient apiClient}) : _apiClient = apiClient;
 
   final ApiClient _apiClient;
+
+  Future<AdminStats> getStats() async {
+    try {
+      final response = await _apiClient.dio.get('/admin/stats');
+      return AdminStats.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 
   Future<List<Place>> listPlaces({int page = 1, int limit = 50}) async {
     try {

@@ -74,6 +74,13 @@ export const envSchema = z.object({
 
   CHECK_IN_MAX_DISTANCE_METERS: z.coerce.number().positive().default(200),
   CHECK_IN_COOLDOWN_MINUTES: z.coerce.number().positive().default(15),
+
+  // Comma-separated email lists — whoever logs in (or registers) with one
+  // of these emails is auto-promoted to that role. See env-role.util.ts.
+  // Only ever promotes, never demotes, so removing an email here later
+  // doesn't strip an already-granted role.
+  ADMIN_EMAILS: z.string().default(''),
+  SUPER_ADMIN_EMAILS: z.string().default(''),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

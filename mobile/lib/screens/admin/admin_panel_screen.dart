@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
 import 'admin_categories_screen.dart';
 import 'admin_places_screen.dart';
 import 'admin_users_screen.dart';
 
-class AdminPanelScreen extends StatelessWidget {
+class AdminPanelScreen extends ConsumerWidget {
   const AdminPanelScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final statsAsync = ref.watch(adminStatsProvider);
     return Scaffold(
       backgroundColor: AppColors.cream,
       appBar: AppBar(
@@ -25,6 +29,30 @@ class AdminPanelScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
+            statsAsync.when(
+              loading: () => const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: CircularProgressIndicator(color: AppColors.orange),
+                ),
+              ),
+              error: (e, _) => Text(
+                e is ApiException ? e.message : 'Statistikani yuklab bo\'lmadi',
+                style: const TextStyle(color: AppColors.mutedText),
+              ),
+              data: (stats) => Row(
+                children: [
+                  _StatCard(label: 'Foydalanuvchi', value: stats.totalUsers),
+                  const SizedBox(width: 10),
+                  _StatCard(label: 'Joylar', value: stats.totalPlaces),
+                  const SizedBox(width: 10),
+                  _StatCard(label: 'Sharhlar', value: stats.totalReviews),
+                  const SizedBox(width: 10),
+                  _StatCard(label: 'Check-inlar', value: stats.totalCheckIns),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             _AdminMenuCard(
               icon: Icons.storefront_outlined,
               title: 'Joylar',
@@ -56,6 +84,45 @@ class AdminPanelScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const AdminUsersScreen()),
                 );
               },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.fieldBorder),
+        ),
+        child: Column(
+          children: [
+            Text(
+              '$value',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.orange,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 10, color: AppColors.mutedText),
             ),
           ],
         ),
