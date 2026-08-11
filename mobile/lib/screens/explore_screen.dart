@@ -14,6 +14,7 @@ import '../providers/place_provider.dart';
 import '../services/location_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
+import '../utils/avatar_marker.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'filters_screen.dart';
@@ -48,6 +49,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
 
+  String? _markersKey;
+  Future<Set<Marker>>? _markersFuture;
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -55,36 +59,62 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   }
 
   // Friends without a visible check-in are simply left off the map, rather
-  // than given a fake position — same rule as FriendsScreen's map.
-  Set<Marker> _markersFor(
+  // than given a fake position — same rule as FriendsScreen's map. Markers
+  // use each person's actual profile photo (built to a BitmapDescriptor by
+  // AvatarMarker) instead of a generic pin, so building them is async —
+  // cached per (friends, locations, myPosition, avatar) combination below so
+  // rebuilds triggered by unrelated state don't redo the image work.
+  Future<Set<Marker>> _markersFor(
     List<Friend> friends,
     Map<String, PublicCheckIn> locations,
     Position? myPosition,
-  ) {
-    return {
+    String? myAvatarUrl,
+  ) async {
+    final relevantFriends = friends
+        .where((friend) => locations[friend.profile.id] != null)
+        .toList();
+
+    final results = await Future.wait([
       if (myPosition != null)
-        Marker(
-          markerId: const MarkerId('me'),
-          position: LatLng(myPosition.latitude, myPosition.longitude),
-          icon: BitmapDescriptor.defaultMarker,
-        ),
-      for (final friend in friends)
-        if (locations[friend.profile.id] != null)
-          Marker(
-            markerId: MarkerId(friend.profile.id),
-            position: LatLng(
-              locations[friend.profile.id]!.place.latitude,
-              locations[friend.profile.id]!.place.longitude,
+        AvatarMarker.build(
+              avatarUrl: myAvatarUrl,
+              fallbackLabel: 'Men',
+              fallbackColor: AppColors.orange,
+            )
+            .then(
+              (icon) => Marker(
+                markerId: const MarkerId('me'),
+                position: LatLng(myPosition.latitude, myPosition.longitude),
+                icon: icon,
+              ),
             ),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-            infoWindow: InfoWindow(
-              title: friend.profile.displayName,
-              snippet: locations[friend.profile.id]!.place.name,
-              onTap: () => _openChat(friend),
+      for (final friend in relevantFriends)
+        AvatarMarker.build(
+              avatarUrl: friend.profile.avatarUrl,
+              fallbackLabel: friend.profile.displayName.isNotEmpty
+                  ? friend.profile.displayName[0].toUpperCase()
+                  : '?',
+              fallbackColor: const Color(0xFF3B82C4),
+            )
+            .then(
+              (icon) => Marker(
+                markerId: MarkerId(friend.profile.id),
+                position: LatLng(
+                  locations[friend.profile.id]!.place.latitude,
+                  locations[friend.profile.id]!.place.longitude,
+                ),
+                icon: icon,
+                infoWindow: InfoWindow(
+                  title: friend.profile.displayName,
+                  snippet: locations[friend.profile.id]!.place.name,
+                  onTap: () => _openChat(friend),
+                ),
+                onTap: () => _openChat(friend),
+              ),
             ),
-            onTap: () => _openChat(friend),
-          ),
-    };
+    ]);
+
+    return results.toSet();
   }
 
   Future<void> _openChat(Friend friend) async {
@@ -319,21 +349,35 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   }
 
   Widget _buildMap() {
+    final friends = ref.watch(friendsProvider).value ?? const [];
+    final locations = ref.watch(friendLocationsProvider).value ?? const {};
+    final myPosition = ref.watch(currentPositionProvider).value;
+    final myAvatarUrl = ref.watch(authControllerProvider).value?.user?.avatarUrl;
+
+    final key =
+        '${myPosition?.latitude},${myPosition?.longitude}|$myAvatarUrl|'
+        '${friends.map((f) => '${f.profile.id}:${f.profile.avatarUrl}:${locations[f.profile.id]?.place.id}').join(',')}';
+    if (_markersKey != key) {
+      _markersKey = key;
+      _markersFuture = _markersFor(friends, locations, myPosition, myAvatarUrl);
+    }
+
     return Stack(
       children: [
-        GoogleMap(
-          initialCameraPosition: const CameraPosition(
-            target: _tashkentCenter,
-            zoom: 14.5,
-          ),
-          markers: _markersFor(
-            ref.watch(friendsProvider).value ?? const [],
-            ref.watch(friendLocationsProvider).value ?? const {},
-            ref.watch(currentPositionProvider).value,
-          ),
-          myLocationButtonEnabled: false,
-          zoomControlsEnabled: false,
-          mapToolbarEnabled: false,
+        FutureBuilder<Set<Marker>>(
+          future: _markersFuture,
+          builder: (context, snapshot) {
+            return GoogleMap(
+              initialCameraPosition: const CameraPosition(
+                target: _tashkentCenter,
+                zoom: 14.5,
+              ),
+              markers: snapshot.data ?? const <Marker>{},
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false,
+              mapToolbarEnabled: false,
+            );
+          },
         ),
         Positioned(
           top: 16,

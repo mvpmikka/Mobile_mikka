@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../core/api_exception.dart';
+import '../models/check_in.dart';
 import '../models/friend.dart';
 import '../models/user_search_result.dart';
 import '../providers/chat_provider.dart';
 import '../providers/friend_location_provider.dart';
 import '../providers/user_search_provider.dart';
 import '../theme/app_colors.dart';
+import '../utils/avatar_marker.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'conversations_screen.dart';
@@ -34,6 +36,8 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
   String _debouncedQuery = '';
   Timer? _debounce;
   final _sentRequestIds = <String>{};
+  String? _markersKey;
+  Future<Set<Marker>>? _markersFuture;
 
   @override
   void dispose() {
@@ -265,24 +269,11 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
     }
 
     final locations = locationsAsync.value ?? const {};
-    final markers = <Marker>{
-      for (final friend in friends)
-        if (locations[friend.profile.id] != null)
-          Marker(
-            markerId: MarkerId(friend.profile.id),
-            position: LatLng(
-              locations[friend.profile.id]!.place.latitude,
-              locations[friend.profile.id]!.place.longitude,
-            ),
-            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-            infoWindow: InfoWindow(
-              title: friend.profile.displayName,
-              snippet: locations[friend.profile.id]!.place.name,
-            ),
-          ),
-    };
+    final relevantFriends = friends
+        .where((friend) => locations[friend.profile.id] != null)
+        .toList();
 
-    if (markers.isEmpty) {
+    if (relevantFriends.isEmpty) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 32),
@@ -295,13 +286,68 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       );
     }
 
-    return GoogleMap(
-      initialCameraPosition: CameraPosition(target: markers.first.position, zoom: 12),
-      markers: markers,
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      mapToolbarEnabled: false,
+    final key = relevantFriends
+        .map(
+          (f) =>
+              '${f.profile.id}:${f.profile.avatarUrl}:${locations[f.profile.id]!.place.id}',
+        )
+        .join(',');
+    if (_markersKey != key) {
+      _markersKey = key;
+      _markersFuture = _buildFriendMarkers(relevantFriends, locations);
+    }
+
+    return FutureBuilder<Set<Marker>>(
+      future: _markersFuture,
+      builder: (context, snapshot) {
+        final markers = snapshot.data;
+        if (markers == null || markers.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.orange),
+          );
+        }
+        return GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: markers.first.position,
+            zoom: 12,
+          ),
+          markers: markers,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          mapToolbarEnabled: false,
+        );
+      },
     );
+  }
+
+  // Markers use each friend's real profile photo (via AvatarMarker) instead
+  // of a generic pin, matching the same approach as ExploreScreen's map.
+  Future<Set<Marker>> _buildFriendMarkers(
+    List<Friend> friends,
+    Map<String, PublicCheckIn> locations,
+  ) async {
+    final markers = await Future.wait(
+      friends.map((friend) async {
+        final location = locations[friend.profile.id]!;
+        final icon = await AvatarMarker.build(
+          avatarUrl: friend.profile.avatarUrl,
+          fallbackLabel: friend.profile.displayName.isNotEmpty
+              ? friend.profile.displayName[0].toUpperCase()
+              : '?',
+          fallbackColor: const Color(0xFF3B82C4),
+        );
+        return Marker(
+          markerId: MarkerId(friend.profile.id),
+          position: LatLng(location.place.latitude, location.place.longitude),
+          icon: icon,
+          infoWindow: InfoWindow(
+            title: friend.profile.displayName,
+            snippet: location.place.name,
+          ),
+        );
+      }),
+    );
+    return markers.toSet();
   }
 
   Widget _buildSearchResults(List<Friend> friends) {
