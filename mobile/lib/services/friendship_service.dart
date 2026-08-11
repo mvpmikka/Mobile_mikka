@@ -23,4 +23,15 @@ class FriendshipService {
       throw ApiException.fromDio(e);
     }
   }
+
+  Future<void> sendFriendRequest(String addresseeUserId) async {
+    try {
+      await _apiClient.dio.post(
+        '/friend-requests',
+        data: {'addresseeUserId': addresseeUserId},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 }

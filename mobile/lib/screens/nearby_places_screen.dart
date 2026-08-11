@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/place.dart';
 import '../providers/place_provider.dart';
+import '../services/location_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
 import 'filters_screen.dart';
@@ -36,11 +37,9 @@ class _NearbyPlacesScreenState extends ConsumerState<NearbyPlacesScreen> {
                 loading: () => const Center(
                   child: CircularProgressIndicator(color: AppColors.orange),
                 ),
-                error: (error, _) => const Center(
-                  child: Text(
-                    'Joylarni yuklab bo\'lmadi',
-                    style: TextStyle(color: AppColors.mutedText),
-                  ),
+                error: (error, _) => _LocationErrorView(
+                  isLocationError: error is LocationUnavailableException,
+                  onRetry: () => ref.invalidate(currentPositionProvider),
                 ),
                 data: (places) {
                   if (places.isEmpty) {
@@ -127,6 +126,39 @@ class _NearbyPlacesScreenState extends ConsumerState<NearbyPlacesScreen> {
             onTap: () => setState(() => _selectedTab = 1),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LocationErrorView extends StatelessWidget {
+  const _LocationErrorView({required this.isLocationError, required this.onRetry});
+
+  final bool isLocationError;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isLocationError
+                  ? 'Joylashuvingiz aniqlanmadi. GPS yoqilganini va ilovaga joylashuv ruxsati berilganini tekshiring.'
+                  : 'Joylarni yuklab bo\'lmadi',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.mutedText, fontSize: 14),
+            ),
+            const SizedBox(height: 12),
+            TextButton(
+              onPressed: onRetry,
+              child: const Text('Qayta urinish', style: TextStyle(color: AppColors.orange)),
+            ),
+          ],
+        ),
       ),
     );
   }

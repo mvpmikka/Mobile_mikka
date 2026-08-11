@@ -10,15 +10,20 @@ export interface CheckInWithPlace {
 }
 
 // Shown to viewers other than the owner (GET /users/:username/check-ins) —
-// deliberately excludes latitude/longitude/distanceMeters/userId. Unlike
+// deliberately excludes the user's own distanceMeters/userId/raw GPS. Unlike
 // CheckInWithPlace (self-view only), this is reachable by other users once
-// checkInVisibility allows it, and exact GPS coordinates are more than
-// "which place" — never over-expose. See docs/foundation.md.
+// checkInVisibility allows it, and the user's exact GPS coordinates are more
+// than "which place" — never over-expose those. See docs/foundation.md.
+// place.latitude/longitude ARE included: that's the place's own public
+// business location (same data returned by GET /places), not the viewer's
+// personal position.
 export interface PublicCheckInItem {
   id: string;
   place: {
     id: string;
     name: string;
+    latitude: number;
+    longitude: number;
   };
   createdAt: Date;
 }

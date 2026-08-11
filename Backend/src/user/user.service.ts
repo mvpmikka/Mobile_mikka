@@ -9,7 +9,7 @@ import { UserRepository } from './user.repository';
 import type { Prisma, User } from '../../generated/prisma/client';
 import type { UpdateProfileDto } from './dto/update-profile.dto';
 import { toPublicProfile } from './mappers/profile.mapper';
-import type { PublicProfile } from './types/profile.type';
+import type { PublicProfile, UserSearchResult } from './types/profile.type';
 import type { AdminUserView } from './types/admin-user.type';
 
 export interface PaginatedResult<T> {
@@ -165,6 +165,20 @@ export class UserService {
       }
       throw error;
     }
+  }
+
+  async search(
+    query: string,
+    currentUserId: string,
+  ): Promise<UserSearchResult[]> {
+    const rows = await this.userRepository.searchPublic(
+      query,
+      currentUserId,
+      20,
+    );
+    return rows
+      .filter((user) => user.username !== null)
+      .map((user) => ({ ...user, username: user.username! }));
   }
 
   async listForAdmin(

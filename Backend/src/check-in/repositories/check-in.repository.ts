@@ -17,7 +17,7 @@ const checkInWithPlaceInclude = {
 const publicCheckInSelect = {
   id: true,
   createdAt: true,
-  place: { select: { id: true, name: true } },
+  place: { select: { id: true, name: true, latitude: true, longitude: true } },
 } as const;
 
 @Injectable()

@@ -1,8 +1,15 @@
 import 'package:geolocator/geolocator.dart';
 
+/// Thrown by callers when [LocationService.getCurrentPosition] returns null,
+/// so the UI can show an actionable message instead of silently using a
+/// wrong location.
+class LocationUnavailableException implements Exception {
+  const LocationUnavailableException();
+}
+
 /// Wraps device GPS access. Returns null on any failure (permission denied,
-/// location services off, timeout) so callers can fall back to a fixed
-/// reference point instead of crashing.
+/// location services off, timeout) — callers must surface this to the user
+/// rather than silently substituting a fixed reference point.
 class LocationService {
   Future<Position?> getCurrentPosition() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();

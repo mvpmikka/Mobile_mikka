@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../core/api_exception.dart';
 import '../models/friend.dart';
+import '../models/user_search_result.dart';
 import '../providers/chat_provider.dart';
+import '../providers/friend_location_provider.dart';
+import '../providers/user_search_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
@@ -13,8 +18,6 @@ import 'explore_screen.dart';
 import 'message_thread_screen.dart';
 import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
-
-const _tashkentCenter = LatLng(41.311081, 69.240562);
 
 class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
@@ -28,10 +31,14 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
   final _selectedNavIndex = 1;
   final _searchController = TextEditingController();
   String _searchQuery = '';
+  String _debouncedQuery = '';
+  Timer? _debounce;
+  final _sentRequestIds = <String>{};
 
   @override
   void dispose() {
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -42,6 +49,19 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
           (friend) => friend.profile.displayName.toLowerCase().contains(_searchQuery),
         )
         .toList();
+  }
+
+  Future<void> _sendFriendRequest(UserSearchResult user) async {
+    try {
+      await ref.read(friendshipServiceProvider).sendFriendRequest(user.id);
+      if (!mounted) return;
+      setState(() => _sentRequestIds.add(user.id));
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
+      );
+    }
   }
 
   Future<void> _openChat(Friend friend) async {
@@ -81,37 +101,39 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             _buildSearchBar(),
             const SizedBox(height: 12),
             Expanded(
-              child: friendsAsync.when(
-                loading: () => const Center(
-                  child: CircularProgressIndicator(color: AppColors.orange),
-                ),
-                error: (error, _) => const Center(
-                  child: Text(
-                    'Do\'stlar ro\'yxatini yuklab bo\'lmadi',
-                    style: TextStyle(color: AppColors.mutedText),
-                  ),
-                ),
-                data: (friends) {
-                  final filtered = _filtered(friends);
-                  if (friends.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Hali do\'stlaringiz yo\'q',
-                        style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+              child: _debouncedQuery.isNotEmpty
+                  ? _buildSearchResults(friendsAsync.value ?? const [])
+                  : friendsAsync.when(
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(color: AppColors.orange),
                       ),
-                    );
-                  }
-                  if (filtered.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Hech kim topilmadi',
-                        style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                      error: (error, _) => const Center(
+                        child: Text(
+                          'Do\'stlar ro\'yxatini yuklab bo\'lmadi',
+                          style: TextStyle(color: AppColors.mutedText),
+                        ),
                       ),
-                    );
-                  }
-                  return _mapView ? _buildMap(filtered) : _buildList(filtered);
-                },
-              ),
+                      data: (friends) {
+                        final filtered = _filtered(friends);
+                        if (friends.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              'Hali do\'stlaringiz yo\'q',
+                              style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                            ),
+                          );
+                        }
+                        if (filtered.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              'Hech kim topilmadi',
+                              style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                            ),
+                          );
+                        }
+                        return _mapView ? _buildMap(filtered) : _buildList(filtered);
+                      },
+                    ),
             ),
           ],
         ),
@@ -200,6 +222,11 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                     _searchQuery = value.trim().toLowerCase();
                     _mapView = false;
                   });
+                  _debounce?.cancel();
+                  _debounce = Timer(const Duration(milliseconds: 400), () {
+                    if (!mounted) return;
+                    setState(() => _debouncedQuery = _searchQuery);
+                  });
                 },
                 style: const TextStyle(color: AppColors.darkText, fontSize: 14),
                 decoration: const InputDecoration(
@@ -213,9 +240,11 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             if (_searchQuery.isNotEmpty)
               GestureDetector(
                 onTap: () {
+                  _debounce?.cancel();
                   setState(() {
                     _searchController.clear();
                     _searchQuery = '';
+                    _debouncedQuery = '';
                   });
                 },
                 child: const Icon(Icons.close, color: AppColors.mutedText, size: 18),
@@ -227,24 +256,92 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
   }
 
   Widget _buildMap(List<Friend> friends) {
+    final locationsAsync = ref.watch(friendLocationsProvider);
+
+    if (locationsAsync.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: AppColors.orange),
+      );
+    }
+
+    final locations = locationsAsync.value ?? const {};
     final markers = <Marker>{
-      for (var i = 0; i < friends.length; i++)
-        Marker(
-          markerId: MarkerId(friends[i].profile.id),
-          position: LatLng(
-            _tashkentCenter.latitude + (i - friends.length / 2) * 0.003,
-            _tashkentCenter.longitude + (i - friends.length / 2) * 0.003,
+      for (final friend in friends)
+        if (locations[friend.profile.id] != null)
+          Marker(
+            markerId: MarkerId(friend.profile.id),
+            position: LatLng(
+              locations[friend.profile.id]!.place.latitude,
+              locations[friend.profile.id]!.place.longitude,
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+            infoWindow: InfoWindow(
+              title: friend.profile.displayName,
+              snippet: locations[friend.profile.id]!.place.name,
+            ),
           ),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-          infoWindow: InfoWindow(title: friends[i].profile.displayName),
-        ),
     };
+
+    if (markers.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            'Do\'stlaringizning hozircha check-in qilingan joyi yo\'q',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+          ),
+        ),
+      );
+    }
+
     return GoogleMap(
-      initialCameraPosition: const CameraPosition(target: _tashkentCenter, zoom: 14.5),
+      initialCameraPosition: CameraPosition(target: markers.first.position, zoom: 12),
       markers: markers,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       mapToolbarEnabled: false,
+    );
+  }
+
+  Widget _buildSearchResults(List<Friend> friends) {
+    final resultsAsync = ref.watch(userSearchProvider(_debouncedQuery));
+    final friendIds = friends.map((f) => f.profile.id).toSet();
+
+    return resultsAsync.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(color: AppColors.orange),
+      ),
+      error: (error, _) => const Center(
+        child: Text(
+          'Qidiruvni bajarib bo\'lmadi',
+          style: TextStyle(color: AppColors.mutedText),
+        ),
+      ),
+      data: (results) {
+        if (results.isEmpty) {
+          return const Center(
+            child: Text(
+              'Hech kim topilmadi',
+              style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+            ),
+          );
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
+          itemCount: results.length,
+          separatorBuilder: (_, _) => const SizedBox(height: 14),
+          itemBuilder: (context, index) {
+            final user = results[index];
+            return _SearchResultItem(
+              user: user,
+              isFriend: friendIds.contains(user.id),
+              requestSent: _sentRequestIds.contains(user.id),
+              onSendRequest: () => _sendFriendRequest(user),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -308,6 +405,90 @@ class _ToggleIconButton extends StatelessWidget {
           size: 18,
         ),
       ),
+    );
+  }
+}
+
+class _SearchResultItem extends StatelessWidget {
+  const _SearchResultItem({
+    required this.user,
+    required this.isFriend,
+    required this.requestSent,
+    required this.onSendRequest,
+  });
+
+  final UserSearchResult user;
+  final bool isFriend;
+  final bool requestSent;
+  final VoidCallback onSendRequest;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatarUrl = user.avatarUrl;
+
+    return Row(
+      children: [
+        Container(
+          width: 52,
+          height: 52,
+          decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+          clipBehavior: Clip.antiAlias,
+          child: avatarUrl != null && avatarUrl.isNotEmpty
+              ? Image.network(
+                  avatarUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) =>
+                      const Icon(Icons.person, color: Colors.white, size: 26),
+                )
+              : const Icon(Icons.person, color: Colors.white, size: 26),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user.displayName,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.darkText,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '@${user.username}',
+                style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+              ),
+            ],
+          ),
+        ),
+        if (isFriend)
+          const Text(
+            'Do\'stingiz',
+            style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+          )
+        else if (requestSent)
+          const Text(
+            'Yuborildi',
+            style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+          )
+        else
+          GestureDetector(
+            onTap: onSendRequest,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.orange,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Text(
+                'Qo\'shish',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

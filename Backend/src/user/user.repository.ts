@@ -4,6 +4,13 @@ import { PrismaService } from '../prisma/prisma.service';
 import type { Prisma, User } from '../../generated/prisma/client';
 import type { AdminUserView } from './types/admin-user.type';
 
+const userSearchSelect = {
+  id: true,
+  username: true,
+  fullName: true,
+  avatarUrl: true,
+} as const;
+
 // Deliberately wider than PrivateProfile/PublicProfile (email, role,
 // isBanned included) — this projection is only ever reachable through
 // AdminModule's ADMIN-gated routes, never returned to the user it
@@ -106,6 +113,39 @@ export class UserRepository {
       this.prisma.user.count({ where }),
     ]);
     return { items, total };
+  }
+
+  // Excludes the caller. Rows always have a non-null username (a user
+  // without one hasn't finished onboarding and shouldn't be discoverable
+  // yet) even though Prisma's inferred type keeps it nullable — the caller
+  // (UserService.search) is responsible for narrowing that.
+  searchPublic(
+    query: string,
+    excludeUserId: string,
+    limit: number,
+  ): Promise<
+    Array<{
+      id: string;
+      username: string | null;
+      fullName: string | null;
+      avatarUrl: string | null;
+    }>
+  > {
+    return this.prisma.user.findMany({
+      where: {
+        deletedAt: null,
+        isBanned: false,
+        id: { not: excludeUserId },
+        username: { not: null },
+        OR: [
+          { username: { contains: query, mode: 'insensitive' } },
+          { fullName: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      select: userSearchSelect,
+      orderBy: { username: 'asc' },
+      take: limit,
+    });
   }
 
   findByIdAdmin(id: string): Promise<AdminUserView | null> {

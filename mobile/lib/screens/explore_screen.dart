@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../core/api_exception.dart';
+import '../models/check_in.dart';
 import '../models/friend.dart';
 import '../models/place.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
+import '../providers/friend_location_provider.dart';
 import '../providers/place_provider.dart';
+import '../services/location_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
 import '../widgets/app_bottom_nav.dart';
@@ -50,32 +54,36 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     super.dispose();
   }
 
-  // Backend has no live-location tracking for users, so a real friend's
-  // actual GPS position doesn't exist anywhere — these positions are a
-  // deterministic scatter around the city center, purely to place a real
-  // person's marker somewhere on the map. Only the identity is real.
-  Set<Marker> _markersFor(List<Friend> friends) {
+  // Friends without a visible check-in are simply left off the map, rather
+  // than given a fake position — same rule as FriendsScreen's map.
+  Set<Marker> _markersFor(
+    List<Friend> friends,
+    Map<String, PublicCheckIn> locations,
+    Position? myPosition,
+  ) {
     return {
-      const Marker(
-        markerId: MarkerId('me'),
-        position: _tashkentCenter,
-        icon: BitmapDescriptor.defaultMarker,
-      ),
-      for (var i = 0; i < friends.length; i++)
+      if (myPosition != null)
         Marker(
-          markerId: MarkerId(friends[i].profile.id),
-          position: LatLng(
-            _tashkentCenter.latitude + (i - friends.length / 2) * 0.003,
-            _tashkentCenter.longitude + (i - friends.length / 2) * 0.003,
-          ),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-          infoWindow: InfoWindow(
-            title: friends[i].profile.displayName,
-            snippet: 'Chat ochish uchun bosing',
-            onTap: () => _openChat(friends[i]),
-          ),
-          onTap: () => _openChat(friends[i]),
+          markerId: const MarkerId('me'),
+          position: LatLng(myPosition.latitude, myPosition.longitude),
+          icon: BitmapDescriptor.defaultMarker,
         ),
+      for (final friend in friends)
+        if (locations[friend.profile.id] != null)
+          Marker(
+            markerId: MarkerId(friend.profile.id),
+            position: LatLng(
+              locations[friend.profile.id]!.place.latitude,
+              locations[friend.profile.id]!.place.longitude,
+            ),
+            icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+            infoWindow: InfoWindow(
+              title: friend.profile.displayName,
+              snippet: locations[friend.profile.id]!.place.name,
+              onTap: () => _openChat(friend),
+            ),
+            onTap: () => _openChat(friend),
+          ),
     };
   }
 
@@ -318,7 +326,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             target: _tashkentCenter,
             zoom: 14.5,
           ),
-          markers: _markersFor(ref.watch(friendsProvider).value ?? const []),
+          markers: _markersFor(
+            ref.watch(friendsProvider).value ?? const [],
+            ref.watch(friendLocationsProvider).value ?? const {},
+            ref.watch(currentPositionProvider).value,
+          ),
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
           mapToolbarEnabled: false,
@@ -342,6 +354,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   Widget _buildNearbyPanel() {
     final placesAsync = ref.watch(nearbyPlacesProvider);
+    final locationError = placesAsync.error;
     final allPlaces = placesAsync.value ?? const <Place>[];
     final places = _searchQuery.isEmpty
         ? allPlaces
@@ -396,6 +409,27 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
               padding: EdgeInsets.symmetric(vertical: 24),
               child: Center(
                 child: CircularProgressIndicator(color: AppColors.orange),
+              ),
+            )
+          else if (locationError != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    locationError is LocationUnavailableException
+                        ? 'Joylashuvingiz aniqlanmadi. GPS yoqilganini va ilovaga joylashuv ruxsati berilganini tekshiring.'
+                        : 'Joylarni yuklab bo\'lmadi',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => ref.invalidate(currentPositionProvider),
+                    child: const Text('Qayta urinish', style: TextStyle(color: AppColors.orange)),
+                  ),
+                ],
               ),
             )
           else if (places.isEmpty)
