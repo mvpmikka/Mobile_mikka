@@ -358,10 +358,30 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       loading: () => const Center(
         child: CircularProgressIndicator(color: AppColors.orange),
       ),
-      error: (error, _) => const Center(
-        child: Text(
-          'Qidiruvni bajarib bo\'lmadi',
-          style: TextStyle(color: AppColors.mutedText),
+      error: (error, _) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                error is ApiException
+                    ? error.message
+                    : 'Qidiruvni bajarib bo\'lmadi',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: () =>
+                    ref.invalidate(userSearchProvider(_debouncedQuery)),
+                child: const Text(
+                  'Qayta urinish',
+                  style: TextStyle(color: AppColors.orange),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       data: (results) {
