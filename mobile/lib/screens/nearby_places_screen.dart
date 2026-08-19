@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/place.dart';
+import '../models/place_filters.dart';
 import '../providers/place_provider.dart';
 import '../services/location_service.dart';
 import '../theme/app_colors.dart';
@@ -18,13 +19,23 @@ class NearbyPlacesScreen extends ConsumerStatefulWidget {
 
 class _NearbyPlacesScreenState extends ConsumerState<NearbyPlacesScreen> {
   int _selectedTab = 0;
+  PlaceFilters _filters = const PlaceFilters();
+
+  Future<void> _openFilters() async {
+    final result = await Navigator.of(context).push<PlaceFilters>(
+      MaterialPageRoute(
+        builder: (_) => FiltersScreen(initialFilters: _filters),
+      ),
+    );
+    if (result != null) setState(() => _filters = result);
+  }
 
   @override
   Widget build(BuildContext context) {
     final placesAsync = ref.watch(nearbyPlacesProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -41,12 +52,13 @@ class _NearbyPlacesScreenState extends ConsumerState<NearbyPlacesScreen> {
                   isLocationError: error is LocationUnavailableException,
                   onRetry: () => ref.invalidate(currentPositionProvider),
                 ),
-                data: (places) {
+                data: (allPlaces) {
+                  final places = _filters.apply(allPlaces);
                   if (places.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'Yaqin atrofda joylar topilmadi',
-                        style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                        style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                       ),
                     );
                   }
@@ -84,25 +96,21 @@ class _NearbyPlacesScreenState extends ConsumerState<NearbyPlacesScreen> {
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back, color: AppColors.darkText),
+            icon: Icon(Icons.arrow_back, color: AppColors.darkText(context)),
           ),
-          const Expanded(
+          Expanded(
             child: Text(
               'Nearby Places',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.darkText,
+                color: AppColors.darkText(context),
               ),
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const FiltersScreen()),
-              );
-            },
-            child: const Icon(Icons.tune, color: AppColors.darkText),
+            onTap: _openFilters,
+            child: Icon(Icons.tune, color: AppColors.darkText(context)),
           ),
         ],
       ),
@@ -150,7 +158,7 @@ class _LocationErrorView extends StatelessWidget {
                   ? 'Joylashuvingiz aniqlanmadi. GPS yoqilganini va ilovaga joylashuv ruxsati berilganini tekshiring.'
                   : 'Joylarni yuklab bo\'lmadi',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.mutedText, fontSize: 14),
+              style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
             ),
             const SizedBox(height: 12),
             TextButton(
@@ -182,16 +190,16 @@ class _TabChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
         decoration: BoxDecoration(
-          color: selected ? AppColors.orange : Colors.white,
+          color: selected ? AppColors.orange : AppColors.surface(context),
           borderRadius: BorderRadius.circular(20),
-          border: selected ? null : Border.all(color: AppColors.fieldBorder),
+          border: selected ? null : Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: selected ? Colors.white : AppColors.mutedText,
+            color: selected ? Colors.white : AppColors.mutedText(context),
           ),
         ),
       ),
@@ -231,32 +239,32 @@ class _PlaceListItem extends StatelessWidget {
             children: [
               Text(
                 place.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 place.category.name,
-                style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
               ),
               if (distanceLabel != null) ...[
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.location_on_outlined,
-                      color: AppColors.mutedText,
+                      color: AppColors.mutedText(context),
                       size: 14,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       distanceLabel,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.mutedText,
+                        color: AppColors.mutedText(context),
                       ),
                     ),
                   ],
@@ -265,9 +273,9 @@ class _PlaceListItem extends StatelessWidget {
             ],
           ),
         ),
-        const Icon(
+        Icon(
           Icons.bookmark_outline,
-          color: AppColors.mutedText,
+          color: AppColors.mutedText(context),
           size: 20,
         ),
       ],

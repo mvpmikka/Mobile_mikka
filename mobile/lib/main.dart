@@ -83,8 +83,16 @@ class _MyAppState extends ConsumerState<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: const Color(0xFFE97A3C),
+        brightness: Brightness.light,
         fontFamily: 'Roboto',
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: const Color(0xFFE97A3C),
+        brightness: Brightness.dark,
+        fontFamily: 'Roboto',
+      ),
+      themeMode: ThemeMode.system,
       home: const AuthGate(),
     );
   }
@@ -133,9 +141,9 @@ class _SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.cream,
-      body: Center(
+    return Scaffold(
+      backgroundColor: AppColors.cream(context),
+      body: const Center(
         child: CircularProgressIndicator(color: AppColors.orange),
       ),
     );

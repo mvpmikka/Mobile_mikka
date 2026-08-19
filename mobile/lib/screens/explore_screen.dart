@@ -7,6 +7,7 @@ import '../core/api_exception.dart';
 import '../models/check_in.dart';
 import '../models/friend.dart';
 import '../models/place.dart';
+import '../models/place_filters.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../providers/friend_location_provider.dart';
@@ -23,6 +24,7 @@ import 'message_thread_screen.dart';
 import 'nearby_places_screen.dart';
 import 'place_detail_screen.dart';
 import 'profile_screen.dart';
+import 'search_screen.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
 
@@ -46,17 +48,10 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   int _selectedCategory = 0;
   final _selectedNavIndex = 0;
   bool _nearbyPanelVisible = true;
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
+  PlaceFilters _filters = const PlaceFilters();
 
   String? _markersKey;
   Future<Set<Marker>>? _markersFuture;
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   // Friends without a visible check-in are simply left off the map, rather
   // than given a fake position — same rule as FriendsScreen's map. Markers
@@ -117,6 +112,31 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     return results.toSet();
   }
 
+  // Places have no async image work, so their markers are built directly —
+  // no future/caching needed, unlike the friend markers above.
+  Set<Marker> _placeMarkers(List<Place> places) {
+    return {
+      for (final place in places)
+        Marker(
+          markerId: MarkerId('place-${place.id}'),
+          position: LatLng(place.latitude, place.longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+          infoWindow: InfoWindow(
+            title: place.name,
+            snippet: place.category.name,
+            onTap: () => _openPlace(place),
+          ),
+          onTap: () => _openPlace(place),
+        ),
+    };
+  }
+
+  void _openPlace(Place place) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => PlaceDetailScreen(place: place)),
+    );
+  }
+
   Future<void> _openChat(Friend friend) async {
     try {
       final conversation = await ref
@@ -139,10 +159,19 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     }
   }
 
+  Future<void> _openFilters() async {
+    final result = await Navigator.of(context).push<PlaceFilters>(
+      MaterialPageRoute(
+        builder: (_) => FiltersScreen(initialFilters: _filters),
+      ),
+    );
+    if (result != null) setState(() => _filters = result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -178,17 +207,17 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         children: [
           const Icon(Icons.location_on, color: AppColors.orange, size: 20),
           const SizedBox(width: 4),
-          const Expanded(
+          Expanded(
             child: Text(
               'Tashkent, Uzbekistan',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
-                color: AppColors.darkText,
+                color: AppColors.darkText(context),
               ),
             ),
           ),
-          const Icon(Icons.keyboard_arrow_down, color: AppColors.darkText),
+          Icon(Icons.keyboard_arrow_down, color: AppColors.darkText(context)),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () {
@@ -199,8 +228,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             child: Container(
               width: 36,
               height: 36,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
                 shape: BoxShape.circle,
               ),
               clipBehavior: Clip.antiAlias,
@@ -208,15 +237,15 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   ? Image.network(
                       avatarUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => const Icon(
+                      errorBuilder: (_, _, _) => Icon(
                         Icons.person_outline,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                         size: 20,
                       ),
                     )
-                  : const Icon(
+                  : Icon(
                       Icons.person_outline,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                       size: 20,
                     ),
             ),
@@ -232,66 +261,45 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              height: 46,
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.fieldBorder),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.search, color: AppColors.mutedText, size: 20),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value.trim().toLowerCase();
-                          _nearbyPanelVisible = true;
-                        });
-                      },
-                      style: const TextStyle(color: AppColors.darkText, fontSize: 14),
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        hintText: 'Search places, people...',
-                        hintStyle: TextStyle(color: AppColors.mutedText, fontSize: 14),
-                      ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SearchScreen()),
+                );
+              },
+              child: Container(
+                height: 46,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                decoration: BoxDecoration(
+                  color: AppColors.surface(context),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.fieldBorder(context)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.search, color: AppColors.mutedText(context), size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Search places, people...',
+                      style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                     ),
-                  ),
-                  if (_searchQuery.isNotEmpty)
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _searchController.clear();
-                          _searchQuery = '';
-                        });
-                      },
-                      child: const Icon(Icons.close, color: AppColors.mutedText, size: 18),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
           const SizedBox(width: 10),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const FiltersScreen()),
-              );
-            },
+            onTap: _openFilters,
             child: Container(
               width: 46,
               height: 46,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface(context),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.fieldBorder),
+                border: Border.all(color: AppColors.fieldBorder(context)),
               ),
-              child: const Icon(Icons.tune, color: AppColors.darkText, size: 20),
+              child: Icon(Icons.tune, color: AppColors.darkText(context), size: 20),
             ),
           ),
         ],
@@ -319,15 +327,15 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: selected ? AppColors.orange : Colors.white,
+                    color: selected ? AppColors.orange : AppColors.surface(context),
                     shape: BoxShape.circle,
                     border: selected
                         ? null
-                        : Border.all(color: AppColors.fieldBorder),
+                        : Border.all(color: AppColors.fieldBorder(context)),
                   ),
                   child: Icon(
                     category.icon,
-                    color: selected ? Colors.white : AppColors.darkText,
+                    color: selected ? Colors.white : AppColors.darkText(context),
                     size: 20,
                   ),
                 ),
@@ -337,7 +345,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                    color: selected ? AppColors.orange : AppColors.mutedText,
+                    color: selected ? AppColors.orange : AppColors.mutedText(context),
                   ),
                 ),
               ],
@@ -353,6 +361,8 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final locations = ref.watch(friendLocationsProvider).value ?? const {};
     final myPosition = ref.watch(currentPositionProvider).value;
     final myAvatarUrl = ref.watch(authControllerProvider).value?.user?.avatarUrl;
+    final allPlaces = ref.watch(nearbyPlacesProvider).value ?? const <Place>[];
+    final filteredPlaces = _filters.apply(allPlaces);
 
     final key =
         '${myPosition?.latitude},${myPosition?.longitude}|$myAvatarUrl|'
@@ -372,7 +382,10 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 target: _tashkentCenter,
                 zoom: 14.5,
               ),
-              markers: snapshot.data ?? const <Marker>{},
+              markers: {
+                ...(snapshot.data ?? const <Marker>{}),
+                ..._placeMarkers(filteredPlaces),
+              },
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
@@ -390,30 +403,20 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         if (_nearbyPanelVisible)
           Align(
             alignment: Alignment.bottomCenter,
-            child: _buildNearbyPanel(),
+            child: _buildNearbyPanel(filteredPlaces),
           ),
       ],
     );
   }
 
-  Widget _buildNearbyPanel() {
+  Widget _buildNearbyPanel(List<Place> places) {
     final placesAsync = ref.watch(nearbyPlacesProvider);
     final locationError = placesAsync.error;
-    final allPlaces = placesAsync.value ?? const <Place>[];
-    final places = _searchQuery.isEmpty
-        ? allPlaces
-        : allPlaces
-              .where(
-                (place) =>
-                    place.name.toLowerCase().contains(_searchQuery) ||
-                    place.category.name.toLowerCase().contains(_searchQuery),
-              )
-              .toList();
 
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: AppColors.surface(context),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
       child: Column(
@@ -432,18 +435,18 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                     );
                   },
                   child: Text(
-                    _searchQuery.isEmpty ? 'Nearby places' : 'Search results',
-                    style: const TextStyle(
+                    'Nearby places',
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                     ),
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () => setState(() => _nearbyPanelVisible = false),
-                child: const Icon(Icons.close, color: AppColors.mutedText, size: 20),
+                child: Icon(Icons.close, color: AppColors.mutedText(context), size: 20),
               ),
             ],
           ),
@@ -466,7 +469,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                         ? 'Joylashuvingiz aniqlanmadi. GPS yoqilganini va ilovaga joylashuv ruxsati berilganini tekshiring.'
                         : 'Joylarni yuklab bo\'lmadi',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+                    style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
@@ -477,11 +480,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
               ),
             )
           else if (places.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
               child: Text(
                 'Hech narsa topilmadi',
-                style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
               ),
             )
           else
@@ -494,13 +497,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 itemBuilder: (context, index) {
                   final place = places[index];
                   return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => PlaceDetailScreen(place: place),
-                        ),
-                      );
-                    },
+                    onTap: () => _openPlace(place),
                     child: _NearbyPlaceCard(place: place),
                   );
                 },
@@ -548,7 +545,7 @@ class _RoundIconButton extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
@@ -557,7 +554,7 @@ class _RoundIconButton extends StatelessWidget {
             ),
           ],
         ),
-        child: Icon(icon, color: AppColors.darkText, size: 20),
+        child: Icon(icon, color: AppColors.darkText(context), size: 20),
       ),
     );
   }
@@ -596,29 +593,29 @@ class _NearbyPlaceCard extends StatelessWidget {
             place.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           Text(
             place.category.name,
-            style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
           ),
           if (distanceLabel != null) ...[
             const SizedBox(height: 2),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.location_on_outlined,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                   size: 12,
                 ),
                 const SizedBox(width: 2),
                 Text(
                   distanceLabel,
-                  style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
+                  style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                 ),
               ],
             ),
