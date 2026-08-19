@@ -48,14 +48,14 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
   Widget build(BuildContext context) {
     final usersAsync = ref.watch(adminUsersProvider);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        foregroundColor: AppColors.darkText,
-        title: const Text(
+        foregroundColor: AppColors.darkText(context),
+        title: Text(
           'Foydalanuvchilar',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText),
+          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText(context)),
         ),
       ),
       body: SafeArea(
@@ -67,12 +67,12 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Email, username yoki ism bo\'yicha qidirish',
-                  prefixIcon: const Icon(Icons.search, color: AppColors.mutedText),
+                  prefixIcon: Icon(Icons.search, color: AppColors.mutedText(context)),
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.fieldBorder),
+                    borderSide: BorderSide(color: AppColors.fieldBorder(context)),
                   ),
                 ),
                 onSubmitted: (value) {
@@ -89,7 +89,7 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                 error: (e, _) => Center(
                   child: Text(
                     e is ApiException ? e.message : 'Xatolik yuz berdi',
-                    style: const TextStyle(color: AppColors.mutedText),
+                    style: TextStyle(color: AppColors.mutedText(context)),
                   ),
                 ),
                 data: (page) {
@@ -108,10 +108,10 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                           )
                           .toList();
                   if (users.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'Foydalanuvchi topilmadi',
-                        style: TextStyle(color: AppColors.mutedText),
+                        style: TextStyle(color: AppColors.mutedText(context)),
                       ),
                     );
                   }
@@ -124,9 +124,9 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                       return Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface(context),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.fieldBorder),
+                          border: Border.all(color: AppColors.fieldBorder(context)),
                         ),
                         child: Row(
                           children: [
@@ -136,17 +136,17 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
                                 children: [
                                   Text(
                                     user.fullName ?? user.username ?? user.email,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.darkText,
+                                      color: AppColors.darkText(context),
                                     ),
                                   ),
                                   Text(
                                     user.email,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
-                                      color: AppColors.mutedText,
+                                      color: AppColors.mutedText(context),
                                     ),
                                   ),
                                   const SizedBox(height: 4),

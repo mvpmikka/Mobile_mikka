@@ -114,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
@@ -134,18 +134,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Welcome back!',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Log in to continue',
-                style: TextStyle(fontSize: 15, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 15, color: AppColors.mutedText(context)),
               ),
               const SizedBox(height: 28),
               _buildTextField(
@@ -162,7 +162,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     _obscurePassword
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.mutedText,
+                    color: AppColors.mutedText(context),
                   ),
                   onPressed: () {
                     setState(() => _obscurePassword = !_obscurePassword);
@@ -229,16 +229,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
               const SizedBox(height: 28),
               Row(
-                children: const [
-                  Expanded(child: Divider(color: AppColors.fieldBorder)),
+                children: [
+                  Expanded(child: Divider(color: AppColors.fieldBorder(context))),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       'or continue with',
-                      style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                      style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
                     ),
                   ),
-                  Expanded(child: Divider(color: AppColors.fieldBorder)),
+                  Expanded(child: Divider(color: AppColors.fieldBorder(context))),
                 ],
               ),
               const SizedBox(height: 24),
@@ -248,9 +248,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 child: OutlinedButton(
                   onPressed: _isGoogleSubmitting ? null : _loginWithGoogle,
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.darkText,
-                    side: const BorderSide(color: AppColors.fieldBorder),
+                    backgroundColor: AppColors.surface(context),
+                    foregroundColor: AppColors.darkText(context),
+                    side: BorderSide(color: AppColors.fieldBorder(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),
@@ -291,7 +291,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               Center(
                 child: RichText(
                   text: TextSpan(
-                    style: const TextStyle(fontSize: 14, color: AppColors.mutedText),
+                    style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
                     children: [
                       const TextSpan(text: "Don't have an account? "),
                       TextSpan(
@@ -327,12 +327,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     return TextField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: AppColors.darkText),
+      style: TextStyle(color: AppColors.darkText(context)),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: AppColors.mutedText),
+        hintStyle: TextStyle(color: AppColors.mutedText(context)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.surface(context),
         suffixIcon: suffixIcon,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -340,11 +340,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

@@ -25,13 +25,13 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     final notificationsAsync = ref.watch(notificationsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 8, 20, 0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(
                 children: [
                   Text(
@@ -39,7 +39,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                     ),
                   ),
                 ],
@@ -143,8 +143,8 @@ class _ActivityMessage extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: const TextStyle(
-                    color: AppColors.mutedText,
+                  style: TextStyle(
+                    color: AppColors.mutedText(context),
                     fontSize: 14,
                   ),
                 ),
@@ -203,9 +203,9 @@ class _NotificationTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.fieldBorder),
+          border: Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Row(
           children: [
@@ -215,13 +215,13 @@ class _NotificationTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: item.isUnread
                     ? AppColors.orange.withValues(alpha: 0.12)
-                    : AppColors.cream,
+                    : AppColors.cream(context),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 _icon,
                 size: 20,
-                color: item.isUnread ? AppColors.orange : AppColors.mutedText,
+                color: item.isUnread ? AppColors.orange : AppColors.mutedText(context),
               ),
             ),
             const SizedBox(width: 12),
@@ -233,7 +233,7 @@ class _NotificationTile extends StatelessWidget {
                     item.body,
                     style: TextStyle(
                       fontSize: 14,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                       fontWeight: item.isUnread
                           ? FontWeight.w700
                           : FontWeight.w500,
@@ -242,9 +242,9 @@ class _NotificationTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     _relativeTime,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.mutedText,
+                      color: AppColors.mutedText(context),
                     ),
                   ),
                 ],

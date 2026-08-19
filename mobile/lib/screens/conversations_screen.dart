@@ -16,19 +16,19 @@ class ConversationsScreen extends ConsumerWidget {
     final conversationsAsync = ref.watch(conversationsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Chats',
           style: TextStyle(
-            color: AppColors.darkText,
+            color: AppColors.darkText(context),
             fontWeight: FontWeight.w800,
             fontSize: 18,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColors.darkText),
+        iconTheme: IconThemeData(color: AppColors.darkText(context)),
       ),
       body: SafeArea(
         child: conversationsAsync.when(
@@ -38,16 +38,16 @@ class ConversationsScreen extends ConsumerWidget {
           error: (error, _) => Center(
             child: Text(
               'Suhbatlarni yuklab bo\'lmadi',
-              style: const TextStyle(color: AppColors.mutedText),
+              style: TextStyle(color: AppColors.mutedText(context)),
             ),
           ),
           data: (conversations) {
             if (conversations.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Hozircha suhbatlar yo\'q.\nDo\'stlar ekranidan xabar yozishni boshlang.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                  style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                 ),
               );
             }
@@ -126,10 +126,10 @@ class _ConversationTile extends StatelessWidget {
                   name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.darkText,
+                    color: AppColors.darkText(context),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -137,7 +137,7 @@ class _ConversationTile extends StatelessWidget {
                   conversation.lastMessage?.summary ?? 'Hali xabar yo\'q',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                 ),
               ],
             ),

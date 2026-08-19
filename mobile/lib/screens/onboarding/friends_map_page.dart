@@ -73,18 +73,18 @@ class _FriendsMapPageState extends ConsumerState<FriendsMapPage> {
           const SizedBox(height: 8),
           Image.asset('assets/icon/logo_wordmark.png', height: 28),
           const SizedBox(height: 18),
-          const Text(
+          Text(
             'See where your friends are.',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Share your location with friends and see theirs on the map in real time.',
-            style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
           ),
           const SizedBox(height: 18),
           ClipRRect(
@@ -117,9 +117,9 @@ class _FriendsMapPageState extends ConsumerState<FriendsMapPage> {
             child: OutlinedButton(
               onPressed: _enableLocationSharing,
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: AppColors.darkText,
-                side: const BorderSide(color: AppColors.fieldBorder),
+                backgroundColor: AppColors.surface(context),
+                foregroundColor: AppColors.darkText(context),
+                side: BorderSide(color: AppColors.fieldBorder(context)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),

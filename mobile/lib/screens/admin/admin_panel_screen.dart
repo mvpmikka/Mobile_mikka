@@ -15,14 +15,14 @@ class AdminPanelScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final statsAsync = ref.watch(adminStatsProvider);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        foregroundColor: AppColors.darkText,
-        title: const Text(
+        foregroundColor: AppColors.darkText(context),
+        title: Text(
           'Admin panel',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText),
+          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText(context)),
         ),
       ),
       body: SafeArea(
@@ -38,7 +38,7 @@ class AdminPanelScreen extends ConsumerWidget {
               ),
               error: (e, _) => Text(
                 e is ApiException ? e.message : 'Statistikani yuklab bo\'lmadi',
-                style: const TextStyle(color: AppColors.mutedText),
+                style: TextStyle(color: AppColors.mutedText(context)),
               ),
               data: (stats) => Row(
                 children: [
@@ -104,9 +104,9 @@ class _StatCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.fieldBorder),
+          border: Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Column(
           children: [
@@ -122,7 +122,7 @@ class _StatCard extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 10, color: AppColors.mutedText),
+              style: TextStyle(fontSize: 10, color: AppColors.mutedText(context)),
             ),
           ],
         ),
@@ -152,9 +152,9 @@ class _AdminMenuCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.fieldBorder),
+          border: Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Row(
           children: [
@@ -174,21 +174,21 @@ class _AdminMenuCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.mutedText),
+            Icon(Icons.chevron_right, color: AppColors.mutedText(context)),
           ],
         ),
       ),

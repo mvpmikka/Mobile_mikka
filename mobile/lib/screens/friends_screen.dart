@@ -95,7 +95,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
     final friendsAsync = ref.watch(friendsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -111,27 +111,27 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                       loading: () => const Center(
                         child: CircularProgressIndicator(color: AppColors.orange),
                       ),
-                      error: (error, _) => const Center(
+                      error: (error, _) => Center(
                         child: Text(
                           'Do\'stlar ro\'yxatini yuklab bo\'lmadi',
-                          style: TextStyle(color: AppColors.mutedText),
+                          style: TextStyle(color: AppColors.mutedText(context)),
                         ),
                       ),
                       data: (friends) {
                         final filtered = _filtered(friends);
                         if (friends.isEmpty) {
-                          return const Center(
+                          return Center(
                             child: Text(
                               'Hali do\'stlaringiz yo\'q',
-                              style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                              style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                             ),
                           );
                         }
                         if (filtered.isEmpty) {
-                          return const Center(
+                          return Center(
                             child: Text(
                               'Hech kim topilmadi',
-                              style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                              style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
                             ),
                           );
                         }
@@ -159,13 +159,13 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Text(
               'Friends',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
-                color: AppColors.darkText,
+                color: AppColors.darkText(context),
               ),
             ),
           ),
@@ -178,12 +178,12 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             child: Container(
               width: 38,
               height: 38,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
                 shape: BoxShape.circle,
-                border: Border.fromBorderSide(BorderSide(color: AppColors.fieldBorder)),
+                border: Border.fromBorderSide(BorderSide(color: AppColors.fieldBorder(context))),
               ),
-              child: const Icon(Icons.chat_bubble_outline, color: AppColors.darkText, size: 18),
+              child: Icon(Icons.chat_bubble_outline, color: AppColors.darkText(context), size: 18),
             ),
           ),
           const SizedBox(width: 8),
@@ -210,13 +210,13 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
         height: 46,
         padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.fieldBorder),
+          border: Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Row(
           children: [
-            const Icon(Icons.search, color: AppColors.mutedText, size: 20),
+            Icon(Icons.search, color: AppColors.mutedText(context), size: 20),
             const SizedBox(width: 8),
             Expanded(
               child: TextField(
@@ -232,12 +232,12 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                     setState(() => _debouncedQuery = _searchQuery);
                   });
                 },
-                style: const TextStyle(color: AppColors.darkText, fontSize: 14),
-                decoration: const InputDecoration(
+                style: TextStyle(color: AppColors.darkText(context), fontSize: 14),
+                decoration: InputDecoration(
                   isDense: true,
                   border: InputBorder.none,
                   hintText: 'Search friends...',
-                  hintStyle: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                  hintStyle: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                 ),
               ),
             ),
@@ -251,7 +251,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                     _debouncedQuery = '';
                   });
                 },
-                child: const Icon(Icons.close, color: AppColors.mutedText, size: 18),
+                child: Icon(Icons.close, color: AppColors.mutedText(context), size: 18),
               ),
           ],
         ),
@@ -274,13 +274,13 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
         .toList();
 
     if (relevantFriends.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text(
             'Do\'stlaringizning hozircha check-in qilingan joyi yo\'q',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+            style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
           ),
         ),
       );
@@ -369,7 +369,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                     ? error.message
                     : 'Qidiruvni bajarib bo\'lmadi',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+                style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
               ),
               const SizedBox(height: 8),
               TextButton(
@@ -386,10 +386,10 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       ),
       data: (results) {
         if (results.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
               'Hech kim topilmadi',
-              style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+              style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
             ),
           );
         }
@@ -461,13 +461,13 @@ class _ToggleIconButton extends StatelessWidget {
         width: 38,
         height: 38,
         decoration: BoxDecoration(
-          color: selected ? AppColors.orange : Colors.white,
+          color: selected ? AppColors.orange : AppColors.surface(context),
           shape: BoxShape.circle,
-          border: selected ? null : Border.all(color: AppColors.fieldBorder),
+          border: selected ? null : Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Icon(
           icon,
-          color: selected ? Colors.white : AppColors.darkText,
+          color: selected ? Colors.white : AppColors.darkText(context),
           size: 18,
         ),
       ),
@@ -515,29 +515,29 @@ class _SearchResultItem extends StatelessWidget {
             children: [
               Text(
                 user.displayName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 '@${user.username}',
-                style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
               ),
             ],
           ),
         ),
         if (isFriend)
-          const Text(
+          Text(
             'Do\'stingiz',
-            style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
           )
         else if (requestSent)
-          const Text(
+          Text(
             'Yuborildi',
-            style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
           )
         else
           GestureDetector(
@@ -595,17 +595,17 @@ class _FriendListItem extends StatelessWidget {
               children: [
                 Text(
                   profile.displayName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.darkText,
+                    color: AppColors.darkText(context),
                   ),
                 ),
                 const SizedBox(height: 2),
                 if (profile.username != null)
                   Text(
                     '@${profile.username}',
-                    style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                   ),
               ],
             ),

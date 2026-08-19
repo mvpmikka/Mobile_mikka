@@ -39,29 +39,29 @@ class PlaceCard extends StatelessWidget {
             place.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           Text(
             place.category.name,
-            style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
           ),
           if (distanceLabel != null) ...[
             const SizedBox(height: 2),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.location_on_outlined,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                   size: 12,
                 ),
                 const SizedBox(width: 2),
                 Text(
                   distanceLabel,
-                  style: const TextStyle(fontSize: 11, color: AppColors.mutedText),
+                  style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                 ),
               ],
             ),

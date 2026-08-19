@@ -28,9 +28,9 @@ class AppBottomNav extends StatelessWidget {
       top: false,
       child: Container(
         height: 64,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: AppColors.fieldBorder)),
+        decoration: BoxDecoration(
+          color: AppColors.surface(context),
+          border: Border(top: BorderSide(color: AppColors.fieldBorder(context))),
         ),
         child: Row(
           children: List.generate(_items.length, (index) {
@@ -63,7 +63,7 @@ class AppBottomNav extends StatelessWidget {
                     Icon(
                       item.icon,
                       size: 22,
-                      color: selected ? AppColors.orange : AppColors.mutedText,
+                      color: selected ? AppColors.orange : AppColors.mutedText(context),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -73,7 +73,7 @@ class AppBottomNav extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: selected
                             ? AppColors.orange
-                            : AppColors.mutedText,
+                            : AppColors.mutedText(context),
                       ),
                     ),
                   ],

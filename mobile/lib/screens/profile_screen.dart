@@ -30,7 +30,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final username = user?.username ?? '';
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
@@ -40,17 +40,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       'Profile',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                       ),
                     ),
                   ),
-                  const Icon(Icons.settings_outlined, color: AppColors.darkText),
+                  Icon(Icons.settings_outlined, color: AppColors.darkText(context)),
                 ],
               ),
               const SizedBox(height: 20),
@@ -80,16 +80,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     const SizedBox(height: 12),
                     Text(
                       displayName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       '@$username',
-                      style: const TextStyle(fontSize: 13, color: AppColors.mutedText),
+                      style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
                     ),
                   ],
                 ),
@@ -113,8 +113,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.darkText,
-                    side: const BorderSide(color: AppColors.fieldBorder),
+                    foregroundColor: AppColors.darkText(context),
+                    side: BorderSide(color: AppColors.fieldBorder(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
@@ -201,16 +201,16 @@ class _StatItem extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(fontSize: 12, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
           ),
         ],
       ),
@@ -233,7 +233,7 @@ class _MenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = destructive ? const Color(0xFFCB4B4B) : AppColors.darkText;
+    final color = destructive ? const Color(0xFFCB4B4B) : AppColors.darkText(context);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -253,7 +253,7 @@ class _MenuTile extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(Icons.chevron_right, color: AppColors.mutedText, size: 20),
+            Icon(Icons.chevron_right, color: AppColors.mutedText(context), size: 20),
           ],
         ),
       ),

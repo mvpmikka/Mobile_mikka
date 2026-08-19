@@ -37,36 +37,36 @@ class ConnectChatPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Connect and Chat',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Stay close to the people who matter, wherever they are.',
-            style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
           ),
           const SizedBox(height: 20),
           const _ChatBubblePreview(),
           const SizedBox(height: 14),
           const _MeetupMapPreview(),
           const SizedBox(height: 20),
-          _buildInfoCard(),
+          _buildInfoCard(context),
         ],
       ),
     );
   }
 
-  Widget _buildInfoCard() {
+  Widget _buildInfoCard(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface(context),
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 12),
@@ -79,23 +79,23 @@ class ConnectChatPage extends StatelessWidget {
             children: [
               Image.asset('assets/icon/app_icon.png', height: 24),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'Mikka',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'Connect and Chat',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 16),
@@ -120,18 +120,18 @@ class ConnectChatPage extends StatelessWidget {
                     children: [
                       Text(
                         bullet.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.darkText,
+                          color: AppColors.darkText(context),
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         bullet.description,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.mutedText,
+                          color: AppColors.mutedText(context),
                           height: 1.35,
                         ),
                       ),
@@ -170,7 +170,7 @@ class _ChatBubblePreview extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface(context),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(4),
                 topRight: Radius.circular(16),
@@ -181,9 +181,9 @@ class _ChatBubblePreview extends StatelessWidget {
                 BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8),
               ],
             ),
-            child: const Text(
+            child: Text(
               'Shall we meet here?',
-              style: TextStyle(fontSize: 14, color: AppColors.darkText),
+              style: TextStyle(fontSize: 14, color: AppColors.darkText(context)),
             ),
           ),
         ),
@@ -231,23 +231,23 @@ class _MeetupMapPreview extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface(context),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 6),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.location_on, color: AppColors.orange, size: 14),
-                    SizedBox(width: 4),
+                    const Icon(Icons.location_on, color: AppColors.orange, size: 14),
+                    const SizedBox(width: 4),
                     Text(
                       'Central Park Cafe',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                       ),
                     ),
                   ],

@@ -54,7 +54,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -78,12 +78,12 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 'Emailingizni tasdiqlang',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -91,7 +91,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               Text(
                 '${widget.email} manziliga tasdiqlash havolasi yuborildi. '
                 'Havolani bosgach, bu ekran avtomatik davom etadi.',
-                style: const TextStyle(fontSize: 15, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 15, color: AppColors.mutedText(context)),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),

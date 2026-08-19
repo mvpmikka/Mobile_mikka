@@ -84,19 +84,19 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
         title: Text(
           widget.title,
-          style: const TextStyle(
-            color: AppColors.darkText,
+          style: TextStyle(
+            color: AppColors.darkText(context),
             fontWeight: FontWeight.w800,
             fontSize: 17,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColors.darkText),
+        iconTheme: IconThemeData(color: AppColors.darkText(context)),
       ),
       body: SafeArea(
         child: Column(
@@ -106,18 +106,18 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
                 loading: () => const Center(
                   child: CircularProgressIndicator(color: AppColors.orange),
                 ),
-                error: (error, _) => const Center(
+                error: (error, _) => Center(
                   child: Text(
                     'Xabarlarni yuklab bo\'lmadi',
-                    style: TextStyle(color: AppColors.mutedText),
+                    style: TextStyle(color: AppColors.mutedText(context)),
                   ),
                 ),
                 data: (messages) {
                   if (messages.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'Birinchi xabarni yozing',
-                        style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                        style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
                       ),
                     );
                   }
@@ -160,21 +160,21 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
               constraints: const BoxConstraints(maxHeight: 120),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surface(context),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColors.fieldBorder),
+                border: Border.all(color: AppColors.fieldBorder(context)),
               ),
               child: TextField(
                 controller: _textController,
                 minLines: 1,
                 maxLines: 4,
                 textCapitalization: TextCapitalization.sentences,
-                style: const TextStyle(color: AppColors.darkText, fontSize: 14),
-                decoration: const InputDecoration(
+                style: TextStyle(color: AppColors.darkText(context), fontSize: 14),
+                decoration: InputDecoration(
                   isDense: true,
                   border: InputBorder.none,
                   hintText: 'Xabar yozing...',
-                  hintStyle: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                  hintStyle: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                 ),
                 onSubmitted: (_) => _send(),
               ),
@@ -215,8 +215,8 @@ class _MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bubbleColor = isMine ? AppColors.orange : Colors.white;
-    final textColor = isMine ? Colors.white : AppColors.darkText;
+    final bubbleColor = isMine ? AppColors.orange : AppColors.surface(context);
+    final textColor = isMine ? Colors.white : AppColors.darkText(context);
 
     return Align(
       alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -234,7 +234,7 @@ class _MessageBubble extends StatelessWidget {
             bottomLeft: Radius.circular(isMine ? 16 : 4),
             bottomRight: Radius.circular(isMine ? 4 : 16),
           ),
-          border: isMine ? null : Border.all(color: AppColors.fieldBorder),
+          border: isMine ? null : Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Text(
           message.text ?? '',

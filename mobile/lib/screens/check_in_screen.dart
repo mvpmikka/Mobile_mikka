@@ -93,7 +93,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   Widget build(BuildContext context) {
     final place = widget.place;
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
@@ -102,20 +102,20 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
             children: [
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       'Check-in',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                       ),
                     ),
                   ),
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
-                    child: const Icon(Icons.close, color: AppColors.darkText),
+                    child: Icon(Icons.close, color: AppColors.darkText(context)),
                   ),
                 ],
               ),
@@ -141,25 +141,25 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                     children: [
                       Text(
                         place.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.darkText,
+                          color: AppColors.darkText(context),
                         ),
                       ),
                       if (place.distanceLabel != null)
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.location_on,
-                              color: AppColors.mutedText,
+                              color: AppColors.mutedText(context),
                               size: 14,
                             ),
                             Text(
                               place.distanceLabel!,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: AppColors.mutedText,
+                                color: AppColors.mutedText(context),
                               ),
                             ),
                           ],
@@ -169,12 +169,12 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                 ],
               ),
               const SizedBox(height: 28),
-              const Text(
+              Text(
                 'How are you feeling?',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 14),
@@ -191,12 +191,12 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                       decoration: BoxDecoration(
                         color: selected
                             ? AppColors.orange.withValues(alpha: 0.15)
-                            : Colors.white,
+                            : AppColors.surface(context),
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: selected
                               ? AppColors.orange
-                              : AppColors.fieldBorder,
+                              : AppColors.fieldBorder(context),
                           width: selected ? 2 : 1,
                         ),
                       ),
@@ -209,12 +209,12 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                 }),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 'Add a note (optional)',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 10),
@@ -222,9 +222,9 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface(context),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppColors.fieldBorder),
+                    border: Border.all(color: AppColors.fieldBorder(context)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,10 +236,10 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                           maxLines: null,
                           expands: true,
                           textAlignVertical: TextAlignVertical.top,
-                          style: const TextStyle(color: AppColors.darkText),
-                          decoration: const InputDecoration(
+                          style: TextStyle(color: AppColors.darkText(context)),
+                          decoration: InputDecoration(
                             hintText: 'Say something about this place...',
-                            hintStyle: TextStyle(color: AppColors.mutedText),
+                            hintStyle: TextStyle(color: AppColors.mutedText(context)),
                             border: InputBorder.none,
                             counterText: '',
                           ),
@@ -250,9 +250,9 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                         alignment: Alignment.centerRight,
                         child: Text(
                           '${_noteController.text.length}/200',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
-                            color: AppColors.mutedText,
+                            color: AppColors.mutedText(context),
                           ),
                         ),
                       ),
@@ -290,10 +290,10 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Center(
+              Center(
                 child: Text(
                   'You can check-in here once every 15 minutes.',
-                  style: TextStyle(fontSize: 11, color: AppColors.mutedText),
+                  style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                 ),
               ),
             ],

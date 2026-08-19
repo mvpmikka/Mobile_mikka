@@ -79,14 +79,14 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
   Widget build(BuildContext context) {
     final categoriesAsync = ref.watch(adminCategoriesProvider);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        foregroundColor: AppColors.darkText,
-        title: const Text(
+        foregroundColor: AppColors.darkText(context),
+        title: Text(
           'Yangi joy qo\'shish',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText),
+          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText(context)),
         ),
       ),
       body: SafeArea(
@@ -131,9 +131,9 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
               const SizedBox(height: 14),
               _Field(label: 'Manzil (address)', controller: _addressController),
               const SizedBox(height: 4),
-              const Text(
+              Text(
                 'Manzil yoki lat+lng dan kamida bittasini kiriting.',
-                style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
               ),
               const SizedBox(height: 14),
               Row(

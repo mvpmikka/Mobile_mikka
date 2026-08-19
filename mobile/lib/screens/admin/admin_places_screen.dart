@@ -51,14 +51,14 @@ class AdminPlacesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final placesAsync = ref.watch(adminPlacesProvider);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        foregroundColor: AppColors.darkText,
-        title: const Text(
+        foregroundColor: AppColors.darkText(context),
+        title: Text(
           'Joylar',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText),
+          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText(context)),
         ),
       ),
       body: SafeArea(
@@ -72,19 +72,19 @@ class AdminPlacesScreen extends ConsumerWidget {
             error: (e, _) => Center(
               child: Text(
                 e is ApiException ? e.message : 'Xatolik yuz berdi',
-                style: const TextStyle(color: AppColors.mutedText),
+                style: TextStyle(color: AppColors.mutedText(context)),
               ),
             ),
             data: (places) {
               if (places.isEmpty) {
                 return ListView(
-                  children: const [
+                  children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 80),
+                      padding: const EdgeInsets.symmetric(vertical: 80),
                       child: Text(
                         'Hali joy yo\'q. Pastdagi + tugmasi orqali qo\'shing.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: AppColors.mutedText),
+                        style: TextStyle(color: AppColors.mutedText(context)),
                       ),
                     ),
                   ],
@@ -99,9 +99,9 @@ class AdminPlacesScreen extends ConsumerWidget {
                   return Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surface(context),
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.fieldBorder),
+                      border: Border.all(color: AppColors.fieldBorder(context)),
                     ),
                     child: Row(
                       children: [
@@ -125,17 +125,17 @@ class AdminPlacesScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 place.name,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.darkText,
+                                  color: AppColors.darkText(context),
                                 ),
                               ),
                               Text(
                                 '${place.category.name} • ${place.status}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
-                                  color: AppColors.mutedText,
+                                  color: AppColors.mutedText(context),
                                 ),
                               ),
                             ],

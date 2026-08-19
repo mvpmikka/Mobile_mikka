@@ -10,28 +10,28 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 32),
             Image.asset('assets/icon/logo_wordmark.png', height: 56),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               'Discover places.\nFind friends. Explore together.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.darkText,
+                color: AppColors.darkText(context),
                 height: 1.3,
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
+            Text(
               'The social map for foodies and explorers.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+              style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
             ),
             Expanded(
               child: Padding(
@@ -88,8 +88,8 @@ class WelcomeScreen extends StatelessWidget {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: AppColors.darkText,
+                        backgroundColor: AppColors.surface(context),
+                        foregroundColor: AppColors.darkText(context),
                         side: const BorderSide(color: Color(0xFFE5DCCB)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),

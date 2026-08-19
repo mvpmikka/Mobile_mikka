@@ -26,7 +26,7 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
     final ratingAsync = ref.watch(placeRatingProvider(place.id));
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: Column(
         children: [
           Stack(
@@ -83,10 +83,10 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                 children: [
                   Text(
                     place.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -109,11 +109,11 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                         ),
                         error: (_, _) => const SizedBox.shrink(),
                         data: (rating) => rating.reviewCount == 0
-                            ? const Text(
+                            ? Text(
                                 'Hali baholanmagan',
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: AppColors.mutedText,
+                                  color: AppColors.mutedText(context),
                                 ),
                               )
                             : Row(
@@ -126,9 +126,9 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                                   const SizedBox(width: 2),
                                   Text(
                                     '${rating.averageRating.toStringAsFixed(1)} (${rating.reviewCount})',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
-                                      color: AppColors.mutedText,
+                                      color: AppColors.mutedText(context),
                                     ),
                                   ),
                                 ],
@@ -170,17 +170,17 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                         child: CircularProgressIndicator(color: AppColors.orange),
                       ),
                     ),
-                    error: (_, _) => const Text(
+                    error: (_, _) => Text(
                       'Ma\'lumotni yuklab bo\'lmadi',
-                      style: TextStyle(color: AppColors.mutedText, fontSize: 14),
+                      style: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                     ),
                     data: (detail) => Text(
                       detail.description?.isNotEmpty == true
                           ? detail.description!
                           : '${place.category.name} haqida hali tavsif qo\'shilmagan.',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: AppColors.darkText,
+                        color: AppColors.darkText(context),
                         height: 1.5,
                       ),
                     ),
@@ -236,11 +236,11 @@ class _CircleIconButton extends StatelessWidget {
       child: Container(
         width: 38,
         height: 38,
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: AppColors.surface(context),
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: AppColors.darkText, size: 18),
+        child: Icon(icon, color: AppColors.darkText(context), size: 18),
       ),
     );
   }
@@ -259,9 +259,9 @@ class _InfoPill extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.fieldBorder),
+          border: Border.all(color: AppColors.fieldBorder(context)),
         ),
         child: Row(
           children: [
@@ -273,19 +273,19 @@ class _InfoPill extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.darkText,
+                      color: AppColors.darkText(context),
                     ),
                   ),
                   Text(
                     sub,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.mutedText,
+                      color: AppColors.mutedText(context),
                     ),
                   ),
                 ],

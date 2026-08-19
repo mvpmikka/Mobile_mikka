@@ -38,18 +38,18 @@ class RewardsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Earn Rewards & Badges',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Explore more, earn badges, and climb the leaderboard.',
-            style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
           ),
           const SizedBox(height: 24),
           Center(
@@ -67,7 +67,7 @@ class RewardsPage extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surface(context),
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
@@ -104,18 +104,18 @@ class RewardsPage extends StatelessWidget {
                           children: [
                             Text(
                               perk.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.darkText,
+                                color: AppColors.darkText(context),
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               perk.description,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: AppColors.mutedText,
+                                color: AppColors.mutedText(context),
                                 height: 1.35,
                               ),
                             ),
@@ -167,10 +167,10 @@ class _BadgeAvatar extends StatelessWidget {
           Text(
             badge.label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
         ],

@@ -52,7 +52,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
@@ -61,44 +61,44 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             children: [
               IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.arrow_back, color: AppColors.darkText),
+                icon: Icon(Icons.arrow_back, color: AppColors.darkText(context)),
                 padding: EdgeInsets.zero,
               ),
               const SizedBox(height: 12),
-              const Text(
+              Text(
                 'Parolni unutdingizmi?',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Ro\'yxatdan o\'tgan emailingizni kiriting — sizga tiklash havolasini yuboramiz.',
-                style: TextStyle(fontSize: 15, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 15, color: AppColors.mutedText(context)),
               ),
               const SizedBox(height: 28),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: AppColors.darkText),
+                style: TextStyle(color: AppColors.darkText(context)),
                 decoration: InputDecoration(
                   hintText: 'Email',
-                  hintStyle: const TextStyle(color: AppColors.mutedText),
+                  hintStyle: TextStyle(color: AppColors.mutedText(context)),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: AppColors.surface(context),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 16,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.fieldBorder),
+                    borderSide: BorderSide(color: AppColors.fieldBorder(context)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.fieldBorder),
+                    borderSide: BorderSide(color: AppColors.fieldBorder(context)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),

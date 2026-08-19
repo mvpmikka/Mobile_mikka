@@ -74,25 +74,25 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Yangi parol o\'rnating',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Hisobingiz uchun yangi parol kiriting.',
-                style: TextStyle(fontSize: 15, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 15, color: AppColors.mutedText(context)),
               ),
               const SizedBox(height: 28),
               _buildTextField(
@@ -104,7 +104,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                     _obscurePassword
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.mutedText,
+                    color: AppColors.mutedText(context),
                   ),
                   onPressed: () {
                     setState(() => _obscurePassword = !_obscurePassword);
@@ -121,7 +121,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                     _obscureConfirmPassword
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.mutedText,
+                    color: AppColors.mutedText(context),
                   ),
                   onPressed: () {
                     setState(
@@ -178,12 +178,12 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     return TextField(
       controller: controller,
       obscureText: obscureText,
-      style: const TextStyle(color: AppColors.darkText),
+      style: TextStyle(color: AppColors.darkText(context)),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: AppColors.mutedText),
+        hintStyle: TextStyle(color: AppColors.mutedText(context)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.surface(context),
         suffixIcon: suffixIcon,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -191,11 +191,11 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

@@ -34,18 +34,18 @@ class DiscoverPlacesPage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Discover Places',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Find great spots to eat, hang out, and explore nearby.',
-            style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
           ),
           const SizedBox(height: 18),
           ClipRRect(
@@ -67,13 +67,17 @@ class DiscoverPlacesPage extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 18),
-          _buildPlacesSection(placesAsync, places),
+          _buildPlacesSection(context, placesAsync, places),
         ],
       ),
     );
   }
 
-  Widget _buildPlacesSection(AsyncValue<List<dynamic>> placesAsync, List places) {
+  Widget _buildPlacesSection(
+    BuildContext context,
+    AsyncValue<List<dynamic>> placesAsync,
+    List places,
+  ) {
     if (placesAsync.isLoading) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
@@ -91,17 +95,17 @@ class DiscoverPlacesPage extends ConsumerWidget {
           error is LocationUnavailableException
               ? 'Enable location to discover places near you.'
               : "Couldn't load nearby places.",
-          style: const TextStyle(color: AppColors.mutedText, fontSize: 13),
+          style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
         ),
       );
     }
 
     if (places.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 20),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Text(
           'No places found nearby yet.',
-          style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+          style: TextStyle(color: AppColors.mutedText(context), fontSize: 13),
         ),
       );
     }

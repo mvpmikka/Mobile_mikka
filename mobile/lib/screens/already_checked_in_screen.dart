@@ -59,7 +59,7 @@ class _AlreadyCheckedInScreenState extends State<AlreadyCheckedInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
@@ -80,21 +80,21 @@ class _AlreadyCheckedInScreenState extends State<AlreadyCheckedInScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 'Already checked-in',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 'You can check in again at ${widget.place.name} in:',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                 ),
               ),
               const SizedBox(height: 20),
@@ -119,8 +119,8 @@ class _AlreadyCheckedInScreenState extends State<AlreadyCheckedInScreen> {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.darkText,
-                    side: const BorderSide(color: AppColors.fieldBorder),
+                    foregroundColor: AppColors.darkText(context),
+                    side: BorderSide(color: AppColors.fieldBorder(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),
@@ -138,7 +138,7 @@ class _AlreadyCheckedInScreenState extends State<AlreadyCheckedInScreen> {
                 child: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.mutedText,
+                    foregroundColor: AppColors.mutedText(context),
                   ),
                   child: const Text(
                     'Cancel',

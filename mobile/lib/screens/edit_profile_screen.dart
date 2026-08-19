@@ -64,19 +64,19 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Edit Profile',
           style: TextStyle(
-            color: AppColors.darkText,
+            color: AppColors.darkText(context),
             fontWeight: FontWeight.w800,
             fontSize: 18,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColors.darkText),
+        iconTheme: IconThemeData(color: AppColors.darkText(context)),
       ),
       body: SafeArea(
         child: Padding(
@@ -84,23 +84,23 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'To\'liq ism',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                 ),
               ),
               const SizedBox(height: 8),
               _buildTextField(controller: _fullNameController, hint: 'To\'liq ismingiz'),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 'Foydalanuvchi nomi',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                 ),
               ),
               const SizedBox(height: 8),
@@ -146,20 +146,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }) {
     return TextField(
       controller: controller,
-      style: const TextStyle(color: AppColors.darkText),
+      style: TextStyle(color: AppColors.darkText(context)),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: AppColors.mutedText),
+        hintStyle: TextStyle(color: AppColors.mutedText(context)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.surface(context),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.fieldBorder),
+          borderSide: BorderSide(color: AppColors.fieldBorder(context)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

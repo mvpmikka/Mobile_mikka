@@ -13,7 +13,7 @@ class CheckedInSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
@@ -30,21 +30,21 @@ class CheckedInSuccessScreen extends StatelessWidget {
                 child: const Icon(Icons.check, color: Colors.white, size: 48),
               ),
               const SizedBox(height: 24),
-              const Text(
+              Text(
                 'Checked-in!',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 'You checked in at ${place.name}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: AppColors.mutedText,
+                  color: AppColors.mutedText(context),
                 ),
               ),
               const Spacer(),
@@ -60,8 +60,8 @@ class CheckedInSuccessScreen extends StatelessWidget {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.darkText,
-                    side: const BorderSide(color: AppColors.fieldBorder),
+                    foregroundColor: AppColors.darkText(context),
+                    side: BorderSide(color: AppColors.fieldBorder(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),

@@ -62,7 +62,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -113,10 +113,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: () => _continue(context),
-                    child: const Text(
+                    child: Text(
                       'Skip',
                       style: TextStyle(
-                        color: AppColors.mutedText,
+                        color: AppColors.mutedText(context),
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
@@ -138,7 +138,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         children: [
           IconButton(
             onPressed: () => _goBack(context),
-            icon: const Icon(Icons.arrow_back, color: AppColors.darkText),
+            icon: Icon(Icons.arrow_back, color: AppColors.darkText(context)),
           ),
           Expanded(
             child: Center(
@@ -165,7 +165,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               shape: BoxShape.circle,
               color: i == _currentPage
                   ? AppColors.orange
-                  : AppColors.fieldBorder,
+                  : AppColors.fieldBorder(context),
             ),
           ),
       ],

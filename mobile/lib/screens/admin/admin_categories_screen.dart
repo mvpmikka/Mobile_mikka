@@ -92,14 +92,14 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
   Widget build(BuildContext context) {
     final categoriesAsync = ref.watch(adminCategoriesProvider);
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: AppColors.cream(context),
       appBar: AppBar(
-        backgroundColor: AppColors.cream,
+        backgroundColor: AppColors.cream(context),
         elevation: 0,
-        foregroundColor: AppColors.darkText,
-        title: const Text(
+        foregroundColor: AppColors.darkText(context),
+        title: Text(
           'Kategoriyalar',
-          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText),
+          style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.darkText(context)),
         ),
       ),
       body: SafeArea(
@@ -110,16 +110,16 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
           error: (e, _) => Center(
             child: Text(
               e is ApiException ? e.message : 'Xatolik yuz berdi',
-              style: const TextStyle(color: AppColors.mutedText),
+              style: TextStyle(color: AppColors.mutedText(context)),
             ),
           ),
           data: (categories) {
             if (categories.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Hali kategoriya yo\'q. Pastdagi + tugmasi orqali qo\'shing.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.mutedText),
+                  style: TextStyle(color: AppColors.mutedText(context)),
                 ),
               );
             }
@@ -132,9 +132,9 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface(context),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.fieldBorder),
+                    border: Border.all(color: AppColors.fieldBorder(context)),
                   ),
                   child: Row(
                     children: [
@@ -143,10 +143,10 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
                       Expanded(
                         child: Text(
                           category.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.darkText,
+                            color: AppColors.darkText(context),
                           ),
                         ),
                       ),

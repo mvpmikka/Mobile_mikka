@@ -32,18 +32,18 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Privacy Settings',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
-              color: AppColors.darkText,
+              color: AppColors.darkText(context),
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             "You're always in control of what you share.",
-            style: TextStyle(fontSize: 14, color: AppColors.mutedText),
+            style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
           ),
           const SizedBox(height: 20),
           _buildToggleRow(
@@ -52,7 +52,7 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
             value: _ghostMode,
             onChanged: (value) => setState(() => _ghostMode = value),
           ),
-          const Divider(color: AppColors.fieldBorder, height: 32),
+          Divider(color: AppColors.fieldBorder(context), height: 32),
           _buildToggleRow(
             title: 'Location',
             description: 'Share your location with friends.',
@@ -66,9 +66,9 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
             child: OutlinedButton(
               onPressed: _enableLocationSharing,
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: AppColors.darkText,
-                side: const BorderSide(color: AppColors.fieldBorder),
+                backgroundColor: AppColors.surface(context),
+                foregroundColor: AppColors.darkText(context),
+                side: BorderSide(color: AppColors.fieldBorder(context)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
@@ -98,16 +98,16 @@ class _PrivacyPageState extends ConsumerState<PrivacyPage> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
+                  color: AppColors.darkText(context),
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 description,
-                style: const TextStyle(fontSize: 13, color: AppColors.mutedText),
+                style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
               ),
             ],
           ),
