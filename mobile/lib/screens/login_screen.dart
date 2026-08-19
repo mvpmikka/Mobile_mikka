@@ -6,6 +6,7 @@ import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import 'explore_screen.dart';
+import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 import 'verify_email_screen.dart';
 
@@ -126,9 +127,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   child: ScaleTransition(
                     scale: _logoScale,
                     child: Image.asset(
-                      'assets/icon/app_icon.png',
-                      width: 96,
-                      height: 96,
+                      'assets/icon/logo_wordmark.png',
+                      height: 32,
                     ),
                   ),
                 ),
@@ -173,7 +173,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const ForgotPasswordScreen(),
+                      ),
+                    );
+                  },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(0, 0),
@@ -236,43 +242,50 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ],
               ),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _SocialButton(
-                    onPressed: _isGoogleSubmitting ? null : _loginWithGoogle,
-                    child: _isGoogleSubmitting
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.4,
-                              color: Color(0xFF4285F4),
-                            ),
-                          )
-                        : const Text(
-                            'G',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF4285F4),
-                            ),
-                          ),
-                  ),
-                  const SizedBox(width: 16),
-                  _SocialButton(
-                    onPressed: () {},
-                    child: const Icon(Icons.apple, color: AppColors.darkText),
-                  ),
-                  const SizedBox(width: 16),
-                  _SocialButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.mail_outline,
-                      color: AppColors.mutedText,
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton(
+                  onPressed: _isGoogleSubmitting ? null : _loginWithGoogle,
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.darkText,
+                    side: const BorderSide(color: AppColors.fieldBorder),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
                     ),
                   ),
-                ],
+                  child: _isGoogleSubmitting
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.4,
+                            color: Color(0xFF4285F4),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'G',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF4285F4),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Continue with Google',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
               ),
               const SizedBox(height: 32),
               Center(
@@ -337,32 +350,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.orange),
         ),
-      ),
-    );
-  }
-}
-
-class _SocialButton extends StatelessWidget {
-  const _SocialButton({required this.onPressed, required this.child});
-
-  final VoidCallback? onPressed;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(28),
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.fieldBorder),
-        ),
-        alignment: Alignment.center,
-        child: child,
       ),
     );
   }

@@ -118,4 +118,26 @@ class AuthService {
       throw ApiException.fromDio(e);
     }
   }
+
+  Future<void> forgotPassword(String email) async {
+    try {
+      await _apiClient.dio.post(
+        '/auth/forgot-password',
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<void> resetPassword(String token, String newPassword) async {
+    try {
+      await _apiClient.dio.post(
+        '/auth/reset-password',
+        data: {'token': token, 'newPassword': newPassword},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 }

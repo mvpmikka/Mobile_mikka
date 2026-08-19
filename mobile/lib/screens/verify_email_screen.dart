@@ -61,10 +61,21 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.mark_email_unread_outlined,
-                size: 72,
-                color: AppColors.orange,
+              Image.asset('assets/icon/logo_wordmark.png', height: 32),
+              const SizedBox(height: 40),
+              Container(
+                width: 96,
+                height: 96,
+                decoration: BoxDecoration(
+                  color: AppColors.orange.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: const Icon(
+                  Icons.mark_email_unread_outlined,
+                  size: 44,
+                  color: AppColors.orange,
+                ),
               ),
               const SizedBox(height: 24),
               const Text(

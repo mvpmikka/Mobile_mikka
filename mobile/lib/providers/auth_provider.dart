@@ -143,4 +143,14 @@ class AuthController extends AsyncNotifier<AuthState> {
     final authService = ref.read(authServiceProvider);
     await authService.resendVerification(currentUser.email);
   }
+
+  Future<void> forgotPassword(String email) async {
+    final authService = ref.read(authServiceProvider);
+    await authService.forgotPassword(email);
+  }
+
+  Future<void> resetPassword(String token, String newPassword) async {
+    final authService = ref.read(authServiceProvider);
+    await authService.resetPassword(token, newPassword);
+  }
 }

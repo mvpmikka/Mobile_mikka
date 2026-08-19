@@ -83,6 +83,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/icon/app_icon.png
+    - assets/icon/logo_wordmark.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

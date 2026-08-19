@@ -17,35 +17,57 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   bool _isSubmitting = false;
+  bool _isGoogleSubmitting = false;
 
   @override
   void dispose() {
+    _fullNameController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
+    final fullName = _fullNameController.text.trim();
     final email = _emailController.text.trim();
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
 
     if (email.isEmpty || username.isEmpty || password.isEmpty) {
       _showError('Barcha maydonlarni to\'ldiring');
       return;
     }
+    if (password != confirmPassword) {
+      _showError('Parollar mos kelmadi');
+      return;
+    }
 
     setState(() => _isSubmitting = true);
     try {
-      await ref
-          .read(authControllerProvider.notifier)
-          .register(email: email, username: username, password: password);
+      final authController = ref.read(authControllerProvider.notifier);
+      await authController.register(
+        email: email,
+        username: username,
+        password: password,
+      );
+      if (fullName.isNotEmpty) {
+        // Best-effort — registration already succeeded, so a failure here
+        // (e.g. flaky network) shouldn't block the user from continuing.
+        try {
+          await authController.updateProfile(fullName: fullName);
+        } catch (_) {}
+      }
       if (!mounted) return;
       final user = ref.read(authControllerProvider).value?.user;
       Navigator.of(context).pushAndRemoveUntil(
@@ -63,6 +85,31 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     }
   }
 
+  Future<void> _registerWithGoogle() async {
+    setState(() => _isGoogleSubmitting = true);
+    try {
+      await ref.read(authControllerProvider.notifier).loginWithGoogle();
+      if (!mounted) return;
+      final user = ref.read(authControllerProvider).value?.user;
+      if (user == null) return; // foydalanuvchi Google oynasini yopdi
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => user.isEmailVerified
+              ? const ExploreScreen()
+              : VerifyEmailScreen(email: user.email),
+        ),
+        (route) => false,
+      );
+    } on ApiException catch (e) {
+      _showError(e.message);
+    } catch (e) {
+      debugPrint('Google sign-in failed: $e');
+      _showError('Google orqali kirishda kutilmagan xatolik yuz berdi');
+    } finally {
+      if (mounted) setState(() => _isGoogleSubmitting = false);
+    }
+  }
+
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
@@ -77,8 +124,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Image.asset('assets/icon/logo_wordmark.png', height: 32),
+              ),
+              const SizedBox(height: 20),
               const Text(
-                'Create account',
+                'Join Mikka',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
@@ -87,10 +138,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               const SizedBox(height: 6),
               const Text(
-                'Sign up to start exploring',
+                'Start your frictionless exploration today.',
                 style: TextStyle(fontSize: 15, color: AppColors.mutedText),
               ),
               const SizedBox(height: 28),
+              _buildTextField(controller: _fullNameController, hint: 'Full Name'),
+              const SizedBox(height: 14),
               _buildTextField(
                 controller: _emailController,
                 hint: 'Email',
@@ -112,6 +165,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   onPressed: () {
                     setState(() => _obscurePassword = !_obscurePassword);
+                  },
+                ),
+              ),
+              const SizedBox(height: 14),
+              _buildTextField(
+                controller: _confirmPasswordController,
+                hint: 'Confirm password',
+                obscureText: _obscureConfirmPassword,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureConfirmPassword
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: AppColors.mutedText,
+                  ),
+                  onPressed: () {
+                    setState(
+                      () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                    );
                   },
                 ),
               ),
@@ -144,6 +216,66 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
+                        ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: const [
+                  Expanded(child: Divider(color: AppColors.fieldBorder)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      'or continue with',
+                      style: TextStyle(color: AppColors.mutedText, fontSize: 13),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: AppColors.fieldBorder)),
+                ],
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton(
+                  onPressed: _isGoogleSubmitting ? null : _registerWithGoogle,
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.darkText,
+                    side: const BorderSide(color: AppColors.fieldBorder),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                  ),
+                  child: _isGoogleSubmitting
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.4,
+                            color: Color(0xFF4285F4),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'G',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF4285F4),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Continue with Google',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                 ),
               ),

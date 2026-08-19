@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import 'login_screen.dart';
-import 'register_screen.dart';
+import 'onboarding_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -15,17 +15,23 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 32),
-            _buildLogo(),
+            Image.asset('assets/icon/logo_wordmark.png', height: 56),
             const SizedBox(height: 24),
             const Text(
-              'Discover places.\nMake moments.',
+              'Discover places.\nFind friends. Explore together.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
                 color: AppColors.darkText,
-                height: 1.4,
+                height: 1.3,
               ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'The social map for foodies and explorers.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: AppColors.mutedText),
             ),
             Expanded(
               child: Padding(
@@ -48,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const RegisterScreen(),
+                            builder: (_) => const OnboardingScreen(),
                           ),
                         );
                       },
@@ -107,51 +113,6 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLogo() {
-    return Column(
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            _Dot(size: 6, opacity: 0.35),
-            SizedBox(width: 4),
-            _Dot(size: 8, opacity: 0.6),
-            SizedBox(width: 4),
-            _Dot(size: 10, opacity: 1),
-          ],
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'mikka',
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.w800,
-            color: AppColors.orange,
-            letterSpacing: -1,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _Dot extends StatelessWidget {
-  const _Dot({required this.size, required this.opacity});
-
-  final double size;
-  final double opacity;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: AppColors.orange.withValues(alpha: opacity),
-        shape: BoxShape.circle,
-      ),
-    );
-  }
 }
 
 class _CityscapePainter extends CustomPainter {
