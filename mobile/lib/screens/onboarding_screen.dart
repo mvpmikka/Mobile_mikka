@@ -1,13 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../theme/app_colors.dart';
+import 'onboarding/connect_chat_page.dart';
+import 'onboarding/discover_places_page.dart';
+import 'onboarding/friends_map_page.dart';
+import 'onboarding/privacy_page.dart';
+import 'onboarding/rewards_page.dart';
 import 'register_screen.dart';
 
-/// Shown once between the welcome screen and sign-up — highlights the
-/// social features (chat, location sharing, group meetups) before the
-/// user commits to creating an account.
-class OnboardingScreen extends StatelessWidget {
+const _pageCount = 5;
+
+/// A 5-page swipeable carousel shown once between the welcome screen and
+/// sign-up: Discover Places, Friends Map, Rewards & Badges, Connect and
+/// Chat, and Privacy Settings.
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+  final _pageController = PageController();
+  int _currentPage = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _goBack(BuildContext context) {
+    if (_currentPage == 0) {
+      Navigator.of(context).pop();
+      return;
+    }
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+    );
+  }
+
+  void _next(BuildContext context) {
+    if (_currentPage == _pageCount - 1) {
+      _continue(context);
+      return;
+    }
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+    );
+  }
 
   void _continue(BuildContext context) {
     Navigator.of(context).push(
@@ -24,53 +68,20 @@ class OnboardingScreen extends StatelessWidget {
           children: [
             _buildHeader(context),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: const TextSpan(
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.darkText,
-                        ),
-                        children: [
-                          TextSpan(text: 'Birga '),
-                          TextSpan(
-                            text: 'muloqot qiling',
-                            style: TextStyle(color: AppColors.orange),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 28),
-                    const _FeatureRow(
-                      icon: Icons.chat_bubble_outline,
-                      title: 'Jonli suhbatlar',
-                      description:
-                          "Do'stlaringiz bilan real vaqtda reja tuzing.",
-                    ),
-                    const SizedBox(height: 24),
-                    const _FeatureRow(
-                      icon: Icons.location_on_outlined,
-                      title: 'Joylashuv ulashish',
-                      description:
-                          "Qayerda ekanligingizni bir tegish bilan ko'rsating.",
-                    ),
-                    const SizedBox(height: 24),
-                    const _FeatureRow(
-                      icon: Icons.groups_outlined,
-                      title: 'Guruh uchrashuvlari',
-                      description:
-                          'Eng yaqin davrangiz bilan uchrashuvlar tashkil eting.',
-                    ),
-                  ],
-                ),
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) => setState(() => _currentPage = index),
+                children: const [
+                  DiscoverPlacesPage(),
+                  FriendsMapPage(),
+                  RewardsPage(),
+                  ConnectChatPage(),
+                  PrivacyPage(),
+                ],
               ),
             ),
+            _buildPageIndicator(),
+            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: Column(
@@ -79,7 +90,7 @@ class OnboardingScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
-                      onPressed: () => _continue(context),
+                      onPressed: () => _next(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.orange,
                         foregroundColor: Colors.white,
@@ -88,9 +99,11 @@ class OnboardingScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(28),
                         ),
                       ),
-                      child: const Text(
-                        'Keyingi →',
-                        style: TextStyle(
+                      child: Text(
+                        _currentPage == _pageCount - 1
+                            ? 'Get Started'
+                            : 'Next →',
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -101,7 +114,7 @@ class OnboardingScreen extends StatelessWidget {
                   TextButton(
                     onPressed: () => _continue(context),
                     child: const Text(
-                      "O'tkazib yuborish",
+                      'Skip',
                       style: TextStyle(
                         color: AppColors.mutedText,
                         fontWeight: FontWeight.w600,
@@ -124,7 +137,7 @@ class OnboardingScreen extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => _goBack(context),
             icon: const Icon(Icons.arrow_back, color: AppColors.darkText),
           ),
           Expanded(
@@ -137,59 +150,24 @@ class OnboardingScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class _FeatureRow extends StatelessWidget {
-  const _FeatureRow({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPageIndicator() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: AppColors.orange.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(12),
+        for (var i = 0; i < _pageCount; i++)
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: i == _currentPage
+                  ? AppColors.orange
+                  : AppColors.fieldBorder,
+            ),
           ),
-          alignment: Alignment.center,
-          child: Icon(icon, color: AppColors.orange, size: 22),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.darkText,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.mutedText,
-                  height: 1.35,
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
