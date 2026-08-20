@@ -52,6 +52,7 @@ model User {
   gender            Gender?
   birthDate         DateTime?
   avatarUrl         String?
+  bio               String?
   profileCompleted  Boolean   @default(false)
   role              Role      @default(USER)
   // Reversible admin moderation action — distinct from deletedAt (permanent,
@@ -84,6 +85,10 @@ model User {
   callsAsCaller          CallSession[]             @relation("CallCaller")
   callsAsCallee          CallSession[]             @relation("CallCallee")
   deviceTokens           DeviceToken[]
+  posts                  Post[]
+  following              Follow[]                  @relation("FollowMade")
+  followers              Follow[]                  @relation("FollowReceived")
+  badges                 UserBadge[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -217,6 +222,7 @@ model Place {
   checkIns      CheckIn[]
   savedByUsers  SavedPlace[]
   stories       Story[]
+  posts         Post[]
   messages      Message[]
 
   createdAt DateTime  @default(now())
@@ -376,6 +382,25 @@ model Block {
   @@map("blocks")
 }
 
+// Directional (follower -> following), independent of Friendship — modeled
+// on Block's shape, not Friendship's. Following someone doesn't require
+// mutual friendship and unfollowing/unfriending don't affect each other.
+// Followers/Following counts are computed on read (prisma.follow.count),
+// not denormalized — profile views aren't hot enough to need it (V1 simple).
+model Follow {
+  id          String @id @default(uuid())
+  followerId  String
+  follower    User   @relation("FollowMade", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User   @relation("FollowReceived", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+  @@map("follows")
+}
+
 // Renamed from CheckInVisibility (was check-in-specific) once Story also
 // needed the identical PUBLIC/FRIENDS/PRIVATE set — see docs/foundation.md.
 // PrivacyService.canView was always generic over this; only the enum name
@@ -473,6 +498,47 @@ model StoryView {
 
   @@unique([storyId, viewerId])
   @@map("story_views")
+}
+
+// Permanent (no expiresAt), unlike Story — the "Posts" grid on a profile.
+// Visibility reuses the same ContentVisibility enum/PrivacyService.canView
+// pattern as Story/CheckIn rather than inventing a fourth visibility knob.
+// At least one image required — enforced by the DTO (min 1), same "DTO not
+// DB CHECK" convention as Story's text/imageUrl/placeId.
+model Post {
+  id      String @id @default(uuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  caption String?
+  placeId String?
+  place   Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
+
+  visibility ContentVisibility @default(FRIENDS)
+  images     PostImage[]
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([userId])
+  @@index([deletedAt])
+  @@map("posts")
+}
+
+// `position` orders the carousel (0-based). Images are uploaded individually
+// via the existing stateless POST /uploads/image beforehand — this table
+// only stores the resulting URLs, it never touches Supabase Storage itself.
+model PostImage {
+  id     String @id @default(uuid())
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  url          String
+  thumbnailUrl String?
+  position     Int
+
+  @@unique([postId, position])
+  @@map("post_images")
 }
 
 enum ConversationType {
@@ -579,6 +645,8 @@ enum NotificationType {
   NEW_MESSAGE
   STORY_UPDATE
   MISSED_CALL
+  FOLLOW
+  BADGE_EARNED
 
   @@map("notification_type")
 }
@@ -683,4 +751,54 @@ model DeviceToken {
 
   @@index([userId])
   @@map("device_tokens")
+}
+
+// Which stat a badge's threshold is measured against. The evaluator logic
+// per type lives in code (services/evaluators/*.ts); only the numbers/params
+// are data-driven via BadgeDefinition, so adding a badge with an EXISTING
+// criteria type never needs a code change, just a new seeded row.
+enum BadgeCriteriaType {
+  CHECKIN_CATEGORY_COUNT
+  CHECKIN_REGION_DISTINCT_COUNT
+  REVIEW_COUNT
+
+  @@map("badge_criteria_type")
+}
+
+// Seeded, not user/admin-created in V1. `criteriaParams` holds type-specific
+// extras (e.g. { "categorySlugs": ["coffee"] } for CHECKIN_CATEGORY_COUNT) —
+// CHECKIN_REGION_DISTINCT_COUNT/REVIEW_COUNT ignore it.
+model BadgeDefinition {
+  id             String            @id @default(uuid())
+  code           String            @unique
+  name           String
+  description    String
+  iconUrl        String?
+  criteriaType   BadgeCriteriaType
+  threshold      Int
+  criteriaParams Json?
+
+  userBadges UserBadge[]
+
+  createdAt DateTime @default(now())
+
+  @@map("badge_definitions")
+}
+
+// Earned instance — written once by BadgeService.evaluateForUser when a
+// threshold is first met (re-evaluation is a no-op past that point, the
+// unique constraint below is what makes the upsert safe). Never deleted:
+// badges are permanent once earned, same "no undo" reasoning as CheckIn.
+model UserBadge {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeDefinitionId String
+  badgeDefinition   BadgeDefinition @relation(fields: [badgeDefinitionId], references: [id], onDelete: Cascade)
+
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, badgeDefinitionId])
+  @@index([userId])
+  @@map("user_badges")
 }
