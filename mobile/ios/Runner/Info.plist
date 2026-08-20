@@ -89,5 +89,9 @@
 	<string>850901436789-fvkisq2fsdh8llnf8r6jf20ncsmgrvdc.apps.googleusercontent.com</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Mikka sizga yaqin joylarni va masofani ko'rsatish uchun joylashuvingizdan foydalanadi.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Mikka video qo'ng'iroqlar uchun kameradan foydalanadi.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Mikka audio va video qo'ng'iroqlar uchun mikrofondan foydalanadi.</string>
 </dict>
 </plist>

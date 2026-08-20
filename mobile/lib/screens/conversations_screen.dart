@@ -89,6 +89,9 @@ class _ConversationTile extends StatelessWidget {
             builder: (_) => MessageThreadScreen(
               conversationId: conversation.id,
               title: name,
+              otherUserId: conversation.isPrivate
+                  ? conversation.otherParticipant(myUserId)?.id
+                  : null,
             ),
           ),
         );
