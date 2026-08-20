@@ -50,10 +50,7 @@ export class FollowService {
     if (!followingId) {
       throw new NotFoundException('User not found');
     }
-    const removed = await this.followRepository.remove(
-      followerId,
-      followingId,
-    );
+    const removed = await this.followRepository.remove(followerId, followingId);
     if (!removed) {
       throw new NotFoundException('You are not following this user');
     }

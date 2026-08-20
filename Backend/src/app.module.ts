@@ -24,6 +24,7 @@ import { ChatModule } from './chat/chat.module';
 import { NotificationModule } from './notification/notification.module';
 import { CallModule } from './call/call.module';
 import { BadgeModule } from './badge/badge.module';
+import { FollowModule } from './follow/follow.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { BadgeModule } from './badge/badge.module';
     NotificationModule,
     CallModule,
     BadgeModule,
+    FollowModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Query,
@@ -10,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { OptionalCurrentUser } from '../auth/decorators/optional-current-user.decorator';
 import type { AuthenticatedUser } from '../auth/strategies/jwt.strategy';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { UserService } from './user.service';
@@ -20,7 +21,6 @@ import { usernameAvailabilitySchema } from './dto/username-availability.dto';
 import type { UsernameAvailabilityQueryDto } from './dto/username-availability.dto';
 import { searchUserSchema } from './dto/search-user.dto';
 import type { SearchUserQueryDto } from './dto/search-user.dto';
-import { toPrivateProfile } from './mappers/profile.mapper';
 
 // Static routes (me, username-availability) must stay declared before the
 // dynamic :username route below — Nest/Express matches in declaration
@@ -31,12 +31,8 @@ export class UserController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  async getMe(@CurrentUser() currentUser: AuthenticatedUser) {
-    const user = await this.userService.findById(currentUser.id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return toPrivateProfile(user);
+  getMe(@CurrentUser() currentUser: AuthenticatedUser) {
+    return this.userService.getPrivateProfile(currentUser.id);
   }
 
   @Patch('me')
@@ -45,8 +41,8 @@ export class UserController {
     @CurrentUser() currentUser: AuthenticatedUser,
     @Body(new ZodValidationPipe(updateProfileSchema)) dto: UpdateProfileDto,
   ) {
-    const user = await this.userService.updateProfile(currentUser.id, dto);
-    return toPrivateProfile(user);
+    await this.userService.updateProfile(currentUser.id, dto);
+    return this.userService.getPrivateProfile(currentUser.id);
   }
 
   @Get('username-availability')
@@ -73,8 +69,14 @@ export class UserController {
     return this.userService.search(query.q, currentUser.id);
   }
 
+  // OptionalJwtAuthGuard: profile is public, but isFollowedByMe must
+  // reflect the caller's identity when they happen to be logged in.
   @Get(':username')
-  getPublicProfile(@Param('username') username: string) {
-    return this.userService.getPublicProfile(username);
+  @UseGuards(OptionalJwtAuthGuard)
+  getPublicProfile(
+    @Param('username') username: string,
+    @OptionalCurrentUser() currentUser: AuthenticatedUser | undefined,
+  ) {
+    return this.userService.getPublicProfile(username, currentUser?.id);
   }
 }

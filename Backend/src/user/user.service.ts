@@ -6,10 +6,15 @@ import {
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { UserRepository } from './user.repository';
+import { FollowRepository } from '../follow/repositories/follow.repository';
 import type { Prisma, User } from '../../generated/prisma/client';
 import type { UpdateProfileDto } from './dto/update-profile.dto';
-import { toPublicProfile } from './mappers/profile.mapper';
-import type { PublicProfile, UserSearchResult } from './types/profile.type';
+import { toPrivateProfile, toPublicProfile } from './mappers/profile.mapper';
+import type {
+  PrivateProfile,
+  PublicProfile,
+  UserSearchResult,
+} from './types/profile.type';
 import type { AdminUserView } from './types/admin-user.type';
 
 export interface PaginatedResult<T> {
@@ -29,7 +34,10 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly followRepository: FollowRepository,
+  ) {}
 
   findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findByEmail(email);
@@ -65,12 +73,40 @@ export class UserService {
     return !existing;
   }
 
-  async getPublicProfile(username: string): Promise<PublicProfile> {
+  // viewerId is undefined for an anonymous caller (GET /users/:username has
+  // no guard) — isFollowedByMe is just false in that case, not omitted.
+  async getPublicProfile(
+    username: string,
+    viewerId?: string,
+  ): Promise<PublicProfile> {
     const user = await this.userRepository.findByUsername(username);
     if (!user || !user.username) {
       throw new NotFoundException('User not found');
     }
-    return toPublicProfile({ ...user, username: user.username });
+    const [followersCount, followingCount, isFollowedByMe] = await Promise.all([
+      this.followRepository.countFollowers(user.id),
+      this.followRepository.countFollowing(user.id),
+      viewerId
+        ? this.followRepository.existsDirectional(viewerId, user.id)
+        : Promise.resolve(false),
+    ]);
+    return toPublicProfile(
+      { ...user, username: user.username },
+      { followersCount, followingCount },
+      isFollowedByMe,
+    );
+  }
+
+  async getPrivateProfile(userId: string): Promise<PrivateProfile> {
+    const user = await this.userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const [followersCount, followingCount] = await Promise.all([
+      this.followRepository.countFollowers(userId),
+      this.followRepository.countFollowing(userId),
+    ]);
+    return toPrivateProfile(user, { followersCount, followingCount });
   }
 
   async updateProfile(
@@ -113,6 +149,9 @@ export class UserService {
     }
     if (updates.avatarUrl !== undefined) {
       data.avatarUrl = updates.avatarUrl;
+    }
+    if (updates.bio !== undefined) {
+      data.bio = updates.bio;
     }
 
     const merged: ProfileCompletionFields = {

@@ -48,11 +48,7 @@ export class FollowController {
     @Param('username') username: string,
     @Query(new ZodValidationPipe(listQuerySchema)) query: ListQueryDto,
   ) {
-    return this.followService.listFollowers(
-      username,
-      query.page,
-      query.limit,
-    );
+    return this.followService.listFollowers(username, query.page, query.limit);
   }
 
   @Get('users/:username/following')
@@ -60,10 +56,6 @@ export class FollowController {
     @Param('username') username: string,
     @Query(new ZodValidationPipe(listQuerySchema)) query: ListQueryDto,
   ) {
-    return this.followService.listFollowing(
-      username,
-      query.page,
-      query.limit,
-    );
+    return this.followService.listFollowing(username, query.page, query.limit);
   }
 }

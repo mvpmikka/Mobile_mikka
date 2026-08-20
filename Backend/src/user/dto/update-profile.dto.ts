@@ -27,6 +27,7 @@ export const updateProfileSchema = z.object({
     .refine(isOldEnough, `You must be at least ${MIN_AGE_YEARS} years old`)
     .optional(),
   avatarUrl: z.string().trim().url().max(500).optional(),
+  bio: z.string().trim().max(280).optional(),
 });
 
 export type UpdateProfileDto = z.infer<typeof updateProfileSchema>;
