@@ -38,6 +38,13 @@ interface SignalPayload {
   candidate?: unknown;
 }
 
+// client.data is typed `any` by socket.io, and `any` absorbs a plain
+// intersection (`Socket & { data: {...} }` still resolves to `any`) — the
+// Omit drops socket.io's `data: any` first so the replacement actually
+// narrows it, letting every @SubscribeMessage handler below read
+// client.data.userId without an unsafe-member-access cast.
+type AuthenticatedSocket = Omit<Socket, 'data'> & { data: { userId: string } };
+
 // Bidirectional, unlike ChatGateway/NotificationGateway: offer/answer/ICE
 // have no REST equivalent, so this gateway IS the signalling transport,
 // not just a push channel for REST-driven mutations. REST
@@ -82,10 +89,10 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:invite')
   async handleInvite(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: InvitePayload,
   ): Promise<{ callId: string } | { error: string; message: string }> {
-    const callerId = client.data.userId as string;
+    const callerId = client.data.userId;
     try {
       const call = await this.callService.initiate(
         callerId,
@@ -112,10 +119,10 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:accept')
   async handleAccept(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: CallIdPayload,
   ): Promise<void> {
-    const userId = client.data.userId as string;
+    const userId = client.data.userId;
     this.clearRingingTimer(payload.callId);
     const call = await this.callService.accept(payload.callId, userId);
     this.server
@@ -125,10 +132,10 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:reject')
   async handleReject(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: CallIdPayload,
   ): Promise<void> {
-    const userId = client.data.userId as string;
+    const userId = client.data.userId;
     this.clearRingingTimer(payload.callId);
     const call = await this.callService.reject(payload.callId, userId);
     this.server
@@ -138,10 +145,10 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:hangup')
   async handleHangup(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: CallIdPayload,
   ): Promise<void> {
-    const userId = client.data.userId as string;
+    const userId = client.data.userId;
     this.clearRingingTimer(payload.callId);
     const call = await this.callService.hangup(payload.callId, userId);
     const otherUserId =
@@ -153,7 +160,7 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:offer')
   async handleOffer(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: SignalPayload,
   ): Promise<void> {
     await this.relay(client, payload, 'call:offer');
@@ -161,7 +168,7 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:answer')
   async handleAnswer(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: SignalPayload,
   ): Promise<void> {
     await this.relay(client, payload, 'call:answer');
@@ -169,7 +176,7 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('call:ice-candidate')
   async handleIceCandidate(
-    @ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: AuthenticatedSocket,
     @MessageBody() payload: SignalPayload,
   ): Promise<void> {
     await this.relay(client, payload, 'call:ice-candidate');
@@ -179,11 +186,11 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // of the call didn't send them — this gateway never inspects SDP/ICE
   // content, it's a dumb relay between the two peers.
   private async relay(
-    client: Socket,
+    client: AuthenticatedSocket,
     payload: SignalPayload,
     event: string,
   ): Promise<void> {
-    const userId = client.data.userId as string;
+    const userId = client.data.userId;
     const call = await this.callService.getById(payload.callId);
     if (!call) return;
     const otherUserId =

@@ -5,7 +5,9 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   flutter_secure_storage_windows
+  flutter_webrtc
   geolocator_windows
+  permission_handler_windows
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
