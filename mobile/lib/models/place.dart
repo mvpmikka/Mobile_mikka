@@ -21,6 +21,7 @@ class Place {
     required this.latitude,
     required this.longitude,
     required this.status,
+    required this.rating,
     this.distanceMeters,
   });
 
@@ -31,6 +32,7 @@ class Place {
   final double longitude;
   final String status;
   final double? distanceMeters;
+  final PlaceRating rating;
 
   String? get distanceLabel {
     final meters = distanceMeters;
@@ -50,6 +52,7 @@ class Place {
       longitude: (json['longitude'] as num).toDouble(),
       status: json['status'] as String,
       distanceMeters: (json['distanceMeters'] as num?)?.toDouble(),
+      rating: PlaceRating.fromJson(json['rating'] as Map<String, dynamic>),
     );
   }
 }

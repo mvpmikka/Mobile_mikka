@@ -14,12 +14,11 @@ import '../providers/user_search_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/avatar_marker.dart';
 import '../widgets/app_bottom_nav.dart';
-import 'activity_screen.dart';
 import 'conversations_screen.dart';
 import 'explore_screen.dart';
 import 'message_thread_screen.dart';
-import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
+import 'shorts_screen.dart';
 
 class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
@@ -146,11 +145,6 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
-          );
-        },
       ),
     );
   }
@@ -431,9 +425,13 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const ExploreScreen()),
         );
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ShortsScreen()),
+        );
       case 3:
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ActivityScreen()),
+          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
         );
       case 4:
         Navigator.of(context).pushReplacement(

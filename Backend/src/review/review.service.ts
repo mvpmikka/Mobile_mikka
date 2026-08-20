@@ -4,17 +4,23 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ReviewRepository } from './repositories/review.repository';
 import { PlaceRatingSummaryRepository } from './repositories/place-rating-summary.repository';
 import type { CreateReviewDto } from './dto/create-review.dto';
 import type { UpdateReviewDto } from './dto/update-review.dto';
 import type { Prisma, Review } from '../../generated/prisma/client';
+import {
+  REVIEW_CREATED_EVENT,
+  type ReviewCreatedEvent,
+} from './events/review-created.event';
 
 @Injectable()
 export class ReviewService {
   constructor(
     private readonly reviewRepository: ReviewRepository,
     private readonly ratingSummaryRepository: PlaceRatingSummaryRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(placeId: string, userId: string, dto: CreateReviewDto) {
@@ -30,12 +36,20 @@ export class ReviewService {
       );
     }
 
-    return this.reviewRepository.create({
+    const review = await this.reviewRepository.create({
       place: { connect: { id: placeId } },
       user: { connect: { id: userId } },
       rating: dto.rating,
       comment: dto.comment,
     });
+
+    this.eventEmitter.emit(REVIEW_CREATED_EVENT, {
+      reviewId: review.id,
+      userId,
+      placeId,
+    } satisfies ReviewCreatedEvent);
+
+    return review;
   }
 
   async findById(id: string): Promise<Review> {

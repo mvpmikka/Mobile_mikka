@@ -18,6 +18,7 @@ import '../theme/place_category_icon.dart';
 import '../utils/avatar_marker.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
+import 'conversations_screen.dart';
 import 'filters_screen.dart';
 import 'friends_screen.dart';
 import 'message_thread_screen.dart';
@@ -25,6 +26,7 @@ import 'nearby_places_screen.dart';
 import 'place_detail_screen.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
+import 'shorts_screen.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
 
@@ -190,11 +192,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
-          );
-        },
       ),
     );
   }
@@ -219,6 +216,19 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             ),
           ),
           Icon(Icons.keyboard_arrow_down, color: AppColors.darkText(context)),
+          const SizedBox(width: 12),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ActivityScreen()),
+              );
+            },
+            child: Icon(
+              Icons.notifications_none,
+              color: AppColors.darkText(context),
+              size: 22,
+            ),
+          ),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () {
@@ -520,9 +530,13 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const FriendsScreen()),
         );
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ShortsScreen()),
+        );
       case 3:
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ActivityScreen()),
+          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
         );
       case 4:
         Navigator.of(context).pushReplacement(

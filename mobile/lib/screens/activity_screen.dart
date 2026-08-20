@@ -5,10 +5,11 @@ import '../models/notification_item.dart';
 import '../providers/notification_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
+import 'conversations_screen.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
-import 'nearby_places_screen.dart';
 import 'profile_screen.dart';
+import 'shorts_screen.dart';
 
 class ActivityScreen extends ConsumerStatefulWidget {
   const ActivityScreen({super.key});
@@ -18,7 +19,10 @@ class ActivityScreen extends ConsumerStatefulWidget {
 }
 
 class _ActivityScreenState extends ConsumerState<ActivityScreen> {
-  final _selectedNavIndex = 3;
+  // Activity/notifications is reached from ExploreScreen's header bell, not
+  // its own bottom-nav slot (the nav's 5 tabs are Map/Friends/Shorts/Chat/
+  // Profile) — pass an out-of-range index so no tab renders as selected.
+  final _selectedNavIndex = -1;
 
   @override
   Widget build(BuildContext context) {

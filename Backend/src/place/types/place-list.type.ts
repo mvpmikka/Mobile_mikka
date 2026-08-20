@@ -20,6 +20,10 @@ export interface PlaceListItem {
     name: string;
   };
   distanceMeters: number | null;
+  rating: {
+    averageRating: number;
+    reviewCount: number;
+  };
 }
 
 // 'none' — plain list, no lat/lng given.

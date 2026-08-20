@@ -7,19 +7,25 @@ class AppBottomNav extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
-    required this.onAddTap,
   });
 
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final VoidCallback onAddTap;
 
   static const _items = [
-    (label: 'Explore', icon: Icons.explore),
-    (label: 'Friends', icon: Icons.people_outline),
-    null,
-    (label: 'Activity', icon: Icons.bar_chart_outlined),
-    (label: 'Profile', icon: Icons.person_outline),
+    (label: 'Map', iconOutline: Icons.map_outlined, iconFilled: Icons.map),
+    (label: 'Friends', iconOutline: Icons.people_outline, iconFilled: Icons.people),
+    (
+      label: 'Shorts',
+      iconOutline: Icons.play_circle_outline,
+      iconFilled: Icons.play_circle,
+    ),
+    (
+      label: 'Chat',
+      iconOutline: Icons.chat_bubble_outline,
+      iconFilled: Icons.chat_bubble,
+    ),
+    (label: 'Profile', iconOutline: Icons.person_outline, iconFilled: Icons.person),
   ];
 
   @override
@@ -35,24 +41,6 @@ class AppBottomNav extends StatelessWidget {
         child: Row(
           children: List.generate(_items.length, (index) {
             final item = _items[index];
-            if (item == null) {
-              return Expanded(
-                child: Center(
-                  child: GestureDetector(
-                    onTap: onAddTap,
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: const BoxDecoration(
-                        color: AppColors.orange,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.add, color: Colors.white),
-                    ),
-                  ),
-                ),
-              );
-            }
             final selected = index == currentIndex;
             return Expanded(
               child: GestureDetector(
@@ -61,7 +49,7 @@ class AppBottomNav extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      item.icon,
+                      selected ? item.iconFilled : item.iconOutline,
                       size: 22,
                       color: selected ? AppColors.orange : AppColors.mutedText(context),
                     ),

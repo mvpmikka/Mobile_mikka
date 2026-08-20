@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CheckInRepository } from './repositories/check-in.repository';
 import { PrivacyService } from '../privacy/services/privacy.service';
 import type { CreateCheckInDto } from './dto/create-check-in.dto';
@@ -15,6 +16,10 @@ import type {
   CheckInWithPlace,
   PublicCheckInItem,
 } from './types/check-in.type';
+import {
+  CHECK_IN_CREATED_EVENT,
+  type CheckInCreatedEvent,
+} from './events/check-in-created.event';
 
 @Injectable()
 export class CheckInService {
@@ -22,6 +27,7 @@ export class CheckInService {
     private readonly checkInRepository: CheckInRepository,
     private readonly configService: ConfigService,
     private readonly privacyService: PrivacyService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(
@@ -67,13 +73,21 @@ export class CheckInService {
       }
     }
 
-    return this.checkInRepository.create({
+    const checkIn = await this.checkInRepository.create({
       place: { connect: { id: placeId } },
       user: { connect: { id: userId } },
       latitude: dto.latitude,
       longitude: dto.longitude,
       distanceMeters,
     });
+
+    this.eventEmitter.emit(CHECK_IN_CREATED_EVENT, {
+      checkInId: checkIn.id,
+      userId,
+      placeId,
+    } satisfies CheckInCreatedEvent);
+
+    return checkIn;
   }
 
   async listMine(

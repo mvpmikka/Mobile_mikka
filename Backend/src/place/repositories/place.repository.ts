@@ -31,6 +31,8 @@ interface RawNearRow {
   categoryId: string;
   categoryName: string;
   distanceMeters: number;
+  averageRating: number | null;
+  reviewCount: number | null;
 }
 
 // Selected once, reused by both list paths — only what a list/map view
@@ -42,6 +44,7 @@ const placeListSelect = {
   longitude: true,
   status: true,
   category: { select: { id: true, name: true } },
+  ratingSummary: { select: { averageRating: true, reviewCount: true } },
 } as const;
 
 @Injectable()
@@ -72,8 +75,17 @@ export class PlaceRepository {
     ]);
 
     const items: PlaceListItem[] = rows.map((row) => ({
-      ...row,
+      id: row.id,
+      name: row.name,
+      latitude: row.latitude,
+      longitude: row.longitude,
+      status: row.status,
+      category: row.category,
       distanceMeters: null,
+      rating: {
+        averageRating: row.ratingSummary?.averageRating ?? 0,
+        reviewCount: row.ratingSummary?.reviewCount ?? 0,
+      },
     }));
     return { items, total };
   }
@@ -95,9 +107,11 @@ export class PlaceRepository {
       SELECT
         p.id, p.name, p.latitude, p.longitude, p.status,
         p."categoryId" AS "categoryId", c.name AS "categoryName",
-        ST_Distance(p.location, ${point}) AS "distanceMeters"
+        ST_Distance(p.location, ${point}) AS "distanceMeters",
+        prs."averageRating" AS "averageRating", prs."reviewCount" AS "reviewCount"
       FROM places p
       JOIN place_categories c ON c.id = p."categoryId"
+      LEFT JOIN place_rating_summaries prs ON prs."placeId" = p.id
       WHERE p."deletedAt" IS NULL
         AND ST_DWithin(p.location, ${point}, ${params.radiusMeters})
         ${categoryFilter}
@@ -113,6 +127,10 @@ export class PlaceRepository {
       status: row.status,
       category: { id: row.categoryId, name: row.categoryName },
       distanceMeters: row.distanceMeters,
+      rating: {
+        averageRating: row.averageRating ?? 0,
+        reviewCount: row.reviewCount ?? 0,
+      },
     }));
 
     const countResult = await this.prisma.$queryRaw<[{ count: bigint }]>`
@@ -162,9 +180,11 @@ export class PlaceRepository {
       SELECT
         p.id, p.name, p.latitude, p.longitude, p.status,
         p."categoryId" AS "categoryId", c.name AS "categoryName",
-        ST_Distance(p.location, ${point}) AS "distanceMeters"
+        ST_Distance(p.location, ${point}) AS "distanceMeters",
+        prs."averageRating" AS "averageRating", prs."reviewCount" AS "reviewCount"
       FROM places p
       JOIN place_categories c ON c.id = p."categoryId"
+      LEFT JOIN place_rating_summaries prs ON prs."placeId" = p.id
       WHERE p."deletedAt" IS NULL
         AND p."regionId" = ${params.regionId}
         ${categoryFilter}
@@ -180,6 +200,10 @@ export class PlaceRepository {
       status: row.status,
       category: { id: row.categoryId, name: row.categoryName },
       distanceMeters: row.distanceMeters,
+      rating: {
+        averageRating: row.averageRating ?? 0,
+        reviewCount: row.reviewCount ?? 0,
+      },
     }));
 
     const countResult = await this.prisma.$queryRaw<[{ count: bigint }]>`

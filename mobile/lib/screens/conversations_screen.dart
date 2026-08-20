@@ -5,11 +5,40 @@ import '../models/conversation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_bottom_nav.dart';
 import '../widgets/mikka_logo.dart';
+import 'explore_screen.dart';
+import 'friends_screen.dart';
 import 'message_thread_screen.dart';
+import 'profile_screen.dart';
+import 'shorts_screen.dart';
 
 class ConversationsScreen extends ConsumerWidget {
   const ConversationsScreen({super.key});
+
+  static const _selectedNavIndex = 3;
+
+  void _onNavTap(BuildContext context, int index) {
+    if (index == _selectedNavIndex) return;
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ExploreScreen()),
+        );
+      case 1:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const FriendsScreen()),
+        );
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ShortsScreen()),
+        );
+      case 4:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ProfileScreen()),
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,6 +93,10 @@ class ConversationsScreen extends ConsumerWidget {
             );
           },
         ),
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: _selectedNavIndex,
+        onTap: (index) => _onNavTap(context, index),
       ),
     );
   }
