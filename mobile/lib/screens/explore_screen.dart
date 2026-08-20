@@ -16,6 +16,7 @@ import '../services/location_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
 import '../utils/avatar_marker.dart';
+import '../utils/place_marker.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
 import 'conversations_screen.dart';
@@ -56,16 +57,19 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   Future<Set<Marker>>? _markersFuture;
 
   // Friends without a visible check-in are simply left off the map, rather
-  // than given a fake position — same rule as FriendsScreen's map. Markers
-  // use each person's actual profile photo (built to a BitmapDescriptor by
-  // AvatarMarker) instead of a generic pin, so building them is async —
-  // cached per (friends, locations, myPosition, avatar) combination below so
-  // rebuilds triggered by unrelated state don't redo the image work.
+  // than given a fake position — same rule as FriendsScreen's map. Friend
+  // markers use each person's actual profile photo (AvatarMarker); place
+  // markers use a category icon (PlaceMarker, e.g. fork/knife for
+  // restaurants) instead of the default red Google pin. Both are async
+  // (image work / canvas drawing), so they're cached together per
+  // (friends, locations, myPosition, avatar, places) combination below so
+  // rebuilds triggered by unrelated state don't redo the drawing work.
   Future<Set<Marker>> _markersFor(
     List<Friend> friends,
     Map<String, PublicCheckIn> locations,
     Position? myPosition,
     String? myAvatarUrl,
+    List<Place> places,
   ) async {
     final relevantFriends = friends
         .where((friend) => locations[friend.profile.id] != null)
@@ -109,28 +113,25 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 onTap: () => _openChat(friend),
               ),
             ),
+      for (final place in places)
+        PlaceMarker.build(icon: placeCategoryIcon(place.category.name))
+            .then(
+              (icon) => Marker(
+                markerId: MarkerId('place-${place.id}'),
+                position: LatLng(place.latitude, place.longitude),
+                icon: icon,
+                anchor: const Offset(0.5, 1),
+                infoWindow: InfoWindow(
+                  title: place.name,
+                  snippet: place.category.name,
+                  onTap: () => _openPlace(place),
+                ),
+                onTap: () => _openPlace(place),
+              ),
+            ),
     ]);
 
     return results.toSet();
-  }
-
-  // Places have no async image work, so their markers are built directly —
-  // no future/caching needed, unlike the friend markers above.
-  Set<Marker> _placeMarkers(List<Place> places) {
-    return {
-      for (final place in places)
-        Marker(
-          markerId: MarkerId('place-${place.id}'),
-          position: LatLng(place.latitude, place.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-          infoWindow: InfoWindow(
-            title: place.name,
-            snippet: place.category.name,
-            onTap: () => _openPlace(place),
-          ),
-          onTap: () => _openPlace(place),
-        ),
-    };
   }
 
   void _openPlace(Place place) {
@@ -377,10 +378,17 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
     final key =
         '${myPosition?.latitude},${myPosition?.longitude}|$myAvatarUrl|'
-        '${friends.map((f) => '${f.profile.id}:${f.profile.avatarUrl}:${locations[f.profile.id]?.place.id}').join(',')}';
+        '${friends.map((f) => '${f.profile.id}:${f.profile.avatarUrl}:${locations[f.profile.id]?.place.id}').join(',')}|'
+        '${filteredPlaces.map((p) => '${p.id}:${p.category.name}').join(',')}';
     if (_markersKey != key) {
       _markersKey = key;
-      _markersFuture = _markersFor(friends, locations, myPosition, myAvatarUrl);
+      _markersFuture = _markersFor(
+        friends,
+        locations,
+        myPosition,
+        myAvatarUrl,
+        filteredPlaces,
+      );
     }
 
     return Stack(
@@ -393,10 +401,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 target: _tashkentCenter,
                 zoom: 14.5,
               ),
-              markers: {
-                ...(snapshot.data ?? const <Marker>{}),
-                ..._placeMarkers(filteredPlaces),
-              },
+              markers: snapshot.data ?? const <Marker>{},
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
@@ -500,7 +505,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             )
           else
             SizedBox(
-              height: 150,
+              height: 96,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: places.length,
@@ -583,15 +588,22 @@ class _NearbyPlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final distanceLabel = place.distanceLabel;
+    final rating = place.rating;
 
-    return SizedBox(
-      width: 130,
-      child: Column(
+    return Container(
+      width: 220,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.cream(context),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.fieldBorder(context)),
+      ),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 84,
-            width: double.infinity,
+            width: 56,
+            height: 56,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.orange.withValues(alpha: 0.12),
@@ -600,41 +612,53 @@ class _NearbyPlaceCard extends StatelessWidget {
             child: Icon(
               placeCategoryIcon(place.category.name),
               color: AppColors.orange,
-              size: 30,
+              size: 26,
             ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            place.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: AppColors.darkText(context),
-            ),
-          ),
-          Text(
-            place.category.name,
-            style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
-          ),
-          if (distanceLabel != null) ...[
-            const SizedBox(height: 2),
-            Row(
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.location_on_outlined,
-                  color: AppColors.mutedText(context),
-                  size: 12,
-                ),
-                const SizedBox(width: 2),
                 Text(
-                  distanceLabel,
+                  place.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.darkText(context),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  distanceLabel != null
+                      ? '${place.category.name} · $distanceLabel'
+                      : place.category.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    const Icon(Icons.star_rounded, color: AppColors.orange, size: 14),
+                    const SizedBox(width: 2),
+                    Text(
+                      rating.reviewCount > 0
+                          ? rating.averageRating.toStringAsFixed(1)
+                          : 'Yangi',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.darkText(context),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ],
       ),
     );

@@ -5,12 +5,12 @@ import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
 import '../widgets/mikka_logo.dart';
-import 'activity_screen.dart';
 import 'admin/admin_panel_screen.dart';
+import 'conversations_screen.dart';
 import 'edit_profile_screen.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
-import 'nearby_places_screen.dart';
+import 'shorts_screen.dart';
 import 'welcome_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -155,11 +155,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
-          );
-        },
       ),
     );
   }
@@ -175,9 +170,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const FriendsScreen()),
         );
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ShortsScreen()),
+        );
       case 3:
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ActivityScreen()),
+          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
         );
     }
   }

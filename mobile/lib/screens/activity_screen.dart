@@ -91,11 +91,6 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
-        onAddTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const NearbyPlacesScreen()),
-          );
-        },
       ),
     );
   }
@@ -120,6 +115,14 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       case 1:
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const FriendsScreen()),
+        );
+      case 2:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ShortsScreen()),
+        );
+      case 3:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
         );
       case 4:
         Navigator.of(context).pushReplacement(
