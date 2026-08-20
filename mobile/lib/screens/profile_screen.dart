@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
+import '../widgets/mikka_logo.dart';
 import 'activity_screen.dart';
 import 'admin/admin_panel_screen.dart';
 import 'edit_profile_screen.dart';
@@ -40,15 +41,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      'Profile',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.darkText(context),
-                      ),
-                    ),
+                  const SizedBox(width: 24),
+                  const Expanded(
+                    child: Center(child: MikkaLogo(height: 28)),
                   ),
                   Icon(Icons.settings_outlined, color: AppColors.darkText(context)),
                 ],

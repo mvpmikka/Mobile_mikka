@@ -79,6 +79,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
           builder: (_) => MessageThreadScreen(
             conversationId: conversation.id,
             title: friend.profile.displayName,
+            otherUserId: friend.profile.id,
           ),
         ),
       );

@@ -5,16 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/auth_provider.dart';
+import 'providers/call_provider.dart';
 import 'providers/chat_provider.dart';
 import 'screens/explore_screen.dart';
+import 'screens/incoming_call_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/verify_email_screen.dart';
 import 'screens/welcome_screen.dart';
+import 'services/call_socket_service.dart';
 import 'theme/app_colors.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
+
+// Top-level so it can be reached from places with no BuildContext of their
+// own — e.g. pushing IncomingCallScreen when a call arrives while the user
+// is anywhere in the app.
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -25,7 +33,6 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   final _appLinks = AppLinks();
-  final _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
 
   @override
@@ -62,7 +69,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       // There's no reliable BuildContext in this State (it sits above
       // MaterialApp), so navigation goes through the global navigator key
       // instead of Navigator.of(context).
-      _navigatorKey.currentState?.push(
+      navigatorKey.currentState?.push(
         MaterialPageRoute(builder: (_) => ResetPasswordScreen(token: token)),
       );
     }
@@ -77,7 +84,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
+      navigatorKey: navigatorKey,
       title: 'Mikka',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -101,25 +108,60 @@ class _MyAppState extends ConsumerState<MyApp> {
 /// Waits for the stored session (if any) to be validated against the
 /// backend, then routes to the signed-in, unverified, or signed-out entry
 /// point.
-class AuthGate extends ConsumerWidget {
+class AuthGate extends ConsumerStatefulWidget {
   const AuthGate({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends ConsumerState<AuthGate> {
+  StreamSubscription<IncomingCallEvent>? _incomingCallSub;
+
+  @override
+  void dispose() {
+    _incomingCallSub?.cancel();
+    super.dispose();
+  }
+
+  void _handleIncomingCall(IncomingCallEvent event) {
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (_) => IncomingCallScreen(
+          callId: event.callId,
+          callerId: event.callerId,
+          kind: event.kind,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
 
-    // Keeps the chat WebSocket connected for the lifetime of the signed-in
-    // session (not just while a chat screen happens to be open), so
-    // real-time messages/badges work app-wide — and torn down on logout.
+    // Keeps the chat/call WebSockets connected for the lifetime of the
+    // signed-in session (not just while a chat/call screen happens to be
+    // open), so real-time messages/badges/incoming calls work app-wide —
+    // and torn down on logout.
     ref.listen(authControllerProvider, (previous, next) async {
-      final socket = ref.read(chatSocketServiceProvider);
+      final chatSocket = ref.read(chatSocketServiceProvider);
+      final callSocket = ref.read(callSocketServiceProvider);
       final isAuthenticated = next.value?.isAuthenticated ?? false;
       if (!isAuthenticated) {
-        socket.disconnect();
+        chatSocket.disconnect();
+        callSocket.disconnect();
+        _incomingCallSub?.cancel();
+        _incomingCallSub = null;
         return;
       }
       final token = await ref.read(tokenStorageProvider).readAccessToken();
-      if (token != null) socket.connect(token);
+      if (token == null) return;
+      chatSocket.connect(token);
+      callSocket.connect(token);
+      _incomingCallSub ??= callSocket.onIncomingCall.listen(
+        _handleIncomingCall,
+      );
     });
 
     return authState.when(

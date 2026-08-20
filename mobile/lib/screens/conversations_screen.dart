@@ -5,6 +5,7 @@ import '../models/conversation.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'message_thread_screen.dart';
 
 class ConversationsScreen extends ConsumerWidget {
@@ -20,14 +21,8 @@ class ConversationsScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: AppColors.cream(context),
         elevation: 0,
-        title: Text(
-          'Chats',
-          style: TextStyle(
-            color: AppColors.darkText(context),
-            fontWeight: FontWeight.w800,
-            fontSize: 18,
-          ),
-        ),
+        centerTitle: true,
+        title: const MikkaLogo(height: 28),
         iconTheme: IconThemeData(color: AppColors.darkText(context)),
       ),
       body: SafeArea(

@@ -4,18 +4,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/api_exception.dart';
 import '../models/chat_message.dart';
 import '../providers/auth_provider.dart';
+import '../providers/call_provider.dart';
 import '../providers/chat_provider.dart';
+import '../services/call_socket_service.dart';
 import '../theme/app_colors.dart';
+import 'call_screen.dart';
 
 class MessageThreadScreen extends ConsumerStatefulWidget {
   const MessageThreadScreen({
     super.key,
     required this.conversationId,
     required this.title,
+    this.otherUserId,
   });
 
   final String conversationId;
   final String title;
+  final String? otherUserId;
 
   @override
   ConsumerState<MessageThreadScreen> createState() => _MessageThreadScreenState();
@@ -62,6 +67,41 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
     }
   }
 
+  Future<void> _startCall(CallKind kind) async {
+    final otherUserId = widget.otherUserId;
+    if (otherUserId == null) return;
+
+    final socket = ref.read(callSocketServiceProvider);
+    try {
+      final callId = await socket.invite(
+        calleeId: otherUserId,
+        kind: kind,
+        conversationId: widget.conversationId,
+      );
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => CallScreen(
+            callId: callId,
+            otherUserId: otherUserId,
+            isVideo: kind == CallKind.video,
+            isCaller: true,
+          ),
+        ),
+      );
+    } on CallBusyException {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Foydalanuvchi band')),
+      );
+    } on CallFailedException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message)));
+    }
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients) return;
@@ -97,6 +137,21 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
           ),
         ),
         iconTheme: IconThemeData(color: AppColors.darkText(context)),
+        actions: widget.otherUserId == null
+            ? null
+            : [
+                IconButton(
+                  icon: Icon(Icons.call, color: AppColors.darkText(context)),
+                  onPressed: () => _startCall(CallKind.audio),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.videocam,
+                    color: AppColors.darkText(context),
+                  ),
+                  onPressed: () => _startCall(CallKind.video),
+                ),
+              ],
       ),
       body: SafeArea(
         child: Column(
