@@ -10,6 +10,7 @@ import { NotificationRepository } from './repositories/notification.repository';
 import { FriendRequestListener } from './listeners/friend-request.listener';
 import { MessageListener } from './listeners/message.listener';
 import { StoryListener } from './listeners/story.listener';
+import { CallListener } from './listeners/call.listener';
 
 @Module({
   // UserModule + AuthModule: NotificationGateway's JWT handshake auth
@@ -27,6 +28,7 @@ import { StoryListener } from './listeners/story.listener';
     FriendRequestListener,
     MessageListener,
     StoryListener,
+    CallListener,
   ],
 })
 export class NotificationModule {}
