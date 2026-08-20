@@ -149,3 +149,8 @@ export type MessageReaction = Prisma.MessageReactionModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model CallSession
+ * 
+ */
+export type CallSession = Prisma.CallSessionModel

@@ -418,7 +418,8 @@ export const ModelName = {
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
   MessageReaction: 'MessageReaction',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  CallSession: 'CallSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "privacySettings" | "savedPlace" | "story" | "storyView" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification"
+    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "privacySettings" | "savedPlace" | "story" | "storyView" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2050,6 +2051,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CallSession: {
+      payload: Prisma.$CallSessionPayload<ExtArgs>
+      fields: Prisma.CallSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CallSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CallSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.CallSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CallSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        findMany: {
+          args: Prisma.CallSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>[]
+        }
+        create: {
+          args: Prisma.CallSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        createMany: {
+          args: Prisma.CallSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CallSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.CallSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        update: {
+          args: Prisma.CallSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CallSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CallSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CallSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CallSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CallSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.CallSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCallSession>
+        }
+        groupBy: {
+          args: Prisma.CallSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CallSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CallSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CallSessionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2368,6 +2443,22 @@ export const NotificationScalarFieldEnum = {
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+export const CallSessionScalarFieldEnum = {
+  id: 'id',
+  callerId: 'callerId',
+  calleeId: 'calleeId',
+  conversationId: 'conversationId',
+  type: 'type',
+  status: 'status',
+  startedAt: 'startedAt',
+  acceptedAt: 'acceptedAt',
+  endedAt: 'endedAt',
+  endReason: 'endReason'
+} as const
+
+export type CallSessionScalarFieldEnum = (typeof CallSessionScalarFieldEnum)[keyof typeof CallSessionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2603,6 +2694,34 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
+
+/**
+ * Reference to a field of type 'CallType'
+ */
+export type EnumCallTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CallType'>
+    
+
+
+/**
+ * Reference to a field of type 'CallType[]'
+ */
+export type ListEnumCallTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CallType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CallStatus'
+ */
+export type EnumCallStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CallStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CallStatus[]'
+ */
+export type ListEnumCallStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CallStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2776,6 +2895,7 @@ export type GlobalOmitConfig = {
   message?: Prisma.MessageOmit
   messageReaction?: Prisma.MessageReactionOmit
   notification?: Prisma.NotificationOmit
+  callSession?: Prisma.CallSessionOmit
 }
 
 /* Types for Logging */

@@ -75,7 +75,28 @@ export type ConversationType = (typeof ConversationType)[keyof typeof Conversati
 export const NotificationType = {
   FRIEND_REQUEST: 'FRIEND_REQUEST',
   NEW_MESSAGE: 'NEW_MESSAGE',
-  STORY_UPDATE: 'STORY_UPDATE'
+  STORY_UPDATE: 'STORY_UPDATE',
+  MISSED_CALL: 'MISSED_CALL'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const CallType = {
+  AUDIO: 'AUDIO',
+  VIDEO: 'VIDEO'
+} as const
+
+export type CallType = (typeof CallType)[keyof typeof CallType]
+
+
+export const CallStatus = {
+  RINGING: 'RINGING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  MISSED: 'MISSED',
+  ENDED: 'ENDED',
+  FAILED: 'FAILED'
+} as const
+
+export type CallStatus = (typeof CallStatus)[keyof typeof CallStatus]

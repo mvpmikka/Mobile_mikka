@@ -81,6 +81,8 @@ model User {
   messagesSent           Message[]                 @relation("MessageSender")
   messageReactions       MessageReaction[]
   notifications          Notification[]
+  callsAsCaller          CallSession[]             @relation("CallCaller")
+  callsAsCallee          CallSession[]             @relation("CallCallee")
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -575,6 +577,7 @@ enum NotificationType {
   FRIEND_REQUEST
   NEW_MESSAGE
   STORY_UPDATE
+  MISSED_CALL
 
   @@map("notification_type")
 }
@@ -602,4 +605,49 @@ model Notification {
   @@index([userId])
   @@index([userId, readAt])
   @@map("notifications")
+}
+
+enum CallType {
+  AUDIO
+  VIDEO
+
+  @@map("call_type")
+}
+
+enum CallStatus {
+  RINGING
+  ACCEPTED
+  DECLINED
+  MISSED
+  ENDED
+  FAILED
+
+  @@map("call_status")
+}
+
+// One row per call *attempt*, not a pure event log — CallService reads the
+// current status back (is either party already RINGING/ACCEPTED elsewhere?)
+// to reject a second concurrent call, so a row's status is live state, not
+// just history. conversationId is optional: a call can be started from
+// FriendsScreen directly (no open conversation yet) as well as from an
+// existing thread.
+model CallSession {
+  id             String   @id @default(uuid())
+  callerId       String
+  caller         User     @relation("CallCaller", fields: [callerId], references: [id], onDelete: Cascade)
+  calleeId       String
+  callee         User     @relation("CallCallee", fields: [calleeId], references: [id], onDelete: Cascade)
+  conversationId String?
+
+  type   CallType
+  status CallStatus @default(RINGING)
+
+  startedAt  DateTime  @default(now())
+  acceptedAt DateTime?
+  endedAt    DateTime?
+  endReason  String?
+
+  @@index([callerId])
+  @@index([calleeId])
+  @@map("call_sessions")
 }

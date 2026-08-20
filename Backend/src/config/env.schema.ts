@@ -81,6 +81,15 @@ export const envSchema = z.object({
   // doesn't strip an already-granted role.
   ADMIN_EMAILS: z.string().default(''),
   SUPER_ADMIN_EMAILS: z.string().default(''),
+
+  // Left empty until a coturn server is provisioned — same graceful
+  // pattern as Mail/Google/Supabase. TurnCredentialService returns
+  // STUN-only ICE servers (no relay) while unset, rather than the app
+  // failing to boot.
+  TURN_HOST: z.string().default(''),
+  TURN_PORT: z.coerce.number().int().positive().default(3478),
+  TURN_SHARED_SECRET: z.string().default(''),
+  TURN_CREDENTIAL_TTL_SECONDS: z.coerce.number().int().positive().default(3600),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
