@@ -83,6 +83,11 @@ export type Friendship = Prisma.FriendshipModel
  */
 export type Block = Prisma.BlockModel
 /**
+ * Model Follow
+ * 
+ */
+export type Follow = Prisma.FollowModel
+/**
  * Model PrivacySettings
  * 
  */
@@ -102,6 +107,16 @@ export type Story = Prisma.StoryModel
  * 
  */
 export type StoryView = Prisma.StoryViewModel
+/**
+ * Model Post
+ * 
+ */
+export type Post = Prisma.PostModel
+/**
+ * Model PostImage
+ * 
+ */
+export type PostImage = Prisma.PostImageModel
 /**
  * Model Conversation
  * 
@@ -137,3 +152,13 @@ export type CallSession = Prisma.CallSessionModel
  * 
  */
 export type DeviceToken = Prisma.DeviceTokenModel
+/**
+ * Model BadgeDefinition
+ * 
+ */
+export type BadgeDefinition = Prisma.BadgeDefinitionModel
+/**
+ * Model UserBadge
+ * 
+ */
+export type UserBadge = Prisma.UserBadgeModel

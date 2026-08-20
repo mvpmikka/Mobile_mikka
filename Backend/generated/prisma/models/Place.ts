@@ -308,6 +308,7 @@ export type PlaceWhereInput = {
   checkIns?: Prisma.CheckInListRelationFilter
   savedByUsers?: Prisma.SavedPlaceListRelationFilter
   stories?: Prisma.StoryListRelationFilter
+  posts?: Prisma.PostListRelationFilter
   messages?: Prisma.MessageListRelationFilter
 }
 
@@ -335,6 +336,7 @@ export type PlaceOrderByWithRelationInput = {
   checkIns?: Prisma.CheckInOrderByRelationAggregateInput
   savedByUsers?: Prisma.SavedPlaceOrderByRelationAggregateInput
   stories?: Prisma.StoryOrderByRelationAggregateInput
+  posts?: Prisma.PostOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
 }
 
@@ -365,6 +367,7 @@ export type PlaceWhereUniqueInput = Prisma.AtLeast<{
   checkIns?: Prisma.CheckInListRelationFilter
   savedByUsers?: Prisma.SavedPlaceListRelationFilter
   stories?: Prisma.StoryListRelationFilter
+  posts?: Prisma.PostListRelationFilter
   messages?: Prisma.MessageListRelationFilter
 }, "id">
 
@@ -433,6 +436,7 @@ export type PlaceCreateInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -457,6 +461,7 @@ export type PlaceUncheckedCreateInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -481,6 +486,7 @@ export type PlaceUpdateInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -505,6 +511,7 @@ export type PlaceUncheckedUpdateInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -839,6 +846,22 @@ export type PlaceUpdateOneWithoutStoriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutStoriesInput, Prisma.PlaceUpdateWithoutStoriesInput>, Prisma.PlaceUncheckedUpdateWithoutStoriesInput>
 }
 
+export type PlaceCreateNestedOneWithoutPostsInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutPostsInput, Prisma.PlaceUncheckedCreateWithoutPostsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutPostsInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneWithoutPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutPostsInput, Prisma.PlaceUncheckedCreateWithoutPostsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutPostsInput
+  upsert?: Prisma.PlaceUpsertWithoutPostsInput
+  disconnect?: Prisma.PlaceWhereInput | boolean
+  delete?: Prisma.PlaceWhereInput | boolean
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutPostsInput, Prisma.PlaceUpdateWithoutPostsInput>, Prisma.PlaceUncheckedUpdateWithoutPostsInput>
+}
+
 export type PlaceCreateNestedOneWithoutMessagesInput = {
   create?: Prisma.XOR<Prisma.PlaceCreateWithoutMessagesInput, Prisma.PlaceUncheckedCreateWithoutMessagesInput>
   connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutMessagesInput
@@ -875,6 +898,7 @@ export type PlaceCreateWithoutCreatedByInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -898,6 +922,7 @@ export type PlaceUncheckedCreateWithoutCreatedByInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -968,6 +993,7 @@ export type PlaceCreateWithoutCategoryInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -991,6 +1017,7 @@ export type PlaceUncheckedCreateWithoutCategoryInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1040,6 +1067,7 @@ export type PlaceCreateWithoutRegionInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1063,6 +1091,7 @@ export type PlaceUncheckedCreateWithoutRegionInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1112,6 +1141,7 @@ export type PlaceCreateWithoutReviewsInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1135,6 +1165,7 @@ export type PlaceUncheckedCreateWithoutReviewsInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1174,6 +1205,7 @@ export type PlaceUpdateWithoutReviewsInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1197,6 +1229,7 @@ export type PlaceUncheckedUpdateWithoutReviewsInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1220,6 +1253,7 @@ export type PlaceCreateWithoutRatingSummaryInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1243,6 +1277,7 @@ export type PlaceUncheckedCreateWithoutRatingSummaryInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1282,6 +1317,7 @@ export type PlaceUpdateWithoutRatingSummaryInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1305,6 +1341,7 @@ export type PlaceUncheckedUpdateWithoutRatingSummaryInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1328,6 +1365,7 @@ export type PlaceCreateWithoutCheckInsInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1351,6 +1389,7 @@ export type PlaceUncheckedCreateWithoutCheckInsInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1390,6 +1429,7 @@ export type PlaceUpdateWithoutCheckInsInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1413,6 +1453,7 @@ export type PlaceUncheckedUpdateWithoutCheckInsInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1436,6 +1477,7 @@ export type PlaceCreateWithoutSavedByUsersInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1459,6 +1501,7 @@ export type PlaceUncheckedCreateWithoutSavedByUsersInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1498,6 +1541,7 @@ export type PlaceUpdateWithoutSavedByUsersInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1521,6 +1565,7 @@ export type PlaceUncheckedUpdateWithoutSavedByUsersInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1544,6 +1589,7 @@ export type PlaceCreateWithoutStoriesInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
 }
 
@@ -1567,6 +1613,7 @@ export type PlaceUncheckedCreateWithoutStoriesInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
 }
 
@@ -1606,6 +1653,7 @@ export type PlaceUpdateWithoutStoriesInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1629,6 +1677,119 @@ export type PlaceUncheckedUpdateWithoutStoriesInput = {
   ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutPostsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address?: string | null
+  latitude: number
+  longitude: number
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  category: Prisma.PlaceCategoryCreateNestedOneWithoutPlacesInput
+  region?: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutPlacesCreatedInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutPostsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  categoryId: string
+  address?: string | null
+  latitude: number
+  longitude: number
+  regionId?: string | null
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutPostsInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutPostsInput, Prisma.PlaceUncheckedCreateWithoutPostsInput>
+}
+
+export type PlaceUpsertWithoutPostsInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutPostsInput, Prisma.PlaceUncheckedUpdateWithoutPostsInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutPostsInput, Prisma.PlaceUncheckedCreateWithoutPostsInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutPostsInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutPostsInput, Prisma.PlaceUncheckedUpdateWithoutPostsInput>
+}
+
+export type PlaceUpdateWithoutPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  category?: Prisma.PlaceCategoryUpdateOneRequiredWithoutPlacesNestedInput
+  region?: Prisma.RegionUpdateOneWithoutPlacesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPlacesCreatedNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1653,6 +1814,7 @@ export type PlaceCreateWithoutMessagesInput = {
   checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutMessagesInput = {
@@ -1676,6 +1838,7 @@ export type PlaceUncheckedCreateWithoutMessagesInput = {
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
   savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutMessagesInput = {
@@ -1715,6 +1878,7 @@ export type PlaceUpdateWithoutMessagesInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutMessagesInput = {
@@ -1738,6 +1902,7 @@ export type PlaceUncheckedUpdateWithoutMessagesInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateManyCreatedByInput = {
@@ -1777,6 +1942,7 @@ export type PlaceUpdateWithoutCreatedByInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1800,6 +1966,7 @@ export type PlaceUncheckedUpdateWithoutCreatedByInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1857,6 +2024,7 @@ export type PlaceUpdateWithoutCategoryInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1880,6 +2048,7 @@ export type PlaceUncheckedUpdateWithoutCategoryInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1920,6 +2089,7 @@ export type PlaceUpdateWithoutRegionInput = {
   checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1943,6 +2113,7 @@ export type PlaceUncheckedUpdateWithoutRegionInput = {
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
   savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
@@ -1990,6 +2161,7 @@ export type PlaceCountOutputType = {
   checkIns: number
   savedByUsers: number
   stories: number
+  posts: number
   messages: number
 }
 
@@ -1998,6 +2170,7 @@ export type PlaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   checkIns?: boolean | PlaceCountOutputTypeCountCheckInsArgs
   savedByUsers?: boolean | PlaceCountOutputTypeCountSavedByUsersArgs
   stories?: boolean | PlaceCountOutputTypeCountStoriesArgs
+  posts?: boolean | PlaceCountOutputTypeCountPostsArgs
   messages?: boolean | PlaceCountOutputTypeCountMessagesArgs
 }
 
@@ -2042,6 +2215,13 @@ export type PlaceCountOutputTypeCountStoriesArgs<ExtArgs extends runtime.Types.E
 /**
  * PlaceCountOutputType without action
  */
+export type PlaceCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
 export type PlaceCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MessageWhereInput
 }
@@ -2071,6 +2251,7 @@ export type PlaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   checkIns?: boolean | Prisma.Place$checkInsArgs<ExtArgs>
   savedByUsers?: boolean | Prisma.Place$savedByUsersArgs<ExtArgs>
   stories?: boolean | Prisma.Place$storiesArgs<ExtArgs>
+  posts?: boolean | Prisma.Place$postsArgs<ExtArgs>
   messages?: boolean | Prisma.Place$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["place"]>
@@ -2145,6 +2326,7 @@ export type PlaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   checkIns?: boolean | Prisma.Place$checkInsArgs<ExtArgs>
   savedByUsers?: boolean | Prisma.Place$savedByUsersArgs<ExtArgs>
   stories?: boolean | Prisma.Place$storiesArgs<ExtArgs>
+  posts?: boolean | Prisma.Place$postsArgs<ExtArgs>
   messages?: boolean | Prisma.Place$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2170,6 +2352,7 @@ export type $PlacePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     checkIns: Prisma.$CheckInPayload<ExtArgs>[]
     savedByUsers: Prisma.$SavedPlacePayload<ExtArgs>[]
     stories: Prisma.$StoryPayload<ExtArgs>[]
+    posts: Prisma.$PostPayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2590,6 +2773,7 @@ export interface Prisma__PlaceClient<T, Null = never, ExtArgs extends runtime.Ty
   checkIns<T extends Prisma.Place$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   savedByUsers<T extends Prisma.Place$savedByUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$savedByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedPlacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stories<T extends Prisma.Place$storiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$storiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  posts<T extends Prisma.Place$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.Place$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3167,6 +3351,30 @@ export type Place$storiesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.StoryScalarFieldEnum | Prisma.StoryScalarFieldEnum[]
+}
+
+/**
+ * Place.posts
+ */
+export type Place$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Post
+   */
+  select?: Prisma.PostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Post
+   */
+  omit?: Prisma.PostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostInclude<ExtArgs> | null
+  where?: Prisma.PostWhereInput
+  orderBy?: Prisma.PostOrderByWithRelationInput | Prisma.PostOrderByWithRelationInput[]
+  cursor?: Prisma.PostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
 }
 
 /**

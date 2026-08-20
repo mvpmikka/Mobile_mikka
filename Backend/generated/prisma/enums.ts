@@ -76,7 +76,9 @@ export const NotificationType = {
   FRIEND_REQUEST: 'FRIEND_REQUEST',
   NEW_MESSAGE: 'NEW_MESSAGE',
   STORY_UPDATE: 'STORY_UPDATE',
-  MISSED_CALL: 'MISSED_CALL'
+  MISSED_CALL: 'MISSED_CALL',
+  FOLLOW: 'FOLLOW',
+  BADGE_EARNED: 'BADGE_EARNED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -116,3 +118,12 @@ export const DeviceTokenKind = {
 } as const
 
 export type DeviceTokenKind = (typeof DeviceTokenKind)[keyof typeof DeviceTokenKind]
+
+
+export const BadgeCriteriaType = {
+  CHECKIN_CATEGORY_COUNT: 'CHECKIN_CATEGORY_COUNT',
+  CHECKIN_REGION_DISTINCT_COUNT: 'CHECKIN_REGION_DISTINCT_COUNT',
+  REVIEW_COUNT: 'REVIEW_COUNT'
+} as const
+
+export type BadgeCriteriaType = (typeof BadgeCriteriaType)[keyof typeof BadgeCriteriaType]

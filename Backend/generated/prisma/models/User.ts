@@ -34,6 +34,7 @@ export type UserMinAggregateOutputType = {
   gender: $Enums.Gender | null
   birthDate: Date | null
   avatarUrl: string | null
+  bio: string | null
   profileCompleted: boolean | null
   role: $Enums.Role | null
   isBanned: boolean | null
@@ -52,6 +53,7 @@ export type UserMaxAggregateOutputType = {
   gender: $Enums.Gender | null
   birthDate: Date | null
   avatarUrl: string | null
+  bio: string | null
   profileCompleted: boolean | null
   role: $Enums.Role | null
   isBanned: boolean | null
@@ -70,6 +72,7 @@ export type UserCountAggregateOutputType = {
   gender: number
   birthDate: number
   avatarUrl: number
+  bio: number
   profileCompleted: number
   role: number
   isBanned: number
@@ -90,6 +93,7 @@ export type UserMinAggregateInputType = {
   gender?: true
   birthDate?: true
   avatarUrl?: true
+  bio?: true
   profileCompleted?: true
   role?: true
   isBanned?: true
@@ -108,6 +112,7 @@ export type UserMaxAggregateInputType = {
   gender?: true
   birthDate?: true
   avatarUrl?: true
+  bio?: true
   profileCompleted?: true
   role?: true
   isBanned?: true
@@ -126,6 +131,7 @@ export type UserCountAggregateInputType = {
   gender?: true
   birthDate?: true
   avatarUrl?: true
+  bio?: true
   profileCompleted?: true
   role?: true
   isBanned?: true
@@ -217,6 +223,7 @@ export type UserGroupByOutputType = {
   gender: $Enums.Gender | null
   birthDate: Date | null
   avatarUrl: string | null
+  bio: string | null
   profileCompleted: boolean
   role: $Enums.Role
   isBanned: boolean
@@ -256,6 +263,7 @@ export type UserWhereInput = {
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   birthDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
   profileCompleted?: Prisma.BoolFilter<"User"> | boolean
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isBanned?: Prisma.BoolFilter<"User"> | boolean
@@ -286,6 +294,10 @@ export type UserWhereInput = {
   callsAsCaller?: Prisma.CallSessionListRelationFilter
   callsAsCallee?: Prisma.CallSessionListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
+  posts?: Prisma.PostListRelationFilter
+  following?: Prisma.FollowListRelationFilter
+  followers?: Prisma.FollowListRelationFilter
+  badges?: Prisma.UserBadgeListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -298,6 +310,7 @@ export type UserOrderByWithRelationInput = {
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   birthDate?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
@@ -328,6 +341,10 @@ export type UserOrderByWithRelationInput = {
   callsAsCaller?: Prisma.CallSessionOrderByRelationAggregateInput
   callsAsCallee?: Prisma.CallSessionOrderByRelationAggregateInput
   deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
+  posts?: Prisma.PostOrderByRelationAggregateInput
+  following?: Prisma.FollowOrderByRelationAggregateInput
+  followers?: Prisma.FollowOrderByRelationAggregateInput
+  badges?: Prisma.UserBadgeOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -343,6 +360,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   birthDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
   profileCompleted?: Prisma.BoolFilter<"User"> | boolean
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   isBanned?: Prisma.BoolFilter<"User"> | boolean
@@ -373,6 +391,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   callsAsCaller?: Prisma.CallSessionListRelationFilter
   callsAsCallee?: Prisma.CallSessionListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
+  posts?: Prisma.PostListRelationFilter
+  following?: Prisma.FollowListRelationFilter
+  followers?: Prisma.FollowListRelationFilter
+  badges?: Prisma.UserBadgeListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -385,6 +407,7 @@ export type UserOrderByWithAggregationInput = {
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   birthDate?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
@@ -409,6 +432,7 @@ export type UserScalarWhereWithAggregatesInput = {
   gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
   birthDate?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   profileCompleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   isBanned?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
@@ -427,6 +451,7 @@ export type UserCreateInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -457,6 +482,10 @@ export type UserCreateInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -469,6 +498,7 @@ export type UserUncheckedCreateInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -499,6 +529,10 @@ export type UserUncheckedCreateInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -511,6 +545,7 @@ export type UserUpdateInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -541,6 +576,10 @@ export type UserUpdateInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -553,6 +592,7 @@ export type UserUncheckedUpdateInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -583,6 +623,10 @@ export type UserUncheckedUpdateInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -595,6 +639,7 @@ export type UserCreateManyInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -613,6 +658,7 @@ export type UserUpdateManyMutationInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -631,6 +677,7 @@ export type UserUncheckedUpdateManyInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -649,6 +696,7 @@ export type UserCountOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
@@ -667,6 +715,7 @@ export type UserMaxOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
@@ -685,6 +734,7 @@ export type UserMinOrderByAggregateInput = {
   gender?: Prisma.SortOrder
   birthDate?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   profileCompleted?: Prisma.SortOrder
   role?: Prisma.SortOrder
   isBanned?: Prisma.SortOrder
@@ -894,6 +944,34 @@ export type UserUpdateOneRequiredWithoutBlocksReceivedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlocksReceivedInput, Prisma.UserUpdateWithoutBlocksReceivedInput>, Prisma.UserUncheckedUpdateWithoutBlocksReceivedInput>
 }
 
+export type UserCreateNestedOneWithoutFollowingInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutFollowersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFollowingNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingInput
+  upsert?: Prisma.UserUpsertWithoutFollowingInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowingInput, Prisma.UserUpdateWithoutFollowingInput>, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+}
+
+export type UserUpdateOneRequiredWithoutFollowersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowersInput
+  upsert?: Prisma.UserUpsertWithoutFollowersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowersInput, Prisma.UserUpdateWithoutFollowersInput>, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+}
+
 export type UserCreateNestedOneWithoutPrivacySettingsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPrivacySettingsInput, Prisma.UserUncheckedCreateWithoutPrivacySettingsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPrivacySettingsInput
@@ -948,6 +1026,20 @@ export type UserUpdateOneRequiredWithoutStoryViewsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutStoryViewsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoryViewsInput, Prisma.UserUpdateWithoutStoryViewsInput>, Prisma.UserUncheckedUpdateWithoutStoryViewsInput>
+}
+
+export type UserCreateNestedOneWithoutPostsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
+  upsert?: Prisma.UserUpsertWithoutPostsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
 }
 
 export type UserCreateNestedOneWithoutConversationsCreatedInput = {
@@ -1062,6 +1154,20 @@ export type UserUpdateOneRequiredWithoutDeviceTokensNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDeviceTokensInput, Prisma.UserUpdateWithoutDeviceTokensInput>, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
 }
 
+export type UserCreateNestedOneWithoutBadgesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBadgesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBadgesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBadgesInput
+  upsert?: Prisma.UserUpsertWithoutBadgesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBadgesInput, Prisma.UserUpdateWithoutBadgesInput>, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+}
+
 export type UserCreateWithoutAuthIdentitiesInput = {
   id?: string
   email: string
@@ -1072,6 +1178,7 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1101,6 +1208,10 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
@@ -1113,6 +1224,7 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1142,6 +1254,10 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthIdentitiesInput = {
@@ -1170,6 +1286,7 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1199,6 +1316,10 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
@@ -1211,6 +1332,7 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1240,6 +1362,10 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRefreshTokensInput = {
@@ -1252,6 +1378,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1281,6 +1408,10 @@ export type UserCreateWithoutRefreshTokensInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -1293,6 +1424,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1322,6 +1454,10 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -1350,6 +1486,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1379,6 +1516,10 @@ export type UserUpdateWithoutRefreshTokensInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -1391,6 +1532,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1420,6 +1562,10 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationTokensInput = {
@@ -1432,6 +1578,7 @@ export type UserCreateWithoutVerificationTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1461,6 +1608,10 @@ export type UserCreateWithoutVerificationTokensInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationTokensInput = {
@@ -1473,6 +1624,7 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1502,6 +1654,10 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationTokensInput = {
@@ -1530,6 +1686,7 @@ export type UserUpdateWithoutVerificationTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1559,6 +1716,10 @@ export type UserUpdateWithoutVerificationTokensInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationTokensInput = {
@@ -1571,6 +1732,7 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1600,6 +1762,10 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPlacesCreatedInput = {
@@ -1612,6 +1778,7 @@ export type UserCreateWithoutPlacesCreatedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1641,6 +1808,10 @@ export type UserCreateWithoutPlacesCreatedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPlacesCreatedInput = {
@@ -1653,6 +1824,7 @@ export type UserUncheckedCreateWithoutPlacesCreatedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1682,6 +1854,10 @@ export type UserUncheckedCreateWithoutPlacesCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPlacesCreatedInput = {
@@ -1710,6 +1886,7 @@ export type UserUpdateWithoutPlacesCreatedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1739,6 +1916,10 @@ export type UserUpdateWithoutPlacesCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPlacesCreatedInput = {
@@ -1751,6 +1932,7 @@ export type UserUncheckedUpdateWithoutPlacesCreatedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1780,6 +1962,10 @@ export type UserUncheckedUpdateWithoutPlacesCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1792,6 +1978,7 @@ export type UserCreateWithoutReviewsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1821,6 +2008,10 @@ export type UserCreateWithoutReviewsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1833,6 +2024,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -1862,6 +2054,10 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1890,6 +2086,7 @@ export type UserUpdateWithoutReviewsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1919,6 +2116,10 @@ export type UserUpdateWithoutReviewsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1931,6 +2132,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1960,6 +2162,10 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCheckInsInput = {
@@ -1972,6 +2178,7 @@ export type UserCreateWithoutCheckInsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2001,6 +2208,10 @@ export type UserCreateWithoutCheckInsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCheckInsInput = {
@@ -2013,6 +2224,7 @@ export type UserUncheckedCreateWithoutCheckInsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2042,6 +2254,10 @@ export type UserUncheckedCreateWithoutCheckInsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCheckInsInput = {
@@ -2070,6 +2286,7 @@ export type UserUpdateWithoutCheckInsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2099,6 +2316,10 @@ export type UserUpdateWithoutCheckInsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCheckInsInput = {
@@ -2111,6 +2332,7 @@ export type UserUncheckedUpdateWithoutCheckInsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2140,6 +2362,10 @@ export type UserUncheckedUpdateWithoutCheckInsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFriendRequestsSentInput = {
@@ -2152,6 +2378,7 @@ export type UserCreateWithoutFriendRequestsSentInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2181,6 +2408,10 @@ export type UserCreateWithoutFriendRequestsSentInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendRequestsSentInput = {
@@ -2193,6 +2424,7 @@ export type UserUncheckedCreateWithoutFriendRequestsSentInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2222,6 +2454,10 @@ export type UserUncheckedCreateWithoutFriendRequestsSentInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendRequestsSentInput = {
@@ -2239,6 +2475,7 @@ export type UserCreateWithoutFriendRequestsReceivedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2268,6 +2505,10 @@ export type UserCreateWithoutFriendRequestsReceivedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendRequestsReceivedInput = {
@@ -2280,6 +2521,7 @@ export type UserUncheckedCreateWithoutFriendRequestsReceivedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2309,6 +2551,10 @@ export type UserUncheckedCreateWithoutFriendRequestsReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendRequestsReceivedInput = {
@@ -2337,6 +2583,7 @@ export type UserUpdateWithoutFriendRequestsSentInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2366,6 +2613,10 @@ export type UserUpdateWithoutFriendRequestsSentInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendRequestsSentInput = {
@@ -2378,6 +2629,7 @@ export type UserUncheckedUpdateWithoutFriendRequestsSentInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2407,6 +2659,10 @@ export type UserUncheckedUpdateWithoutFriendRequestsSentInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFriendRequestsReceivedInput = {
@@ -2430,6 +2686,7 @@ export type UserUpdateWithoutFriendRequestsReceivedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2459,6 +2716,10 @@ export type UserUpdateWithoutFriendRequestsReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendRequestsReceivedInput = {
@@ -2471,6 +2732,7 @@ export type UserUncheckedUpdateWithoutFriendRequestsReceivedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2500,6 +2762,10 @@ export type UserUncheckedUpdateWithoutFriendRequestsReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFriendshipsOwnedInput = {
@@ -2512,6 +2778,7 @@ export type UserCreateWithoutFriendshipsOwnedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2541,6 +2808,10 @@ export type UserCreateWithoutFriendshipsOwnedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsOwnedInput = {
@@ -2553,6 +2824,7 @@ export type UserUncheckedCreateWithoutFriendshipsOwnedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2582,6 +2854,10 @@ export type UserUncheckedCreateWithoutFriendshipsOwnedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsOwnedInput = {
@@ -2599,6 +2875,7 @@ export type UserCreateWithoutFriendshipsAsFriendInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2628,6 +2905,10 @@ export type UserCreateWithoutFriendshipsAsFriendInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsAsFriendInput = {
@@ -2640,6 +2921,7 @@ export type UserUncheckedCreateWithoutFriendshipsAsFriendInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2669,6 +2951,10 @@ export type UserUncheckedCreateWithoutFriendshipsAsFriendInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsAsFriendInput = {
@@ -2697,6 +2983,7 @@ export type UserUpdateWithoutFriendshipsOwnedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2726,6 +3013,10 @@ export type UserUpdateWithoutFriendshipsOwnedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsOwnedInput = {
@@ -2738,6 +3029,7 @@ export type UserUncheckedUpdateWithoutFriendshipsOwnedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2767,6 +3059,10 @@ export type UserUncheckedUpdateWithoutFriendshipsOwnedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFriendshipsAsFriendInput = {
@@ -2790,6 +3086,7 @@ export type UserUpdateWithoutFriendshipsAsFriendInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2819,6 +3116,10 @@ export type UserUpdateWithoutFriendshipsAsFriendInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsAsFriendInput = {
@@ -2831,6 +3132,7 @@ export type UserUncheckedUpdateWithoutFriendshipsAsFriendInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2860,6 +3162,10 @@ export type UserUncheckedUpdateWithoutFriendshipsAsFriendInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBlocksMadeInput = {
@@ -2872,6 +3178,7 @@ export type UserCreateWithoutBlocksMadeInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2901,6 +3208,10 @@ export type UserCreateWithoutBlocksMadeInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlocksMadeInput = {
@@ -2913,6 +3224,7 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2942,6 +3254,10 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlocksMadeInput = {
@@ -2959,6 +3275,7 @@ export type UserCreateWithoutBlocksReceivedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -2988,6 +3305,10 @@ export type UserCreateWithoutBlocksReceivedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlocksReceivedInput = {
@@ -3000,6 +3321,7 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3029,6 +3351,10 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlocksReceivedInput = {
@@ -3057,6 +3383,7 @@ export type UserUpdateWithoutBlocksMadeInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3086,6 +3413,10 @@ export type UserUpdateWithoutBlocksMadeInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksMadeInput = {
@@ -3098,6 +3429,7 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3127,6 +3459,10 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutBlocksReceivedInput = {
@@ -3150,6 +3486,7 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3179,6 +3516,10 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
@@ -3191,6 +3532,7 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3220,6 +3562,410 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFollowingInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFollowingInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFollowingInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+}
+
+export type UserCreateWithoutFollowersInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFollowersInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFollowersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+}
+
+export type UserUpsertWithoutFollowingInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFollowingInput, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFollowingInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFollowingInput, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+}
+
+export type UserUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutFollowersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFollowersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+}
+
+export type UserUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPrivacySettingsInput = {
@@ -3232,6 +3978,7 @@ export type UserCreateWithoutPrivacySettingsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3261,6 +4008,10 @@ export type UserCreateWithoutPrivacySettingsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPrivacySettingsInput = {
@@ -3273,6 +4024,7 @@ export type UserUncheckedCreateWithoutPrivacySettingsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3302,6 +4054,10 @@ export type UserUncheckedCreateWithoutPrivacySettingsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPrivacySettingsInput = {
@@ -3330,6 +4086,7 @@ export type UserUpdateWithoutPrivacySettingsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3359,6 +4116,10 @@ export type UserUpdateWithoutPrivacySettingsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPrivacySettingsInput = {
@@ -3371,6 +4132,7 @@ export type UserUncheckedUpdateWithoutPrivacySettingsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3400,6 +4162,10 @@ export type UserUncheckedUpdateWithoutPrivacySettingsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSavedPlacesInput = {
@@ -3412,6 +4178,7 @@ export type UserCreateWithoutSavedPlacesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3441,6 +4208,10 @@ export type UserCreateWithoutSavedPlacesInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSavedPlacesInput = {
@@ -3453,6 +4224,7 @@ export type UserUncheckedCreateWithoutSavedPlacesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3482,6 +4254,10 @@ export type UserUncheckedCreateWithoutSavedPlacesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSavedPlacesInput = {
@@ -3510,6 +4286,7 @@ export type UserUpdateWithoutSavedPlacesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3539,6 +4316,10 @@ export type UserUpdateWithoutSavedPlacesInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSavedPlacesInput = {
@@ -3551,6 +4332,7 @@ export type UserUncheckedUpdateWithoutSavedPlacesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3580,6 +4362,10 @@ export type UserUncheckedUpdateWithoutSavedPlacesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoriesInput = {
@@ -3592,6 +4378,7 @@ export type UserCreateWithoutStoriesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3621,6 +4408,10 @@ export type UserCreateWithoutStoriesInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoriesInput = {
@@ -3633,6 +4424,7 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3662,6 +4454,10 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoriesInput = {
@@ -3690,6 +4486,7 @@ export type UserUpdateWithoutStoriesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3719,6 +4516,10 @@ export type UserUpdateWithoutStoriesInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoriesInput = {
@@ -3731,6 +4532,7 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3760,6 +4562,10 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoryViewsInput = {
@@ -3772,6 +4578,7 @@ export type UserCreateWithoutStoryViewsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3801,6 +4608,10 @@ export type UserCreateWithoutStoryViewsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoryViewsInput = {
@@ -3813,6 +4624,7 @@ export type UserUncheckedCreateWithoutStoryViewsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3842,6 +4654,10 @@ export type UserUncheckedCreateWithoutStoryViewsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoryViewsInput = {
@@ -3870,6 +4686,7 @@ export type UserUpdateWithoutStoryViewsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3899,6 +4716,10 @@ export type UserUpdateWithoutStoryViewsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoryViewsInput = {
@@ -3911,6 +4732,7 @@ export type UserUncheckedUpdateWithoutStoryViewsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3940,6 +4762,210 @@ export type UserUncheckedUpdateWithoutStoryViewsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPostsInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPostsInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPostsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+}
+
+export type UserUpsertWithoutPostsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPostsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPostsInput, Prisma.UserUncheckedUpdateWithoutPostsInput>
+}
+
+export type UserUpdateWithoutPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationsCreatedInput = {
@@ -3952,6 +4978,7 @@ export type UserCreateWithoutConversationsCreatedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -3981,6 +5008,10 @@ export type UserCreateWithoutConversationsCreatedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsCreatedInput = {
@@ -3993,6 +5024,7 @@ export type UserUncheckedCreateWithoutConversationsCreatedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4022,6 +5054,10 @@ export type UserUncheckedCreateWithoutConversationsCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsCreatedInput = {
@@ -4050,6 +5086,7 @@ export type UserUpdateWithoutConversationsCreatedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4079,6 +5116,10 @@ export type UserUpdateWithoutConversationsCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsCreatedInput = {
@@ -4091,6 +5132,7 @@ export type UserUncheckedUpdateWithoutConversationsCreatedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4120,6 +5162,10 @@ export type UserUncheckedUpdateWithoutConversationsCreatedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConversationsJoinedInput = {
@@ -4132,6 +5178,7 @@ export type UserCreateWithoutConversationsJoinedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4161,6 +5208,10 @@ export type UserCreateWithoutConversationsJoinedInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConversationsJoinedInput = {
@@ -4173,6 +5224,7 @@ export type UserUncheckedCreateWithoutConversationsJoinedInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4202,6 +5254,10 @@ export type UserUncheckedCreateWithoutConversationsJoinedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConversationsJoinedInput = {
@@ -4230,6 +5286,7 @@ export type UserUpdateWithoutConversationsJoinedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4259,6 +5316,10 @@ export type UserUpdateWithoutConversationsJoinedInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConversationsJoinedInput = {
@@ -4271,6 +5332,7 @@ export type UserUncheckedUpdateWithoutConversationsJoinedInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4300,6 +5362,10 @@ export type UserUncheckedUpdateWithoutConversationsJoinedInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessagesSentInput = {
@@ -4312,6 +5378,7 @@ export type UserCreateWithoutMessagesSentInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4341,6 +5408,10 @@ export type UserCreateWithoutMessagesSentInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesSentInput = {
@@ -4353,6 +5424,7 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4382,6 +5454,10 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesSentInput = {
@@ -4410,6 +5486,7 @@ export type UserUpdateWithoutMessagesSentInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4439,6 +5516,10 @@ export type UserUpdateWithoutMessagesSentInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesSentInput = {
@@ -4451,6 +5532,7 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4480,6 +5562,10 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessageReactionsInput = {
@@ -4492,6 +5578,7 @@ export type UserCreateWithoutMessageReactionsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4521,6 +5608,10 @@ export type UserCreateWithoutMessageReactionsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessageReactionsInput = {
@@ -4533,6 +5624,7 @@ export type UserUncheckedCreateWithoutMessageReactionsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4562,6 +5654,10 @@ export type UserUncheckedCreateWithoutMessageReactionsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessageReactionsInput = {
@@ -4590,6 +5686,7 @@ export type UserUpdateWithoutMessageReactionsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4619,6 +5716,10 @@ export type UserUpdateWithoutMessageReactionsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessageReactionsInput = {
@@ -4631,6 +5732,7 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4660,6 +5762,10 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -4672,6 +5778,7 @@ export type UserCreateWithoutNotificationsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4701,6 +5808,10 @@ export type UserCreateWithoutNotificationsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -4713,6 +5824,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4742,6 +5854,10 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -4770,6 +5886,7 @@ export type UserUpdateWithoutNotificationsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4799,6 +5916,10 @@ export type UserUpdateWithoutNotificationsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -4811,6 +5932,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4840,6 +5962,10 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCallsAsCallerInput = {
@@ -4852,6 +5978,7 @@ export type UserCreateWithoutCallsAsCallerInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4881,6 +6008,10 @@ export type UserCreateWithoutCallsAsCallerInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCallsAsCallerInput = {
@@ -4893,6 +6024,7 @@ export type UserUncheckedCreateWithoutCallsAsCallerInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4922,6 +6054,10 @@ export type UserUncheckedCreateWithoutCallsAsCallerInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCallsAsCallerInput = {
@@ -4939,6 +6075,7 @@ export type UserCreateWithoutCallsAsCalleeInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -4968,6 +6105,10 @@ export type UserCreateWithoutCallsAsCalleeInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCallsAsCalleeInput = {
@@ -4980,6 +6121,7 @@ export type UserUncheckedCreateWithoutCallsAsCalleeInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -5009,6 +6151,10 @@ export type UserUncheckedCreateWithoutCallsAsCalleeInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCallsAsCalleeInput = {
@@ -5037,6 +6183,7 @@ export type UserUpdateWithoutCallsAsCallerInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5066,6 +6213,10 @@ export type UserUpdateWithoutCallsAsCallerInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCallsAsCallerInput = {
@@ -5078,6 +6229,7 @@ export type UserUncheckedUpdateWithoutCallsAsCallerInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5107,6 +6259,10 @@ export type UserUncheckedUpdateWithoutCallsAsCallerInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCallsAsCalleeInput = {
@@ -5130,6 +6286,7 @@ export type UserUpdateWithoutCallsAsCalleeInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5159,6 +6316,10 @@ export type UserUpdateWithoutCallsAsCalleeInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCallsAsCalleeInput = {
@@ -5171,6 +6332,7 @@ export type UserUncheckedUpdateWithoutCallsAsCalleeInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5200,6 +6362,10 @@ export type UserUncheckedUpdateWithoutCallsAsCalleeInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDeviceTokensInput = {
@@ -5212,6 +6378,7 @@ export type UserCreateWithoutDeviceTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -5241,6 +6408,10 @@ export type UserCreateWithoutDeviceTokensInput = {
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDeviceTokensInput = {
@@ -5253,6 +6424,7 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   gender?: $Enums.Gender | null
   birthDate?: Date | string | null
   avatarUrl?: string | null
+  bio?: string | null
   profileCompleted?: boolean
   role?: $Enums.Role
   isBanned?: boolean
@@ -5282,6 +6454,10 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDeviceTokensInput = {
@@ -5310,6 +6486,7 @@ export type UserUpdateWithoutDeviceTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5339,6 +6516,10 @@ export type UserUpdateWithoutDeviceTokensInput = {
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceTokensInput = {
@@ -5351,6 +6532,7 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5380,6 +6562,210 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBadgesInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+}
+
+export type UserUncheckedCreateWithoutBadgesInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+}
+
+export type UserCreateOrConnectWithoutBadgesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+}
+
+export type UserUpsertWithoutBadgesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBadgesInput, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBadgesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBadgesInput, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+}
+
+export type UserUpdateWithoutBadgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBadgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
 }
 
 
@@ -5411,6 +6797,10 @@ export type UserCountOutputType = {
   callsAsCaller: number
   callsAsCallee: number
   deviceTokens: number
+  posts: number
+  following: number
+  followers: number
+  badges: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5437,6 +6827,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   callsAsCaller?: boolean | UserCountOutputTypeCountCallsAsCallerArgs
   callsAsCallee?: boolean | UserCountOutputTypeCountCallsAsCalleeArgs
   deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
+  posts?: boolean | UserCountOutputTypeCountPostsArgs
+  following?: boolean | UserCountOutputTypeCountFollowingArgs
+  followers?: boolean | UserCountOutputTypeCountFollowersArgs
+  badges?: boolean | UserCountOutputTypeCountBadgesArgs
 }
 
 /**
@@ -5610,6 +7004,34 @@ export type UserCountOutputTypeCountDeviceTokensArgs<ExtArgs extends runtime.Typ
   where?: Prisma.DeviceTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFollowingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFollowersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBadgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserBadgeWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5621,6 +7043,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   gender?: boolean
   birthDate?: boolean
   avatarUrl?: boolean
+  bio?: boolean
   profileCompleted?: boolean
   role?: boolean
   isBanned?: boolean
@@ -5651,6 +7074,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   callsAsCaller?: boolean | Prisma.User$callsAsCallerArgs<ExtArgs>
   callsAsCallee?: boolean | Prisma.User$callsAsCalleeArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
+  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  followers?: boolean | Prisma.User$followersArgs<ExtArgs>
+  badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -5664,6 +7091,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   gender?: boolean
   birthDate?: boolean
   avatarUrl?: boolean
+  bio?: boolean
   profileCompleted?: boolean
   role?: boolean
   isBanned?: boolean
@@ -5682,6 +7110,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   gender?: boolean
   birthDate?: boolean
   avatarUrl?: boolean
+  bio?: boolean
   profileCompleted?: boolean
   role?: boolean
   isBanned?: boolean
@@ -5700,6 +7129,7 @@ export type UserSelectScalar = {
   gender?: boolean
   birthDate?: boolean
   avatarUrl?: boolean
+  bio?: boolean
   profileCompleted?: boolean
   role?: boolean
   isBanned?: boolean
@@ -5708,7 +7138,7 @@ export type UserSelectScalar = {
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "isEmailVerified" | "username" | "usernameUpdatedAt" | "fullName" | "gender" | "birthDate" | "avatarUrl" | "profileCompleted" | "role" | "isBanned" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "isEmailVerified" | "username" | "usernameUpdatedAt" | "fullName" | "gender" | "birthDate" | "avatarUrl" | "bio" | "profileCompleted" | "role" | "isBanned" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authIdentities?: boolean | Prisma.User$authIdentitiesArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
@@ -5734,6 +7164,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   callsAsCaller?: boolean | Prisma.User$callsAsCallerArgs<ExtArgs>
   callsAsCallee?: boolean | Prisma.User$callsAsCalleeArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
+  posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  followers?: boolean | Prisma.User$followersArgs<ExtArgs>
+  badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -5766,6 +7200,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     callsAsCaller: Prisma.$CallSessionPayload<ExtArgs>[]
     callsAsCallee: Prisma.$CallSessionPayload<ExtArgs>[]
     deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
+    posts: Prisma.$PostPayload<ExtArgs>[]
+    following: Prisma.$FollowPayload<ExtArgs>[]
+    followers: Prisma.$FollowPayload<ExtArgs>[]
+    badges: Prisma.$UserBadgePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5777,6 +7215,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     gender: $Enums.Gender | null
     birthDate: Date | null
     avatarUrl: string | null
+    bio: string | null
     profileCompleted: boolean
     role: $Enums.Role
     isBanned: boolean
@@ -6201,6 +7640,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   callsAsCaller<T extends Prisma.User$callsAsCallerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$callsAsCallerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CallSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   callsAsCallee<T extends Prisma.User$callsAsCalleeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$callsAsCalleeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CallSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  following<T extends Prisma.User$followingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  followers<T extends Prisma.User$followersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  badges<T extends Prisma.User$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6239,6 +7682,7 @@ export interface UserFieldRefs {
   readonly gender: Prisma.FieldRef<"User", 'Gender'>
   readonly birthDate: Prisma.FieldRef<"User", 'DateTime'>
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
+  readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly profileCompleted: Prisma.FieldRef<"User", 'Boolean'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly isBanned: Prisma.FieldRef<"User", 'Boolean'>
@@ -7206,6 +8650,102 @@ export type User$deviceTokensArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.DeviceTokenScalarFieldEnum | Prisma.DeviceTokenScalarFieldEnum[]
+}
+
+/**
+ * User.posts
+ */
+export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Post
+   */
+  select?: Prisma.PostSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Post
+   */
+  omit?: Prisma.PostOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostInclude<ExtArgs> | null
+  where?: Prisma.PostWhereInput
+  orderBy?: Prisma.PostOrderByWithRelationInput | Prisma.PostOrderByWithRelationInput[]
+  cursor?: Prisma.PostWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.following
+ */
+export type User$followingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Follow
+   */
+  select?: Prisma.FollowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Follow
+   */
+  omit?: Prisma.FollowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowInclude<ExtArgs> | null
+  where?: Prisma.FollowWhereInput
+  orderBy?: Prisma.FollowOrderByWithRelationInput | Prisma.FollowOrderByWithRelationInput[]
+  cursor?: Prisma.FollowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+}
+
+/**
+ * User.followers
+ */
+export type User$followersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Follow
+   */
+  select?: Prisma.FollowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Follow
+   */
+  omit?: Prisma.FollowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowInclude<ExtArgs> | null
+  where?: Prisma.FollowWhereInput
+  orderBy?: Prisma.FollowOrderByWithRelationInput | Prisma.FollowOrderByWithRelationInput[]
+  cursor?: Prisma.FollowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+}
+
+/**
+ * User.badges
+ */
+export type User$badgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserBadge
+   */
+  select?: Prisma.UserBadgeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserBadge
+   */
+  omit?: Prisma.UserBadgeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserBadgeInclude<ExtArgs> | null
+  where?: Prisma.UserBadgeWhereInput
+  orderBy?: Prisma.UserBadgeOrderByWithRelationInput | Prisma.UserBadgeOrderByWithRelationInput[]
+  cursor?: Prisma.UserBadgeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserBadgeScalarFieldEnum | Prisma.UserBadgeScalarFieldEnum[]
 }
 
 /**

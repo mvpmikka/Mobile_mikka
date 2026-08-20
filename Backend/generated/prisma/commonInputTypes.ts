@@ -457,6 +457,23 @@ export type EnumDeviceTokenKindWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
 }
 
+export type EnumBadgeCriteriaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BadgeCriteriaType | Prisma.EnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel> | $Enums.BadgeCriteriaType
+}
+
+export type EnumBadgeCriteriaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BadgeCriteriaType | Prisma.EnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBadgeCriteriaTypeWithAggregatesFilter<$PrismaModel> | $Enums.BadgeCriteriaType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -873,6 +890,23 @@ export type NestedEnumDeviceTokenKindWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
+}
+
+export type NestedEnumBadgeCriteriaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BadgeCriteriaType | Prisma.EnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel> | $Enums.BadgeCriteriaType
+}
+
+export type NestedEnumBadgeCriteriaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BadgeCriteriaType | Prisma.EnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BadgeCriteriaType[] | Prisma.ListEnumBadgeCriteriaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBadgeCriteriaTypeWithAggregatesFilter<$PrismaModel> | $Enums.BadgeCriteriaType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBadgeCriteriaTypeFilter<$PrismaModel>
 }
 
 

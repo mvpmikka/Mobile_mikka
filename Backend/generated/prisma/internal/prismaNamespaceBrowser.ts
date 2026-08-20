@@ -64,17 +64,22 @@ export const ModelName = {
   FriendRequest: 'FriendRequest',
   Friendship: 'Friendship',
   Block: 'Block',
+  Follow: 'Follow',
   PrivacySettings: 'PrivacySettings',
   SavedPlace: 'SavedPlace',
   Story: 'Story',
   StoryView: 'StoryView',
+  Post: 'Post',
+  PostImage: 'PostImage',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
   MessageReaction: 'MessageReaction',
   Notification: 'Notification',
   CallSession: 'CallSession',
-  DeviceToken: 'DeviceToken'
+  DeviceToken: 'DeviceToken',
+  BadgeDefinition: 'BadgeDefinition',
+  UserBadge: 'UserBadge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -103,6 +108,7 @@ export const UserScalarFieldEnum = {
   gender: 'gender',
   birthDate: 'birthDate',
   avatarUrl: 'avatarUrl',
+  bio: 'bio',
   profileCompleted: 'profileCompleted',
   role: 'role',
   isBanned: 'isBanned',
@@ -264,6 +270,16 @@ export const BlockScalarFieldEnum = {
 export type BlockScalarFieldEnum = (typeof BlockScalarFieldEnum)[keyof typeof BlockScalarFieldEnum]
 
 
+export const FollowScalarFieldEnum = {
+  id: 'id',
+  followerId: 'followerId',
+  followingId: 'followingId',
+  createdAt: 'createdAt'
+} as const
+
+export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum]
+
+
 export const PrivacySettingsScalarFieldEnum = {
   userId: 'userId',
   checkInVisibility: 'checkInVisibility',
@@ -307,6 +323,30 @@ export const StoryViewScalarFieldEnum = {
 } as const
 
 export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
+
+
+export const PostScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  caption: 'caption',
+  placeId: 'placeId',
+  visibility: 'visibility',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const PostImageScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  url: 'url',
+  thumbnailUrl: 'thumbnailUrl',
+  position: 'position'
+} as const
+
+export type PostImageScalarFieldEnum = (typeof PostImageScalarFieldEnum)[keyof typeof PostImageScalarFieldEnum]
 
 
 export const ConversationScalarFieldEnum = {
@@ -399,6 +439,31 @@ export const DeviceTokenScalarFieldEnum = {
 } as const
 
 export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
+
+
+export const BadgeDefinitionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  iconUrl: 'iconUrl',
+  criteriaType: 'criteriaType',
+  threshold: 'threshold',
+  criteriaParams: 'criteriaParams',
+  createdAt: 'createdAt'
+} as const
+
+export type BadgeDefinitionScalarFieldEnum = (typeof BadgeDefinitionScalarFieldEnum)[keyof typeof BadgeDefinitionScalarFieldEnum]
+
+
+export const UserBadgeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  badgeDefinitionId: 'badgeDefinitionId',
+  earnedAt: 'earnedAt'
+} as const
+
+export type UserBadgeScalarFieldEnum = (typeof UserBadgeScalarFieldEnum)[keyof typeof UserBadgeScalarFieldEnum]
 
 
 export const SortOrder = {
