@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../providers/place_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/avatar_marker.dart';
+import '../../widgets/mikka_logo.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
 
@@ -71,7 +72,7 @@ class _FriendsMapPageState extends ConsumerState<FriendsMapPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          Image.asset('assets/icon/logo_wordmark.png', height: 28),
+          const MikkaLogo(height: 28),
           const SizedBox(height: 18),
           Text(
             'See where your friends are.',

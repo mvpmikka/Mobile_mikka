@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'explore_screen.dart';
 import 'login_screen.dart';
 import 'verify_email_screen.dart';
@@ -125,7 +126,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.asset('assets/icon/logo_wordmark.png', height: 32),
+                child: const MikkaLogo(height: 32),
               ),
               const SizedBox(height: 20),
               Text(

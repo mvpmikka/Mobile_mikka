@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'onboarding/connect_chat_page.dart';
 import 'onboarding/discover_places_page.dart';
 import 'onboarding/friends_map_page.dart';
@@ -142,7 +143,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           Expanded(
             child: Center(
-              child: Image.asset('assets/icon/logo_wordmark.png', height: 24),
+              child: const MikkaLogo(height: 24),
             ),
           ),
           const SizedBox(width: 48),

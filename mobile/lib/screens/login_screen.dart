@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'explore_screen.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
@@ -126,10 +127,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   opacity: _logoFade,
                   child: ScaleTransition(
                     scale: _logoScale,
-                    child: Image.asset(
-                      'assets/icon/logo_wordmark.png',
-                      height: 32,
-                    ),
+                    child: const MikkaLogo(height: 32),
                   ),
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'explore_screen.dart';
 
 /// Shown after register/login while the account's email is still
@@ -61,7 +62,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/icon/logo_wordmark.png', height: 32),
+              const MikkaLogo(height: 32),
               const SizedBox(height: 40),
               Container(
                 width: 96,

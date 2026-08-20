@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../widgets/mikka_logo.dart';
 import 'login_screen.dart';
 import 'onboarding_screen.dart';
 
@@ -15,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 32),
-            Image.asset('assets/icon/logo_wordmark.png', height: 56),
+            const MikkaLogo(height: 56),
             const SizedBox(height: 24),
             Text(
               'Discover places.\nFind friends. Explore together.',

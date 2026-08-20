@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
+import '../../widgets/mikka_logo.dart';
 
 const _badges = [
   (icon: Icons.restaurant_outlined, label: 'Food Explorer'),
@@ -53,7 +54,7 @@ class RewardsPage extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Center(
-            child: Image.asset('assets/icon/logo_wordmark.png', height: 32),
+            child: const MikkaLogo(height: 32),
           ),
           const SizedBox(height: 24),
           Row(
