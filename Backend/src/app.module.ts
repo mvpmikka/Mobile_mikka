@@ -23,6 +23,7 @@ import { StoryModule } from './story/story.module';
 import { ChatModule } from './chat/chat.module';
 import { NotificationModule } from './notification/notification.module';
 import { CallModule } from './call/call.module';
+import { BadgeModule } from './badge/badge.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { CallModule } from './call/call.module';
     ChatModule,
     NotificationModule,
     CallModule,
+    BadgeModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

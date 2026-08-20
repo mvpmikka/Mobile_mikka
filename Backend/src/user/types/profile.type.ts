@@ -8,18 +8,28 @@ export interface PrivateProfile {
   isEmailVerified: boolean;
   username: string | null;
   fullName: string | null;
+  bio: string | null;
   gender: Gender | null;
   birthDate: Date | null;
   avatarUrl: string | null;
   profileCompleted: boolean;
   role: Role;
+  followersCount: number;
+  followingCount: number;
   createdAt: Date;
 }
 
 export interface PublicProfile {
+  id: string;
   username: string;
   fullName: string | null;
+  bio: string | null;
   avatarUrl: string | null;
+  followersCount: number;
+  followingCount: number;
+  // False for an anonymous viewer (GET /users/:username has no guard) —
+  // never omitted, so the client doesn't need to special-case "unknown".
+  isFollowedByMe: boolean;
   createdAt: Date;
 }
 

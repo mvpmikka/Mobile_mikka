@@ -52,9 +52,7 @@ export class BadgeService {
     criteriaTypes: BadgeCriteriaType[],
   ): Promise<void> {
     const definitions =
-      await this.badgeRepository.findDefinitionsByCriteriaTypes(
-        criteriaTypes,
-      );
+      await this.badgeRepository.findDefinitionsByCriteriaTypes(criteriaTypes);
     if (definitions.length === 0) return;
 
     const earnedIds = await this.badgeRepository.findEarnedDefinitionIds(
@@ -72,10 +70,7 @@ export class BadgeService {
       const satisfied = await evaluator.isSatisfied(userId, definition);
       if (!satisfied) continue;
 
-      const awarded = await this.badgeRepository.award(
-        userId,
-        definition.id,
-      );
+      const awarded = await this.badgeRepository.award(userId, definition.id);
       if (!awarded) continue;
 
       this.eventEmitter.emit(BADGE_EARNED_EVENT, {
