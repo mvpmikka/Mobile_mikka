@@ -83,6 +83,7 @@ model User {
   notifications          Notification[]
   callsAsCaller          CallSession[]             @relation("CallCaller")
   callsAsCallee          CallSession[]             @relation("CallCallee")
+  deviceTokens           DeviceToken[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -650,4 +651,36 @@ model CallSession {
   @@index([callerId])
   @@index([calleeId])
   @@map("call_sessions")
+}
+
+enum DevicePlatform {
+  ANDROID
+  IOS
+
+  @@map("device_platform")
+}
+
+// kind distinguishes Android's single FCM token from iOS's two tokens (a
+// regular FCM token for normal push, a separate PushKit/VoIP token used
+// only to wake CallKit for incoming calls) — same platform can hold both.
+enum DeviceTokenKind {
+  FCM
+  VOIP
+
+  @@map("device_token_kind")
+}
+
+model DeviceToken {
+  id       String         @id @default(uuid())
+  userId   String
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform DevicePlatform
+  kind     DeviceTokenKind
+  token    String         @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("device_tokens")
 }

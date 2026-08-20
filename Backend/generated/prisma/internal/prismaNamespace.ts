@@ -419,7 +419,8 @@ export const ModelName = {
   Message: 'Message',
   MessageReaction: 'MessageReaction',
   Notification: 'Notification',
-  CallSession: 'CallSession'
+  CallSession: 'CallSession',
+  DeviceToken: 'DeviceToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "privacySettings" | "savedPlace" | "story" | "storyView" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession"
+    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "privacySettings" | "savedPlace" | "story" | "storyView" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2125,6 +2126,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DeviceToken: {
+      payload: Prisma.$DeviceTokenPayload<ExtArgs>
+      fields: Prisma.DeviceTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DeviceTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DeviceTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.DeviceTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DeviceTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findMany: {
+          args: Prisma.DeviceTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        create: {
+          args: Prisma.DeviceTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        createMany: {
+          args: Prisma.DeviceTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DeviceTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.DeviceTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        update: {
+          args: Prisma.DeviceTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.DeviceTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DeviceTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DeviceTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.DeviceTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.DeviceTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDeviceToken>
+        }
+        groupBy: {
+          args: Prisma.DeviceTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DeviceTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2459,6 +2534,19 @@ export const CallSessionScalarFieldEnum = {
 export type CallSessionScalarFieldEnum = (typeof CallSessionScalarFieldEnum)[keyof typeof CallSessionScalarFieldEnum]
 
 
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  platform: 'platform',
+  kind: 'kind',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2722,6 +2810,34 @@ export type EnumCallStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 export type ListEnumCallStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CallStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'DevicePlatform'
+ */
+export type EnumDevicePlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DevicePlatform'>
+    
+
+
+/**
+ * Reference to a field of type 'DevicePlatform[]'
+ */
+export type ListEnumDevicePlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DevicePlatform[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DeviceTokenKind'
+ */
+export type EnumDeviceTokenKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeviceTokenKind'>
+    
+
+
+/**
+ * Reference to a field of type 'DeviceTokenKind[]'
+ */
+export type ListEnumDeviceTokenKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeviceTokenKind[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2896,6 +3012,7 @@ export type GlobalOmitConfig = {
   messageReaction?: Prisma.MessageReactionOmit
   notification?: Prisma.NotificationOmit
   callSession?: Prisma.CallSessionOmit
+  deviceToken?: Prisma.DeviceTokenOmit
 }
 
 /* Types for Logging */

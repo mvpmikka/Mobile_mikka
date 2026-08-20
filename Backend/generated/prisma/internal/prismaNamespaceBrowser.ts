@@ -73,7 +73,8 @@ export const ModelName = {
   Message: 'Message',
   MessageReaction: 'MessageReaction',
   Notification: 'Notification',
-  CallSession: 'CallSession'
+  CallSession: 'CallSession',
+  DeviceToken: 'DeviceToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -385,6 +386,19 @@ export const CallSessionScalarFieldEnum = {
 } as const
 
 export type CallSessionScalarFieldEnum = (typeof CallSessionScalarFieldEnum)[keyof typeof CallSessionScalarFieldEnum]
+
+
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  platform: 'platform',
+  kind: 'kind',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
 
 
 export const SortOrder = {

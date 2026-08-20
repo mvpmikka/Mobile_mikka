@@ -90,6 +90,25 @@ export const envSchema = z.object({
   TURN_PORT: z.coerce.number().int().positive().default(3478),
   TURN_SHARED_SECRET: z.string().default(''),
   TURN_CREDENTIAL_TTL_SECONDS: z.coerce.number().int().positive().default(3600),
+
+  // Left empty until a real Firebase project exists — same graceful
+  // pattern as Mail/Google/Supabase/TURN. CallPushService silently skips
+  // Android push while unset, rather than the app failing to boot.
+  FIREBASE_SERVICE_ACCOUNT_JSON: z.string().default(''),
+
+  // Left empty until a real Apple Developer APNs key exists — same
+  // graceful pattern. CallPushService silently skips iOS push while unset.
+  APNS_KEY_ID: z.string().default(''),
+  APNS_TEAM_ID: z.string().default(''),
+  APNS_BUNDLE_ID: z.string().default(''),
+  APNS_PRIVATE_KEY: z.string().default(''),
+  APNS_PRODUCTION: z.preprocess(
+    emptyToUndefined,
+    z
+      .enum(['true', 'false'])
+      .default('false')
+      .transform((value) => value === 'true'),
+  ),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

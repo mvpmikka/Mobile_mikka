@@ -100,3 +100,19 @@ export const CallStatus = {
 } as const
 
 export type CallStatus = (typeof CallStatus)[keyof typeof CallStatus]
+
+
+export const DevicePlatform = {
+  ANDROID: 'ANDROID',
+  IOS: 'IOS'
+} as const
+
+export type DevicePlatform = (typeof DevicePlatform)[keyof typeof DevicePlatform]
+
+
+export const DeviceTokenKind = {
+  FCM: 'FCM',
+  VOIP: 'VOIP'
+} as const
+
+export type DeviceTokenKind = (typeof DeviceTokenKind)[keyof typeof DeviceTokenKind]

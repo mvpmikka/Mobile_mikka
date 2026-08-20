@@ -132,3 +132,8 @@ export type Notification = Prisma.NotificationModel
  * 
  */
 export type CallSession = Prisma.CallSessionModel
+/**
+ * Model DeviceToken
+ * 
+ */
+export type DeviceToken = Prisma.DeviceTokenModel

@@ -423,6 +423,40 @@ export type EnumCallStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumCallStatusFilter<$PrismaModel>
 }
 
+export type EnumDevicePlatformFilter<$PrismaModel = never> = {
+  equals?: $Enums.DevicePlatform | Prisma.EnumDevicePlatformFieldRefInput<$PrismaModel>
+  in?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel> | $Enums.DevicePlatform
+}
+
+export type EnumDeviceTokenKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.DeviceTokenKind | Prisma.EnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  in?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel> | $Enums.DeviceTokenKind
+}
+
+export type EnumDevicePlatformWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DevicePlatform | Prisma.EnumDevicePlatformFieldRefInput<$PrismaModel>
+  in?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDevicePlatformWithAggregatesFilter<$PrismaModel> | $Enums.DevicePlatform
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel>
+}
+
+export type EnumDeviceTokenKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DeviceTokenKind | Prisma.EnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  in?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDeviceTokenKindWithAggregatesFilter<$PrismaModel> | $Enums.DeviceTokenKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -805,6 +839,40 @@ export type NestedEnumCallStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCallStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCallStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumDevicePlatformFilter<$PrismaModel = never> = {
+  equals?: $Enums.DevicePlatform | Prisma.EnumDevicePlatformFieldRefInput<$PrismaModel>
+  in?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel> | $Enums.DevicePlatform
+}
+
+export type NestedEnumDeviceTokenKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.DeviceTokenKind | Prisma.EnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  in?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel> | $Enums.DeviceTokenKind
+}
+
+export type NestedEnumDevicePlatformWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DevicePlatform | Prisma.EnumDevicePlatformFieldRefInput<$PrismaModel>
+  in?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DevicePlatform[] | Prisma.ListEnumDevicePlatformFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDevicePlatformWithAggregatesFilter<$PrismaModel> | $Enums.DevicePlatform
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDevicePlatformFilter<$PrismaModel>
+}
+
+export type NestedEnumDeviceTokenKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DeviceTokenKind | Prisma.EnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  in?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DeviceTokenKind[] | Prisma.ListEnumDeviceTokenKindFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDeviceTokenKindWithAggregatesFilter<$PrismaModel> | $Enums.DeviceTokenKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDeviceTokenKindFilter<$PrismaModel>
 }
 
 
