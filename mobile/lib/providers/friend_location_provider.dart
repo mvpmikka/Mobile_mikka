@@ -9,6 +9,10 @@ final checkInServiceProvider = Provider<CheckInService>((ref) {
   return CheckInService(apiClient: ref.watch(apiClientProvider));
 });
 
+final myCheckInCountProvider = FutureProvider<int>((ref) async {
+  return ref.watch(checkInServiceProvider).countMine();
+});
+
 /// Each friend's most recent check-in, keyed by friend (user) id — used to
 /// place friends on the map at a real location instead of a fake one.
 /// Friends with no visible check-in are simply absent from the map, not

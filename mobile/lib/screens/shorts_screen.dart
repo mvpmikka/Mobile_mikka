@@ -24,30 +24,52 @@ class ShortsScreen extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.play_circle_outline,
-                  size: 56,
-                  color: AppColors.mutedText(context),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Shorts tez orada',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.darkText(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 32),
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Qisqa videolar xususiyati ustida ishlanmoqda.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
-                ),
-              ],
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: const BoxDecoration(
+                      color: AppColors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Shorts',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.orange,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Qisqa videolar xususiyati ustida ishlanmoqda.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

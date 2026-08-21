@@ -26,4 +26,19 @@ class CheckInService {
       throw ApiException.fromDio(e);
     }
   }
+
+  /// `total` from the paginated response is enough — `limit: 1` avoids
+  /// pulling every check-in just to count them.
+  Future<int> countMine() async {
+    try {
+      final response = await _apiClient.dio.get(
+        '/users/me/check-ins',
+        queryParameters: {'page': 1, 'limit': 1},
+      );
+      final data = response.data as Map<String, dynamic>;
+      return data['total'] as int;
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 }

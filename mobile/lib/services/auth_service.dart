@@ -65,13 +65,18 @@ class AuthService {
     }
   }
 
-  Future<AppUser> updateProfile({String? fullName, String? username}) async {
+  Future<AppUser> updateProfile({
+    String? fullName,
+    String? username,
+    String? bio,
+  }) async {
     try {
       final response = await _apiClient.dio.patch(
         '/users/me',
         data: {
           'fullName': ?fullName,
           'username': ?username,
+          'bio': ?bio,
         },
       );
       return AppUser.fromJson(response.data as Map<String, dynamic>);

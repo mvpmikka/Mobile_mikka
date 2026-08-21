@@ -45,26 +45,40 @@ class AppBottomNav extends StatelessWidget {
             return Expanded(
               child: GestureDetector(
                 onTap: () => onTap(index),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      selected ? item.iconFilled : item.iconOutline,
-                      size: 22,
-                      color: selected ? AppColors.orange : AppColors.mutedText(context),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      item.label,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: selected
-                            ? AppColors.orange
-                            : AppColors.mutedText(context),
-                      ),
-                    ),
-                  ],
+                child: Center(
+                  child: selected
+                      ? Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: AppColors.orange,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Icon(
+                            item.iconFilled,
+                            size: 22,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              item.iconOutline,
+                              size: 22,
+                              color: AppColors.mutedText(context),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              item.label,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.mutedText(context),
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
               ),
             );

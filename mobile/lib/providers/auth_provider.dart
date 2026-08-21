@@ -115,11 +115,16 @@ class AuthController extends AsyncNotifier<AuthState> {
     state = AsyncData(AuthState.authenticated(user));
   }
 
-  Future<void> updateProfile({String? fullName, String? username}) async {
+  Future<void> updateProfile({
+    String? fullName,
+    String? username,
+    String? bio,
+  }) async {
     final authService = ref.read(authServiceProvider);
     final user = await authService.updateProfile(
       fullName: fullName,
       username: username,
+      bio: bio,
     );
     state = AsyncData(AuthState.authenticated(user));
   }
