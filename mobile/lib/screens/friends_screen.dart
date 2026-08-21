@@ -7,8 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../core/api_exception.dart';
 import '../models/check_in.dart';
 import '../models/friend.dart';
+import '../models/friend_activity.dart';
 import '../models/user_search_result.dart';
 import '../providers/chat_provider.dart';
+import '../providers/friend_activity_provider.dart';
 import '../providers/friend_location_provider.dart';
 import '../providers/user_search_provider.dart';
 import '../theme/app_colors.dart';
@@ -80,6 +82,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             conversationId: conversation.id,
             title: friend.profile.displayName,
             otherUserId: friend.profile.id,
+            otherAvatarUrl: friend.profile.avatarUrl,
           ),
         ),
       );
@@ -570,17 +573,41 @@ class _SearchResultItem extends StatelessWidget {
   }
 }
 
-class _FriendListItem extends StatelessWidget {
+class _FriendListItem extends ConsumerWidget {
   const _FriendListItem({required this.friend, required this.onTap, this.onAvatarTap});
 
   final Friend friend;
   final VoidCallback onTap;
   final VoidCallback? onAvatarTap;
 
+  FriendActivity? _activityFor(List<FriendActivity> items, String userId) {
+    for (final item in items) {
+      if (item.id == userId) return item;
+    }
+    return null;
+  }
+
+  String _statusLabel(FriendActivity? activity, String? username) {
+    if (activity == null) {
+      return username != null ? '@$username' : '';
+    }
+    if (activity.online) return 'Onlayn';
+    final place = activity.lastCheckIn?.placeName;
+    final distance = activity.distanceLabel;
+    if (place != null && distance != null) return '$place • $distance';
+    if (place != null) return place;
+    return username != null ? '@$username' : '';
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final profile = friend.profile;
     final avatarUrl = profile.avatarUrl;
+    final activityAsync = ref.watch(friendActivityProvider);
+    final activity = activityAsync.maybeWhen(
+      data: (items) => _activityFor(items, profile.id),
+      orElse: () => null,
+    );
 
     return GestureDetector(
       onTap: onTap,
@@ -588,19 +615,38 @@ class _FriendListItem extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: onAvatarTap,
-            child: Container(
-              width: 52,
-              height: 52,
-              decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
-              clipBehavior: Clip.antiAlias,
-              child: avatarUrl != null && avatarUrl.isNotEmpty
-                  ? Image.network(
-                      avatarUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) =>
-                          const Icon(Icons.person, color: Colors.white, size: 26),
-                    )
-                  : const Icon(Icons.person, color: Colors.white, size: 26),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+                  clipBehavior: Clip.antiAlias,
+                  child: avatarUrl != null && avatarUrl.isNotEmpty
+                      ? Image.network(
+                          avatarUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, _, _) =>
+                              const Icon(Icons.person, color: Colors.white, size: 26),
+                        )
+                      : const Icon(Icons.person, color: Colors.white, size: 26),
+                ),
+                if (activity?.online == true)
+                  Positioned(
+                    right: -1,
+                    bottom: -1,
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4CAF50),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.cream(context), width: 2),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           const SizedBox(width: 14),
@@ -617,11 +663,16 @@ class _FriendListItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                if (profile.username != null)
-                  Text(
-                    '@${profile.username}',
-                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                Text(
+                  _statusLabel(activity, profile.username),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: activity?.online == true
+                        ? const Color(0xFF4CAF50)
+                        : AppColors.mutedText(context),
+                    fontWeight: activity?.online == true ? FontWeight.w600 : FontWeight.w400,
                   ),
+                ),
               ],
             ),
           ),

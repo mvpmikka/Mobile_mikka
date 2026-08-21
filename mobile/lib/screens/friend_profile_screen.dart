@@ -244,6 +244,7 @@ class _FriendProfileScreenState extends ConsumerState<FriendProfileScreen> {
             conversationId: conversation.id,
             title: profile.displayName,
             otherUserId: profile.id,
+            otherAvatarUrl: profile.avatarUrl,
           ),
         ),
       );

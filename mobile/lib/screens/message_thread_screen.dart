@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/api_exception.dart';
 import '../models/chat_message.dart';
+import '../models/friend_activity.dart';
 import '../providers/auth_provider.dart';
 import '../providers/call_provider.dart';
 import '../providers/chat_provider.dart';
+import '../providers/friend_activity_provider.dart';
 import '../services/call_socket_service.dart';
 import '../theme/app_colors.dart';
 import 'call_screen.dart';
@@ -16,11 +18,13 @@ class MessageThreadScreen extends ConsumerStatefulWidget {
     required this.conversationId,
     required this.title,
     this.otherUserId,
+    this.otherAvatarUrl,
   });
 
   final String conversationId;
   final String title;
   final String? otherUserId;
+  final String? otherAvatarUrl;
 
   @override
   ConsumerState<MessageThreadScreen> createState() => _MessageThreadScreenState();
@@ -128,14 +132,21 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.cream(context),
         elevation: 0,
-        title: Text(
-          widget.title,
-          style: TextStyle(
-            color: AppColors.darkText(context),
-            fontWeight: FontWeight.w800,
-            fontSize: 17,
-          ),
-        ),
+        titleSpacing: 0,
+        title: widget.otherUserId == null
+            ? Text(
+                widget.title,
+                style: TextStyle(
+                  color: AppColors.darkText(context),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 17,
+                ),
+              )
+            : _ThreadHeader(
+                title: widget.title,
+                avatarUrl: widget.otherAvatarUrl,
+                otherUserId: widget.otherUserId!,
+              ),
         iconTheme: IconThemeData(color: AppColors.darkText(context)),
         actions: widget.otherUserId == null
             ? null
@@ -298,6 +309,112 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+class _ThreadHeader extends ConsumerWidget {
+  const _ThreadHeader({
+    required this.title,
+    required this.avatarUrl,
+    required this.otherUserId,
+  });
+
+  final String title;
+  final String? avatarUrl;
+  final String otherUserId;
+
+  FriendActivity? _activityFor(List<FriendActivity> items) {
+    for (final item in items) {
+      if (item.id == otherUserId) return item;
+    }
+    return null;
+  }
+
+  String? _statusLabel(FriendActivity? activity) {
+    if (activity == null) return null;
+    if (activity.online) return 'Onlayn';
+    final place = activity.lastCheckIn?.placeName;
+    final distance = activity.distanceLabel;
+    if (place != null && distance != null) return '$place • $distance';
+    return place;
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final activityAsync = ref.watch(friendActivityProvider);
+    final activity = activityAsync.maybeWhen(
+      data: _activityFor,
+      orElse: () => null,
+    );
+    final status = _statusLabel(activity);
+
+    return Row(
+      children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+              clipBehavior: Clip.antiAlias,
+              child: avatarUrl != null && avatarUrl!.isNotEmpty
+                  ? Image.network(
+                      avatarUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) =>
+                          const Icon(Icons.person, color: Colors.white, size: 18),
+                    )
+                  : const Icon(Icons.person, color: Colors.white, size: 18),
+            ),
+            if (activity?.online == true)
+              Positioned(
+                right: -1,
+                bottom: -1,
+                child: Container(
+                  width: 11,
+                  height: 11,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF4CAF50),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.cream(context), width: 1.5),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: AppColors.darkText(context),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
+                ),
+              ),
+              if (status != null)
+                Text(
+                  status,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: activity?.online == true
+                        ? const Color(0xFF4CAF50)
+                        : AppColors.mutedText(context),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

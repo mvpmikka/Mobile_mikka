@@ -125,6 +125,7 @@ class _ConversationTile extends StatelessWidget {
               otherUserId: conversation.isPrivate
                   ? conversation.otherParticipant(myUserId)?.id
                   : null,
+              otherAvatarUrl: avatarUrl,
             ),
           ),
         );

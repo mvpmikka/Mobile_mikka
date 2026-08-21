@@ -152,6 +152,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             conversationId: conversation.id,
             title: friend.profile.displayName,
             otherUserId: friend.profile.id,
+            otherAvatarUrl: friend.profile.avatarUrl,
           ),
         ),
       );
