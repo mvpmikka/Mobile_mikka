@@ -16,6 +16,7 @@ import '../utils/avatar_marker.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'conversations_screen.dart';
 import 'explore_screen.dart';
+import 'friend_profile_screen.dart';
 import 'message_thread_screen.dart';
 import 'profile_screen.dart';
 import 'shorts_screen.dart';
@@ -88,6 +89,14 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
         SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
       );
     }
+  }
+
+  void _openProfile(Friend friend) {
+    final username = friend.profile.username;
+    if (username == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => FriendProfileScreen(username: username)),
+    );
   }
 
   @override
@@ -414,6 +423,9 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
       itemBuilder: (context, index) => _FriendListItem(
         friend: friends[index],
         onTap: () => _openChat(friends[index]),
+        onAvatarTap: friends[index].profile.username == null
+            ? null
+            : () => _openProfile(friends[index]),
       ),
     );
   }
@@ -559,10 +571,11 @@ class _SearchResultItem extends StatelessWidget {
 }
 
 class _FriendListItem extends StatelessWidget {
-  const _FriendListItem({required this.friend, required this.onTap});
+  const _FriendListItem({required this.friend, required this.onTap, this.onAvatarTap});
 
   final Friend friend;
   final VoidCallback onTap;
+  final VoidCallback? onAvatarTap;
 
   @override
   Widget build(BuildContext context) {
@@ -573,19 +586,22 @@ class _FriendListItem extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
-            clipBehavior: Clip.antiAlias,
-            child: avatarUrl != null && avatarUrl.isNotEmpty
-                ? Image.network(
-                    avatarUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) =>
-                        const Icon(Icons.person, color: Colors.white, size: 26),
-                  )
-                : const Icon(Icons.person, color: Colors.white, size: 26),
+          GestureDetector(
+            onTap: onAvatarTap,
+            child: Container(
+              width: 52,
+              height: 52,
+              decoration: const BoxDecoration(color: AppColors.orange, shape: BoxShape.circle),
+              clipBehavior: Clip.antiAlias,
+              child: avatarUrl != null && avatarUrl.isNotEmpty
+                  ? Image.network(
+                      avatarUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) =>
+                          const Icon(Icons.person, color: Colors.white, size: 26),
+                    )
+                  : const Icon(Icons.person, color: Colors.white, size: 26),
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(

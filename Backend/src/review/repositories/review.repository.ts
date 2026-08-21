@@ -37,6 +37,37 @@ export class ReviewRepository {
     return { items, total };
   }
 
+  // Reviews have no privacy gating anywhere in this codebase — they're
+  // already shown unguarded on a place's public review list
+  // (findManyByPlace/GET places/:placeId/reviews), so a user's own review
+  // history is exposed the same way, unlike CheckIn/Story which do gate
+  // on PrivacySettings.
+  async findManyByUser(userId: string, page: number, limit: number) {
+    const where: Prisma.ReviewWhereInput = { userId, deletedAt: null };
+    const [items, total] = await Promise.all([
+      this.prisma.review.findMany({
+        where,
+        include: { place: { select: { id: true, name: true } } },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+    return { items, total };
+  }
+
+  // Read-only against `users` — kept minimal and local to this module
+  // rather than importing UserModule/UserService, per CLAUDE.md's
+  // module-independence principle (same approach CheckIn uses).
+  async findUserIdByUsername(username: string): Promise<string | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { username, deletedAt: null },
+      select: { id: true },
+    });
+    return user?.id ?? null;
+  }
+
   create(data: Prisma.ReviewCreateInput) {
     return this.prisma.review.create({
       data,

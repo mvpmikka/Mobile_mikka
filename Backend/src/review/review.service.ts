@@ -70,6 +70,19 @@ export class ReviewService {
     return { items, total, page, limit };
   }
 
+  async listByUser(username: string, page: number, limit: number) {
+    const userId = await this.reviewRepository.findUserIdByUsername(username);
+    if (!userId) {
+      throw new NotFoundException('User not found');
+    }
+    const { items, total } = await this.reviewRepository.findManyByUser(
+      userId,
+      page,
+      limit,
+    );
+    return { items, total, page, limit };
+  }
+
   async update(id: string, userId: string, dto: UpdateReviewDto) {
     const review = await this.findById(id);
     if (review.userId !== userId) {

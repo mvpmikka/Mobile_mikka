@@ -53,6 +53,16 @@ export class ReviewController {
     return this.reviewService.getRatingSummary(placeId);
   }
 
+  // No guard, same as places/:placeId/reviews above — reviews have never
+  // been privacy-gated in this codebase (see ReviewRepository.findManyByUser).
+  @Get('users/:username/reviews')
+  listByUser(
+    @Param('username') username: string,
+    @Query(new ZodValidationPipe(listReviewsSchema)) query: ListReviewsDto,
+  ) {
+    return this.reviewService.listByUser(username, query.page, query.limit);
+  }
+
   @Patch('reviews/:id')
   @UseGuards(JwtAuthGuard)
   update(

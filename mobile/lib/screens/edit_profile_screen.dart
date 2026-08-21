@@ -15,6 +15,7 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final TextEditingController _fullNameController;
   late final TextEditingController _usernameController;
+  late final TextEditingController _bioController;
   bool _isSubmitting = false;
 
   @override
@@ -23,12 +24,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.read(authControllerProvider).value?.user;
     _fullNameController = TextEditingController(text: user?.fullName ?? '');
     _usernameController = TextEditingController(text: user?.username ?? '');
+    _bioController = TextEditingController(text: user?.bio ?? '');
   }
 
   @override
   void dispose() {
     _fullNameController.dispose();
     _usernameController.dispose();
+    _bioController.dispose();
     super.dispose();
   }
 
@@ -45,7 +48,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     try {
       await ref
           .read(authControllerProvider.notifier)
-          .updateProfile(fullName: fullName, username: username);
+          .updateProfile(
+            fullName: fullName,
+            username: username,
+            bio: _bioController.text.trim(),
+          );
       if (!mounted) return;
       Navigator.of(context).pop();
     } on ApiException catch (e) {
@@ -105,6 +112,22 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               ),
               const SizedBox(height: 8),
               _buildTextField(controller: _usernameController, hint: 'username'),
+              const SizedBox(height: 20),
+              Text(
+                'Bio',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.mutedText(context),
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildTextField(
+                controller: _bioController,
+                hint: 'O\'zingiz haqingizda qisqacha',
+                maxLines: 3,
+                maxLength: 280,
+              ),
               const SizedBox(height: 28),
               SizedBox(
                 width: double.infinity,
@@ -143,9 +166,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
+    int maxLines = 1,
+    int? maxLength,
   }) {
     return TextField(
       controller: controller,
+      maxLines: maxLines,
+      maxLength: maxLength,
       style: TextStyle(color: AppColors.darkText(context)),
       decoration: InputDecoration(
         hintText: hint,

@@ -13,6 +13,7 @@ import '../widgets/mikka_logo.dart';
 import '../widgets/segmented_tab_bar.dart';
 import 'admin/admin_panel_screen.dart';
 import 'conversations_screen.dart';
+import 'create_post_screen.dart';
 import 'edit_profile_screen.dart';
 import 'explore_screen.dart';
 import 'friends_screen.dart';
@@ -48,7 +49,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             children: [
               Row(
                 children: [
-                  const SizedBox(width: 24),
+                  GestureDetector(
+                    onTap: () async {
+                      final created = await Navigator.of(context).push<bool>(
+                        MaterialPageRoute(builder: (_) => const CreatePostScreen()),
+                      );
+                      if (created == true && username.isNotEmpty) {
+                        ref.invalidate(postsByUsernameProvider(username));
+                      }
+                    },
+                    child: Icon(Icons.add_box_outlined, color: AppColors.darkText(context)),
+                  ),
                   const Expanded(
                     child: Center(child: MikkaLogo(height: 28)),
                   ),
