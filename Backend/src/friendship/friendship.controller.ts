@@ -26,11 +26,7 @@ export class FriendshipController {
     @CurrentUser() currentUser: AuthenticatedUser,
     @Query(new ZodValidationPipe(listQuerySchema)) query: ListQueryDto,
   ) {
-    return this.friendshipService.list(
-      currentUser.id,
-      query.page,
-      query.limit,
-    );
+    return this.friendshipService.list(currentUser.id, query.page, query.limit);
   }
 
   // Static route — must stay before users/me/friends/:friendUserId for

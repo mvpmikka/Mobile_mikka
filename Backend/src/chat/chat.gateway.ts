@@ -10,13 +10,23 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
 import { PresenceService } from '../presence/presence.service';
-import { authenticateSocketUser, userRoom } from '../common/websocket/authenticate-socket';
+import {
+  authenticateSocketUser,
+  userRoom,
+} from '../common/websocket/authenticate-socket';
 import type { MessageItem } from './types/chat.type';
 
 interface ReactionUpdatePayload {
   conversationId: string;
   messageId: string;
   reactions: { emoji: string; count: number }[];
+}
+
+// socket.io types `Socket.data` as `any` by default — this narrows it for
+// the one field this gateway actually stores there, so reading/writing it
+// doesn't trip @typescript-eslint/no-unsafe-member-access.
+interface ChatSocketData {
+  userId?: string;
 }
 
 // No CORS config here, matching the rest of this app (main.ts never calls
@@ -60,7 +70,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect(true);
       return;
     }
-    client.data.userId = userId;
+    (client.data as ChatSocketData).userId = userId;
     await client.join(userRoom(userId));
     this.presenceService.markOnline(userId);
   }
@@ -68,7 +78,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleDisconnect(client: Socket): void {
     // socket.io removes room membership automatically on disconnect —
     // only presence bookkeeping needs an explicit update here.
-    const userId = client.data.userId as string | undefined;
+    const userId = (client.data as ChatSocketData).userId;
     if (userId) {
       this.presenceService.markOffline(userId);
     }
@@ -101,7 +111,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.emitToUsers(recipientUserIds, 'reaction_updated', payload);
   }
 
-  private emitToUsers(userIds: string[], event: string, payload: unknown): void {
+  private emitToUsers(
+    userIds: string[],
+    event: string,
+    payload: unknown,
+  ): void {
     for (const userId of userIds) {
       this.server.to(userRoom(userId)).emit(event, payload);
     }
