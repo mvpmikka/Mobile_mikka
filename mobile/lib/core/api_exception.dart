@@ -13,12 +13,22 @@ class ApiException implements Exception {
 
   factory ApiException.fromDio(DioException error) {
     final data = error.response?.data;
-    if (data is Map && data['message'] != null) {
-      final message = data['message'];
-      final text = message is List && message.isNotEmpty
-          ? message.first.toString()
-          : message.toString();
-      return ApiException(text, statusCode: error.response?.statusCode);
+    if (data is Map) {
+      final errors = data['errors'];
+      if (errors is List && errors.isNotEmpty) {
+        final firstError = errors.first;
+        final detail = firstError is Map ? firstError['message'] : null;
+        if (detail != null) {
+          return ApiException(detail.toString(), statusCode: error.response?.statusCode);
+        }
+      }
+      if (data['message'] != null) {
+        final message = data['message'];
+        final text = message is List && message.isNotEmpty
+            ? message.first.toString()
+            : message.toString();
+        return ApiException(text, statusCode: error.response?.statusCode);
+      }
     }
 
     switch (error.type) {

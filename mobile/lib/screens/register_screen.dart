@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/api_exception.dart';
@@ -161,8 +162,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   _buildTextField(
                     label: 'Foydalanuvchi nomi',
                     controller: _usernameController,
-                    hint: 'Username',
+                    hint: 'username',
                     icon: Icons.alternate_email,
+                    helperText: 'Faqat kichik harflar, raqam, _ va . ishlatiladi',
+                    inputFormatters: [_LowerCaseTextFormatter()],
                   ),
                   const SizedBox(height: 14),
                   _buildTextField(
@@ -367,6 +370,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     bool obscureText = false,
     TextInputType? keyboardType,
     Widget? suffixIcon,
+    String? helperText,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,10 +389,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
           style: TextStyle(color: AppColors.darkText(context)),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: AppColors.mutedText(context)),
+            helperText: helperText,
+            helperMaxLines: 2,
+            helperStyle: TextStyle(color: AppColors.mutedText(context), fontSize: 11),
             prefixIcon: Icon(icon, color: AppColors.mutedText(context)),
             filled: true,
             fillColor: AppColors.cream(context),
@@ -409,5 +418,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
       ],
     );
+  }
+}
+
+/// Lowercases username input live so it always matches the backend's
+/// lowercase-only username regex, instead of failing silently on submit.
+class _LowerCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return newValue.copyWith(text: newValue.text.toLowerCase());
   }
 }
