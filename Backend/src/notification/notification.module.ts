@@ -3,6 +3,7 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { FriendshipModule } from '../friendship/friendship.module';
 import { PrivacyModule } from '../privacy/privacy.module';
+import { BadgeModule } from '../badge/badge.module';
 import { NotificationController } from './notification.controller';
 import { NotificationGateway } from './notification.gateway';
 import { NotificationService } from './services/notification.service';
@@ -11,6 +12,8 @@ import { FriendRequestListener } from './listeners/friend-request.listener';
 import { MessageListener } from './listeners/message.listener';
 import { StoryListener } from './listeners/story.listener';
 import { CallListener } from './listeners/call.listener';
+import { BadgeListener } from './listeners/badge.listener';
+import { FollowListener } from './listeners/follow.listener';
 
 @Module({
   // UserModule + AuthModule: NotificationGateway's JWT handshake auth
@@ -18,8 +21,17 @@ import { CallListener } from './listeners/call.listener';
   // StoryListener resolves "which friends should be notified" itself
   // (see its comment) — Friendship/Privacy have no idea Notification
   // exists; this is a one-directional dependency, same as every other
-  // module that reaches into them.
-  imports: [UserModule, AuthModule, FriendshipModule, PrivacyModule],
+  // module that reaches into them. BadgeModule: BadgeListener resolves the
+  // earned badge's display name via BadgeRepository (exported for exactly
+  // this). FollowListener needs no extra import — it only uses
+  // NotificationRepository.findUserProfile, already local to this module.
+  imports: [
+    UserModule,
+    AuthModule,
+    FriendshipModule,
+    PrivacyModule,
+    BadgeModule,
+  ],
   controllers: [NotificationController],
   providers: [
     NotificationGateway,
@@ -29,6 +41,8 @@ import { CallListener } from './listeners/call.listener';
     MessageListener,
     StoryListener,
     CallListener,
+    BadgeListener,
+    FollowListener,
   ],
 })
 export class NotificationModule {}
