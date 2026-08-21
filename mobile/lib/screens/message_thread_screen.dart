@@ -205,58 +205,122 @@ class _MessageThreadScreenState extends ConsumerState<MessageThreadScreen> {
     );
   }
 
+  // "+" stays a no-op for now (attachments are out of scope — see the
+  // redesign plan), same convention as ProfileScreen's not-yet-built menu
+  // tiles (empty onTap rather than a half-built handler).
   Widget _buildComposer() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              constraints: const BoxConstraints(maxHeight: 120),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppColors.surface(context),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColors.fieldBorder(context)),
-              ),
-              child: TextField(
-                controller: _textController,
-                minLines: 1,
-                maxLines: 4,
-                textCapitalization: TextCapitalization.sentences,
-                style: TextStyle(color: AppColors.darkText(context), fontSize: 14),
-                decoration: InputDecoration(
-                  isDense: true,
-                  border: InputBorder.none,
-                  hintText: 'Xabar yozing...',
-                  hintStyle: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
-                ),
-                onSubmitted: (_) => _send(),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          GestureDetector(
-            onTap: _isSending ? null : _send,
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: const BoxDecoration(
-                color: AppColors.orange,
-                shape: BoxShape.circle,
-              ),
-              child: _isSending
-                  ? const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
+      child: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: _textController,
+        builder: (context, value, _) {
+          final hasText = value.text.trim().isNotEmpty;
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _ComposerIconButton(icon: Icons.add, onTap: () {}),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints(maxHeight: 120),
+                  padding: const EdgeInsets.only(left: 16, right: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface(context),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.fieldBorder(context)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          minLines: 1,
+                          maxLines: 4,
+                          textCapitalization: TextCapitalization.sentences,
+                          style: TextStyle(
+                            color: AppColors.darkText(context),
+                            fontSize: 14,
+                          ),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            hintText: 'Xabar yozing...',
+                            hintStyle: TextStyle(
+                              color: AppColors.mutedText(context),
+                              fontSize: 14,
+                            ),
+                          ),
+                          onSubmitted: (_) => _send(),
+                        ),
                       ),
-                    )
-                  : const Icon(Icons.send, color: Colors.white, size: 20),
-            ),
-          ),
-        ],
+                      if (!hasText) ...[
+                        Icon(
+                          Icons.emoji_emotions_outlined,
+                          color: AppColors.mutedText(context),
+                          size: 21,
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(
+                          Icons.mic_none,
+                          color: AppColors.mutedText(context),
+                          size: 22,
+                        ),
+                        const SizedBox(width: 4),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              if (hasText) ...[
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: _isSending ? null : _send,
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: const BoxDecoration(
+                      color: AppColors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                    child: _isSending
+                        ? const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.send, color: Colors.white, size: 20),
+                  ),
+                ),
+              ],
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ComposerIconButton extends StatelessWidget {
+  const _ComposerIconButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: AppColors.surface(context),
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.fieldBorder(context)),
+        ),
+        child: Icon(icon, color: AppColors.mutedText(context), size: 22),
       ),
     );
   }

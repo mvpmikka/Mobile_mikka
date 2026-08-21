@@ -45,6 +45,7 @@ dependencies:
   geolocator: ^14.0.3
   flutter_webrtc: ^0.14.1
   permission_handler: ^12.0.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
