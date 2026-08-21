@@ -57,76 +57,90 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     return Scaffold(
       backgroundColor: AppColors.cream(context),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const MikkaLogo(height: 32),
-              const SizedBox(height: 40),
-              Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  color: AppColors.orange.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.mark_email_unread_outlined,
-                  size: 44,
-                  color: AppColors.orange,
-                ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: Container(
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
+                borderRadius: BorderRadius.circular(28),
               ),
-              const SizedBox(height: 24),
-              Text(
-                'Emailingizni tasdiqlang',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.darkText(context),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                '${widget.email} manziliga tasdiqlash havolasi yuborildi. '
-                'Havolani bosgach, bu ekran avtomatik davom etadi.',
-                style: TextStyle(fontSize: 15, color: AppColors.mutedText(context)),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: OutlinedButton(
-                  onPressed: _isResending ? null : _resend,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.orange,
-                    side: const BorderSide(color: AppColors.orange),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(child: MikkaLogo(height: 28)),
+                  const SizedBox(height: 24),
+                  Center(
+                    child: Container(
+                      width: 88,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        color: AppColors.orange.withValues(alpha: 0.12),
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.mark_email_unread_outlined,
+                        size: 40,
+                        color: AppColors.orange,
+                      ),
                     ),
                   ),
-                  child: _isResending
-                      ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.4,
-                            color: AppColors.orange,
-                          ),
-                        )
-                      : const Text(
-                          'Qayta yuborish',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Emailingizni tekshiring',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.darkText(context),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${widget.email} manziliga tasdiqlash havolasi yuborildi. '
+                    'Havolani bosgach, bu ekran avtomatik davom etadi.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: TextButton(
+                      onPressed: _isResending ? null : _resend,
+                      child: _isResending
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.2,
+                                color: AppColors.orange,
+                              ),
+                            )
+                          : RichText(
+                              text: const TextSpan(
+                                style: TextStyle(fontSize: 14),
+                                children: [
+                                  TextSpan(
+                                    text: 'Havola kelmadimi? ',
+                                    style: TextStyle(color: AppColors.orange),
+                                  ),
+                                  TextSpan(
+                                    text: 'Qayta yuborish',
+                                    style: TextStyle(
+                                      color: AppColors.orange,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

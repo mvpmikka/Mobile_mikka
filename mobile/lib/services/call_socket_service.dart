@@ -165,7 +165,7 @@ class CallSocketService {
     final result = await socket.emitWithAckAsync('call:invite', {
       'calleeId': calleeId,
       'type': _callKindToString(kind),
-      if (conversationId != null) 'conversationId': conversationId,
+      'conversationId': ?conversationId,
     });
     final map = result as Map<String, dynamic>;
     if (map['error'] == 'busy') throw const CallBusyException();

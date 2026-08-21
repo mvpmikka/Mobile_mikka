@@ -51,11 +51,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Future<void> _openFilters() async {
-    final result = await Navigator.of(context).push<PlaceFilters>(
-      MaterialPageRoute(
-        builder: (_) => FiltersScreen(initialFilters: _filters),
-      ),
-    );
+    final result = await FiltersScreen.show(context, _filters);
     if (result != null) setState(() => _filters = result);
   }
 
