@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FriendshipRepository } from '../repositories/friendship.repository';
-import { CheckInRepository } from '../../check-in/repositories/check-in.repository';
 import { PresenceService } from '../../presence/presence.service';
 import type {
   FriendActivityItem,
   FriendItem,
+  LatestCheckInItem,
   PaginatedResult,
 } from '../types/friendship.type';
-import type { LatestCheckInItem } from '../../check-in/types/check-in.type';
 
 const EARTH_RADIUS_METERS = 6_371_000;
 
@@ -37,7 +36,6 @@ function haversineMeters(
 export class FriendshipService {
   constructor(
     private readonly friendshipRepository: FriendshipRepository,
-    private readonly checkInRepository: CheckInRepository,
     private readonly presenceService: PresenceService,
   ) {}
 
@@ -74,8 +72,8 @@ export class FriendshipService {
 
     const friendIds = friends.map((friend) => friend.id);
     const [myLatest, friendsLatest] = await Promise.all([
-      this.checkInRepository.findLatestByUsers([userId]),
-      this.checkInRepository.findLatestByUsers(friendIds),
+      this.friendshipRepository.findLatestCheckIns([userId]),
+      this.friendshipRepository.findLatestCheckIns(friendIds),
     ]);
     const myLocation = myLatest[0] ?? null;
     const latestByFriendId = new Map<string, LatestCheckInItem>(

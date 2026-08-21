@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import type { FriendItem } from '../types/friendship.type';
+import type { FriendItem, LatestCheckInItem } from '../types/friendship.type';
 
 const profileSelect = {
   id: true,
@@ -55,6 +55,34 @@ export class FriendshipRepository {
       select: { friendId: true },
     });
     return rows.map((row) => row.friendId);
+  }
+
+  // Each user's single most recent active check-in, batched for a list of
+  // users — `distinct` + `orderBy` on the same field is Prisma-native here
+  // (unlike the "distinct on a related model's field" case used
+  // elsewhere in this codebase), so no application-side dedup is needed.
+  // Reads the check_ins table directly (see LatestCheckInItem's comment)
+  // rather than importing CheckInModule, to avoid a module import cycle:
+  // CheckInModule -> PrivacyModule -> FriendshipModule.
+  async findLatestCheckIns(userIds: string[]): Promise<LatestCheckInItem[]> {
+    if (userIds.length === 0) {
+      return [];
+    }
+    const rows = await this.prisma.checkIn.findMany({
+      where: { userId: { in: userIds }, deletedAt: null },
+      include: {
+        place: { select: { name: true, latitude: true, longitude: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      distinct: ['userId'],
+    });
+    return rows.map((row) => ({
+      userId: row.userId,
+      placeName: row.place.name,
+      latitude: row.place.latitude,
+      longitude: row.place.longitude,
+      createdAt: row.createdAt,
+    }));
   }
 
   // Both directions are deleted as one statement (single DELETE ... WHERE

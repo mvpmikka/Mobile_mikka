@@ -33,6 +33,18 @@ export interface BlockedUserItem extends FriendProfileSummary {
   blockedAt: Date;
 }
 
+// One row per user (their single most recent active check-in) — read
+// locally against the `check_ins` table (see FriendshipRepository) rather
+// than importing CheckInModule, per CLAUDE.md's module-independence
+// principle. Used only to build FriendActivityItem below.
+export interface LatestCheckInItem {
+  userId: string;
+  placeName: string;
+  latitude: number;
+  longitude: number;
+  createdAt: Date;
+}
+
 // GET /users/me/friends/activity — no live GPS (see plan): lastCheckIn and
 // distanceMeters are both derived from CheckIn history, not a current
 // position. distanceMeters is null whenever either side has no check-in
