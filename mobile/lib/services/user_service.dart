@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../core/api_client.dart';
 import '../core/api_exception.dart';
+import '../models/public_profile.dart';
 import '../models/user_search_result.dart';
 
 class UserService {
@@ -19,6 +20,17 @@ class UserService {
       return data
           .map((e) => UserSearchResult.fromJson(e as Map<String, dynamic>))
           .toList();
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  /// No guard on the backend route — works for an anonymous viewer too,
+  /// `isFollowedByMe` is just false in that case.
+  Future<PublicProfile> getPublicProfile(String username) async {
+    try {
+      final response = await _apiClient.dio.get('/users/$username');
+      return PublicProfile.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
       throw ApiException.fromDio(e);
     }
