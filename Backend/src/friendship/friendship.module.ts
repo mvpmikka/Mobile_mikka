@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PresenceModule } from '../presence/presence.module';
 import { FriendRequestController } from './friend-request.controller';
 import { FriendshipController } from './friendship.controller';
 import { BlockController } from './block.controller';
@@ -10,6 +11,14 @@ import { FriendshipRepository } from './repositories/friendship.repository';
 import { BlockRepository } from './repositories/block.repository';
 
 @Module({
+  // PresenceModule: GET /users/me/friends/activity's `online` field — see
+  // PresenceService's comment for why this isn't ChatModule directly.
+  // (CheckIn data for the same endpoint is read via a local Prisma query
+  // in FriendshipRepository, not by importing CheckInModule: CheckInModule
+  // imports PrivacyModule, which imports this module, so importing it back
+  // here would be a module cycle — same module-independence reasoning as
+  // every other cross-table lookup in this codebase.)
+  imports: [PresenceModule],
   controllers: [FriendRequestController, FriendshipController, BlockController],
   providers: [
     FriendRequestService,

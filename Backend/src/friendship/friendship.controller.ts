@@ -33,6 +33,20 @@ export class FriendshipController {
     );
   }
 
+  // Static route — must stay before users/me/friends/:friendUserId for
+  // the same declaration-order reason as UserController's static routes.
+  @Get('users/me/friends/activity')
+  getActivity(
+    @CurrentUser() currentUser: AuthenticatedUser,
+    @Query(new ZodValidationPipe(listQuerySchema)) query: ListQueryDto,
+  ) {
+    return this.friendshipService.getActivity(
+      currentUser.id,
+      query.page,
+      query.limit,
+    );
+  }
+
   @Delete('users/me/friends/:friendUserId')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(

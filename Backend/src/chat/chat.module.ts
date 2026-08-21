@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { FriendshipModule } from '../friendship/friendship.module';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
+import { PresenceModule } from '../presence/presence.module';
 import { ChatController } from './chat.controller';
 import { ChatGateway } from './chat.gateway';
 import { ConversationService } from './services/conversation.service';
@@ -16,7 +17,7 @@ import { ReactionRepository } from './repositories/reaction.repository';
   // be friends. UserModule + AuthModule: ChatGateway verifies a socket's
   // JWT and looks up the user directly (WebSocket connections don't go
   // through JwtAuthGuard's HTTP request/response pipeline).
-  imports: [FriendshipModule, UserModule, AuthModule],
+  imports: [FriendshipModule, UserModule, AuthModule, PresenceModule],
   controllers: [ChatController],
   providers: [
     ChatGateway,

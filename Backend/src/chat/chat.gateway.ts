@@ -9,6 +9,7 @@ import type { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
+import { PresenceService } from '../presence/presence.service';
 import { authenticateSocketUser, userRoom } from '../common/websocket/authenticate-socket';
 import type { MessageItem } from './types/chat.type';
 
@@ -38,6 +39,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
+    private readonly presenceService: PresenceService,
   ) {}
 
   // Every connected client joins exactly one room, keyed by their own user
@@ -60,11 +62,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     client.data.userId = userId;
     await client.join(userRoom(userId));
+    this.presenceService.markOnline(userId);
   }
 
-  handleDisconnect(): void {
+  handleDisconnect(client: Socket): void {
     // socket.io removes room membership automatically on disconnect —
-    // nothing else to clean up.
+    // only presence bookkeeping needs an explicit update here.
+    const userId = client.data.userId as string | undefined;
+    if (userId) {
+      this.presenceService.markOffline(userId);
+    }
   }
 
   broadcastNewMessage(recipientUserIds: string[], message: MessageItem): void {

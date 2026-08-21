@@ -32,3 +32,14 @@ export interface FriendItem extends FriendProfileSummary {
 export interface BlockedUserItem extends FriendProfileSummary {
   blockedAt: Date;
 }
+
+// GET /users/me/friends/activity — no live GPS (see plan): lastCheckIn and
+// distanceMeters are both derived from CheckIn history, not a current
+// position. distanceMeters is null whenever either side has no check-in
+// to compare against. online reflects PresenceService (an open chat
+// socket), not a check-in at all.
+export interface FriendActivityItem extends FriendProfileSummary {
+  lastCheckIn: { placeName: string; createdAt: Date } | null;
+  distanceMeters: number | null;
+  online: boolean;
+}
