@@ -44,14 +44,45 @@ export class AuthService {
       this.userService.findByUsername(dto.username),
     ]);
 
-    if (existingEmail) {
+    if (existingEmail?.isEmailVerified) {
       throw new ConflictException('An account with this email already exists');
     }
-    if (existingUsername) {
+    if (existingUsername && existingUsername.id !== existingEmail?.id) {
       throw new ConflictException('This username is already taken');
     }
 
     const passwordHash = await this.passwordService.hash(dto.password);
+
+    if (existingEmail) {
+      // A previous registration with this email was never verified — treat
+      // this as a fresh attempt instead of dead-ending with no new email.
+      const user = await this.userService.update(existingEmail.id, {
+        username: dto.username,
+        usernameUpdatedAt: new Date(),
+      });
+
+      const identity = await this.authIdentityRepository.findByUserAndProvider(
+        existingEmail.id,
+        AuthProvider.LOCAL,
+      );
+      if (identity) {
+        await this.authIdentityRepository.updatePasswordHash(
+          identity.id,
+          passwordHash,
+        );
+      } else {
+        await this.authIdentityRepository.create({
+          user: { connect: { id: existingEmail.id } },
+          provider: AuthProvider.LOCAL,
+          passwordHash,
+        });
+      }
+
+      await this.sendVerificationEmail(user.id, user.email);
+      await this.syncRoleFromEnv(user);
+
+      return this.tokenService.issueTokenPair(user.id);
+    }
 
     const user = await this.userService.create({
       email: dto.email,
