@@ -16,6 +16,30 @@ import 'services/call_socket_service.dart';
 import 'theme/app_colors.dart';
 
 void main() {
+  // Any widget build that throws (e.g. an uncaught network-timeout
+  // exception) would otherwise surface as Flutter's raw red debug screen —
+  // show a friendly, retryable Uzbek message instead.
+  ErrorWidget.builder = (details) => Material(
+        color: const Color(0xFFF8F1E6),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.wifi_off_rounded, size: 40, color: AppColors.orange),
+                const SizedBox(height: 16),
+                const Text(
+                  'Nimadir xato ketdi. Qayta urinib ko\'ring.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -155,13 +179,19 @@ class _AuthGateState extends ConsumerState<AuthGate> {
         _incomingCallSub = null;
         return;
       }
-      final token = await ref.read(tokenStorageProvider).readAccessToken();
-      if (token == null) return;
-      chatSocket.connect(token);
-      callSocket.connect(token);
-      _incomingCallSub ??= callSocket.onIncomingCall.listen(
-        _handleIncomingCall,
-      );
+      try {
+        final token = await ref.read(tokenStorageProvider).readAccessToken();
+        if (token == null) return;
+        chatSocket.connect(token);
+        callSocket.connect(token);
+        _incomingCallSub ??= callSocket.onIncomingCall.listen(
+          _handleIncomingCall,
+        );
+      } catch (e) {
+        // Socket setup failing (e.g. a timed-out network) shouldn't take
+        // down the app — real-time features just stay off this session.
+        debugPrint('Socket connect failed: $e');
+      }
     });
 
     return authState.when(
