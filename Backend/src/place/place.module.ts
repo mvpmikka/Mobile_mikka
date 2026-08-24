@@ -16,5 +16,8 @@ import { PlaceCategoryRepository } from './repositories/place-category.repositor
     PlaceRepository,
     PlaceCategoryRepository,
   ],
+  // PlaceRepository is reused by ProductModule to validate a placeId exists
+  // before scoping inventory queries to it, without duplicating that lookup.
+  exports: [PlaceRepository],
 })
 export class PlaceModule {}

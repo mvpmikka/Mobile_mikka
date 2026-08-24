@@ -26,6 +26,7 @@ import { CallModule } from './call/call.module';
 import { BadgeModule } from './badge/badge.module';
 import { FollowModule } from './follow/follow.module';
 import { PostModule } from './post/post.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { PostModule } from './post/post.module';
     BadgeModule,
     FollowModule,
     PostModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
