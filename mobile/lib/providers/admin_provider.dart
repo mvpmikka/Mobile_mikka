@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/admin_stats.dart';
 import '../models/admin_user.dart';
 import '../models/place.dart';
+import '../models/super_admin_dashboard.dart';
 import '../services/admin_service.dart';
 import 'auth_provider.dart';
 
@@ -12,6 +13,11 @@ final adminServiceProvider = Provider<AdminService>((ref) {
 
 final adminStatsProvider = FutureProvider.autoDispose<AdminStats>((ref) async {
   return ref.watch(adminServiceProvider).getStats();
+});
+
+final adminSuperDashboardProvider =
+    FutureProvider.autoDispose<SuperAdminDashboard>((ref) async {
+  return ref.watch(adminServiceProvider).getSuperDashboard();
 });
 
 final adminPlacesProvider =

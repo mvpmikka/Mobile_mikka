@@ -5,6 +5,7 @@ import '../core/api_exception.dart';
 import '../models/admin_stats.dart';
 import '../models/admin_user.dart';
 import '../models/place.dart';
+import '../models/super_admin_dashboard.dart';
 
 class AdminService {
   AdminService({required ApiClient apiClient}) : _apiClient = apiClient;
@@ -15,6 +16,15 @@ class AdminService {
     try {
       final response = await _apiClient.dio.get('/admin/stats');
       return AdminStats.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<SuperAdminDashboard> getSuperDashboard() async {
+    try {
+      final response = await _apiClient.dio.get('/admin/super-dashboard');
+      return SuperAdminDashboard.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
       throw ApiException.fromDio(e);
     }
