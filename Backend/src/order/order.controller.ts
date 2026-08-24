@@ -58,7 +58,8 @@ export class OrderController {
   updateStatus(
     @Param('placeId') placeId: string,
     @Param('orderId') orderId: string,
-    @Body(new ZodValidationPipe(updateOrderStatusSchema)) dto: UpdateOrderStatusDto,
+    @Body(new ZodValidationPipe(updateOrderStatusSchema))
+    dto: UpdateOrderStatusDto,
   ) {
     return this.orderService.updateStatus(placeId, orderId, dto.status);
   }

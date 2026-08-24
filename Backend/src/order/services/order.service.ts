@@ -1,14 +1,25 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PlaceRepository } from '../../place/repositories/place.repository';
 import { OrderRepository } from '../repositories/order.repository';
 import { OrderStatus } from '../../../generated/prisma/client';
 import type { CreateOrderDto } from '../dto/create-order.dto';
 import type { ListOrdersDto } from '../dto/list-orders.dto';
-import type { OrderListResult, OrderStats, OrderWithItems } from '../types/order-list.type';
+import type {
+  OrderListResult,
+  OrderStats,
+  OrderWithItems,
+} from '../types/order-list.type';
 
 // Terminal states — once an order reaches these, staff can no longer move it
 // (matches the Figma status tabs, which treat Completed/Cancelled as final).
-const TERMINAL_STATUSES: OrderStatus[] = [OrderStatus.COMPLETED, OrderStatus.CANCELLED];
+const TERMINAL_STATUSES: OrderStatus[] = [
+  OrderStatus.COMPLETED,
+  OrderStatus.CANCELLED,
+];
 
 @Injectable()
 export class OrderService {

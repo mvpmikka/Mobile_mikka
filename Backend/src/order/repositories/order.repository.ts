@@ -38,8 +38,12 @@ export class OrderRepository {
       ...(params.search
         ? {
             OR: [
-              { customerName: { contains: params.search, mode: 'insensitive' } },
-              { customerPhone: { contains: params.search, mode: 'insensitive' } },
+              {
+                customerName: { contains: params.search, mode: 'insensitive' },
+              },
+              {
+                customerPhone: { contains: params.search, mode: 'insensitive' },
+              },
               { id: { contains: params.search, mode: 'insensitive' } },
             ],
           }
@@ -62,15 +66,31 @@ export class OrderRepository {
 
   async getStats(placeId: string): Promise<OrderStats> {
     const where = { placeId, deletedAt: null } as const;
-    const [newCount, acceptedCount, preparingCount, readyCount, completedCount, cancelledCount] =
-      await Promise.all([
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.NEW } }),
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.ACCEPTED } }),
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.PREPARING } }),
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.READY } }),
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.COMPLETED } }),
-        this.prisma.order.count({ where: { ...where, status: OrderStatus.CANCELLED } }),
-      ]);
+    const [
+      newCount,
+      acceptedCount,
+      preparingCount,
+      readyCount,
+      completedCount,
+      cancelledCount,
+    ] = await Promise.all([
+      this.prisma.order.count({ where: { ...where, status: OrderStatus.NEW } }),
+      this.prisma.order.count({
+        where: { ...where, status: OrderStatus.ACCEPTED },
+      }),
+      this.prisma.order.count({
+        where: { ...where, status: OrderStatus.PREPARING },
+      }),
+      this.prisma.order.count({
+        where: { ...where, status: OrderStatus.READY },
+      }),
+      this.prisma.order.count({
+        where: { ...where, status: OrderStatus.COMPLETED },
+      }),
+      this.prisma.order.count({
+        where: { ...where, status: OrderStatus.CANCELLED },
+      }),
+    ]);
     return {
       newCount,
       acceptedCount,
