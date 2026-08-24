@@ -48,6 +48,11 @@ export type PlaceCategory = Prisma.PlaceCategoryModel
  */
 export type Place = Prisma.PlaceModel
 /**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
  * Model Region
  * 
  */

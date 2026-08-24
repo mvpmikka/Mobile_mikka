@@ -17,6 +17,8 @@ class AdminPanelScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statsAsync = ref.watch(adminStatsProvider);
+    final isSuperAdmin =
+        ref.watch(authControllerProvider).value?.user?.role == UserRole.superAdmin;
     return Scaffold(
       backgroundColor: AppColors.cream(context),
       appBar: AppBar(
@@ -88,6 +90,19 @@ class AdminPanelScreen extends ConsumerWidget {
                 );
               },
             ),
+            if (isSuperAdmin) ...[
+              const SizedBox(height: 12),
+              _AdminMenuCard(
+                icon: Icons.insights_outlined,
+                title: 'Super admin dashboard',
+                subtitle: 'Rollar, moderatsiya, o\'sish va hudud statistikasi',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AdminSuperDashboardScreen()),
+                  );
+                },
+              ),
+            ],
           ],
         ),
       ),

@@ -57,6 +57,7 @@ export const ModelName = {
   VerificationToken: 'VerificationToken',
   PlaceCategory: 'PlaceCategory',
   Place: 'Place',
+  Product: 'Product',
   Region: 'Region',
   Review: 'Review',
   PlaceRatingSummary: 'PlaceRatingSummary',
@@ -190,6 +191,22 @@ export const PlaceScalarFieldEnum = {
 } as const
 
 export type PlaceScalarFieldEnum = (typeof PlaceScalarFieldEnum)[keyof typeof PlaceScalarFieldEnum]
+
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  name: 'name',
+  sku: 'sku',
+  quantity: 'quantity',
+  lowStockThreshold: 'lowStockThreshold',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
 export const RegionScalarFieldEnum = {

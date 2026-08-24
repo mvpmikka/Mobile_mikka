@@ -64,15 +64,15 @@ model User {
   authIdentities         AuthIdentity[]
   refreshTokens          RefreshToken[]
   verificationTokens     VerificationToken[]
-  placesCreated          Place[]             @relation("PlaceCreatedBy")
+  placesCreated          Place[]                   @relation("PlaceCreatedBy")
   reviews                Review[]
   checkIns               CheckIn[]
-  friendRequestsSent     FriendRequest[]     @relation("FriendRequestSent")
-  friendRequestsReceived FriendRequest[]     @relation("FriendRequestReceived")
-  friendshipsOwned       Friendship[]        @relation("FriendshipOwner")
-  friendshipsAsFriend    Friendship[]        @relation("FriendshipFriend")
-  blocksMade             Block[]             @relation("BlockMade")
-  blocksReceived         Block[]             @relation("BlockReceived")
+  friendRequestsSent     FriendRequest[]           @relation("FriendRequestSent")
+  friendRequestsReceived FriendRequest[]           @relation("FriendRequestReceived")
+  friendshipsOwned       Friendship[]              @relation("FriendshipOwner")
+  friendshipsAsFriend    Friendship[]              @relation("FriendshipFriend")
+  blocksMade             Block[]                   @relation("BlockMade")
+  blocksReceived         Block[]                   @relation("BlockReceived")
   privacySettings        PrivacySettings?
   savedPlaces            SavedPlace[]
   stories                Story[]
@@ -170,6 +170,17 @@ enum PlaceStatus {
   @@map("place_status")
 }
 
+// Derived from quantity vs lowStockThreshold on every write (see
+// ProductService) — stored rather than computed at query time so the
+// inventory table can filter/sort by status without loading every row.
+enum ProductStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+
+  @@map("product_status")
+}
+
 // Flat, admin-managed taxonomy — no hierarchy, no user-submitted categories.
 // See CLAUDE.md "Place Philosophy".
 model PlaceCategory {
@@ -224,6 +235,7 @@ model Place {
   stories       Story[]
   posts         Post[]
   messages      Message[]
+  products      Product[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -233,6 +245,29 @@ model Place {
   @@index([deletedAt])
   @@index([regionId])
   @@map("places")
+}
+
+// Per-place inventory (Mikka Business admin panel). No storefront reads this
+// yet — every route is admin-gated (see ProductController).
+model Product {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
+
+  name              String
+  sku               String
+  quantity          Int           @default(0)
+  lowStockThreshold Int           @default(5)
+  status            ProductStatus @default(IN_STOCK)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([placeId, sku])
+  @@index([placeId])
+  @@index([status])
+  @@map("products")
 }
 
 // Administrative-area fallback for GET /places: when a radius search comes
@@ -245,8 +280,8 @@ model Place {
 // geoBoundaries.org — OSM-derived, ODbL) in the
 // `seed_real_uz_regions` migration — see docs/foundation.md section 7.
 model Region {
-  id       String                                 @id @default(uuid())
-  name     String                                 @unique
+  id       String                                      @id @default(uuid())
+  name     String                                      @unique
   boundary Unsupported("geometry(MultiPolygon, 4326)")
 
   places Place[]
@@ -461,9 +496,9 @@ model SavedPlace {
 // text/imageUrl/placeId is required — enforced by the DTO (Prisma has no
 // declarative "at least one of" constraint), not by a DB CHECK.
 model Story {
-  id      String @id @default(uuid())
-  userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   text     String?
   imageUrl String?
@@ -506,9 +541,9 @@ model StoryView {
 // At least one image required — enforced by the DTO (min 1), same "DTO not
 // DB CHECK" convention as Story's text/imageUrl/placeId.
 model Post {
-  id      String @id @default(uuid())
-  userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   caption String?
   placeId String?
@@ -701,11 +736,11 @@ enum CallStatus {
 // FriendsScreen directly (no open conversation yet) as well as from an
 // existing thread.
 model CallSession {
-  id             String   @id @default(uuid())
+  id             String  @id @default(uuid())
   callerId       String
-  caller         User     @relation("CallCaller", fields: [callerId], references: [id], onDelete: Cascade)
+  caller         User    @relation("CallCaller", fields: [callerId], references: [id], onDelete: Cascade)
   calleeId       String
-  callee         User     @relation("CallCallee", fields: [calleeId], references: [id], onDelete: Cascade)
+  callee         User    @relation("CallCallee", fields: [calleeId], references: [id], onDelete: Cascade)
   conversationId String?
 
   type   CallType
@@ -739,12 +774,12 @@ enum DeviceTokenKind {
 }
 
 model DeviceToken {
-  id       String         @id @default(uuid())
+  id       String          @id @default(uuid())
   userId   String
-  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   platform DevicePlatform
   kind     DeviceTokenKind
-  token    String         @unique
+  token    String          @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

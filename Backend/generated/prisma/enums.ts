@@ -55,6 +55,15 @@ export const PlaceStatus = {
 export type PlaceStatus = (typeof PlaceStatus)[keyof typeof PlaceStatus]
 
 
+export const ProductStatus = {
+  IN_STOCK: 'IN_STOCK',
+  LOW_STOCK: 'LOW_STOCK',
+  OUT_OF_STOCK: 'OUT_OF_STOCK'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
 export const ContentVisibility = {
   PUBLIC: 'PUBLIC',
   FRIENDS: 'FRIENDS',
