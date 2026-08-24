@@ -6,6 +6,7 @@ import '../../models/place.dart';
 import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/place_category_icon.dart';
+import 'admin_inventory_screen.dart';
 import 'admin_place_form_screen.dart';
 
 class AdminPlacesScreen extends ConsumerWidget {
@@ -140,6 +141,17 @@ class AdminPlacesScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.inventory_2_outlined, color: AppColors.orange),
+                          tooltip: 'Inventarizatsiya',
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => AdminInventoryScreen(place: place),
+                              ),
+                            );
+                          },
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete_outline, color: Color(0xFFCB4B4B)),
