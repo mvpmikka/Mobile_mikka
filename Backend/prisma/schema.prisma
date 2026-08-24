@@ -181,6 +181,17 @@ enum ProductStatus {
   @@map("product_status")
 }
 
+enum OrderStatus {
+  NEW
+  ACCEPTED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+
+  @@map("order_status")
+}
+
 // Flat, admin-managed taxonomy — no hierarchy, no user-submitted categories.
 // See CLAUDE.md "Place Philosophy".
 model PlaceCategory {
@@ -236,6 +247,7 @@ model Place {
   posts         Post[]
   messages      Message[]
   products      Product[]
+  orders        Order[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -268,6 +280,48 @@ model Product {
   @@index([placeId])
   @@index([status])
   @@map("products")
+}
+
+// Staff/POS-entered orders (Mikka Business admin panel) — there is no
+// customer-facing ordering flow yet, so customerName/customerPhone are
+// free-text entered by staff, not linked to a User. totalAmount is derived
+// from items on every write (same denormalized-for-listing pattern as
+// Product.status — see OrderService) rather than computed at query time.
+model Order {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
+
+  customerName  String
+  customerPhone String?
+  status        OrderStatus @default(NEW)
+  totalAmount   Int         @default(0)
+
+  items OrderItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([status])
+  @@map("orders")
+}
+
+// name/unitPrice are a snapshot at order-creation time (no live Product
+// price link yet — the Products catalog/pricing section doesn't exist),
+// so later Product edits never retroactively change a past order's total.
+model OrderItem {
+  id      String @id @default(uuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  name      String
+  quantity  Int
+  unitPrice Int
+
+  @@index([orderId])
+  @@map("order_items")
 }
 
 // Administrative-area fallback for GET /places: when a radius search comes

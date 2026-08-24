@@ -58,6 +58,8 @@ export const ModelName = {
   PlaceCategory: 'PlaceCategory',
   Place: 'Place',
   Product: 'Product',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   Region: 'Region',
   Review: 'Review',
   PlaceRatingSummary: 'PlaceRatingSummary',
@@ -207,6 +209,32 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  name: 'name',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice'
+} as const
+
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const RegionScalarFieldEnum = {
