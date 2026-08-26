@@ -6,6 +6,7 @@ import '../../models/user.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
+import 'admin_business_login_screen.dart';
 import 'admin_business_register_screen.dart';
 import 'admin_categories_screen.dart';
 import 'admin_places_screen.dart';
@@ -78,6 +79,17 @@ class AdminPanelScreen extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const AdminBusinessRegisterScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+            _AdminMenuCard(
+              icon: Icons.login_outlined,
+              title: 'Biznes uchun kirish',
+              subtitle: 'MIKKA Business mobil boshqaruv paneliga kirish',
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AdminBusinessLoginScreen()),
                 );
               },
             ),

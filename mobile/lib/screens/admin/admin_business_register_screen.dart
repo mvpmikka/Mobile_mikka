@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../theme/app_colors.dart';
+import 'admin_business_dashboard_screen.dart';
+import 'admin_business_verify_email_screen.dart';
+import 'widgets/admin_brand_topbar.dart';
 import 'widgets/admin_text_field.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
@@ -26,51 +29,6 @@ const _categoryOptions = [
   _CategoryOption('Salon', Icons.content_cut_outlined),
   _CategoryOption('Xizmatlar', Icons.handshake_outlined),
 ];
-
-/// "Ro'yxat" — biznesni ro'yxatdan o'tkazish sarlavhasi uchun brend gradient
-/// wordmark. Faqat sof UI, hech qanday tarmoq chaqiruvi yo'q.
-class _RegisterWordmark extends StatelessWidget {
-  const _RegisterWordmark();
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) => AppColors.adminBrandGradient.createShader(bounds),
-      child: const Text(
-        'Ro\'yxat',
-        style: TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class _RoundIconButton extends StatelessWidget {
-  const _RoundIconButton({required this.icon, required this.onTap});
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      customBorder: const CircleBorder(),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.fieldBorder(context)),
-        ),
-        child: Icon(icon, size: 20, color: AppColors.darkText(context)),
-      ),
-    );
-  }
-}
 
 /// MIKKA Business uchun 4 bosqichli "Biznesni ro'yxatdan o'tkazish" UI
 /// wizard'i (Ma'lumot → Manzil → Xizmatlar → Tasdiqlash). Butunlay lokal
@@ -168,7 +126,7 @@ class _AdminBusinessRegisterScreenState
     if (!_validateStep(_currentStep)) return;
     if (_currentStep == _stepLabels.length - 1) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const AdminBusinessRegisterSuccessScreen()),
+        MaterialPageRoute(builder: (_) => const AdminBusinessVerifyEmailScreen()),
       );
       return;
     }
@@ -186,22 +144,12 @@ class _AdminBusinessRegisterScreenState
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-              child: Row(
-                children: [
-                  const _RegisterWordmark(),
-                  const Spacer(),
-                  _RoundIconButton(
-                    icon: Icons.help_outline,
-                    onTap: () => _showMessage(
-                      'Yordam kerakmi? Admin panel qo\'llab-quvvatlash bo\'limiga murojaat qiling.',
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  _RoundIconButton(
-                    icon: Icons.person_outline,
-                    onTap: () => Navigator.of(context).maybePop(),
-                  ),
-                ],
+              child: AdminBrandTopBar(
+                title: 'Ro\'yxat',
+                onHelp: () => _showMessage(
+                  'Yordam kerakmi? Admin panel qo\'llab-quvvatlash bo\'limiga murojaat qiling.',
+                ),
+                onProfile: () => Navigator.of(context).maybePop(),
               ),
             ),
             Expanded(
@@ -1039,9 +987,7 @@ class AdminBusinessRegisterSuccessScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
           child: Column(
             children: [
-              Row(
-                children: [const _RegisterWordmark(), const Spacer()],
-              ),
+              const AdminBrandTopBar(title: 'Ro\'yxat', showIcons: false),
               Expanded(
                 child: Center(
                   child: Container(
@@ -1095,8 +1041,12 @@ class AdminBusinessRegisterSuccessScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(26),
                             ),
                             child: ElevatedButton.icon(
-                              onPressed: () =>
-                                  Navigator.of(context).popUntil((route) => route.isFirst),
+                              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (_) => const AdminBusinessDashboardScreen(),
+                                ),
+                                (route) => false,
+                              ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
