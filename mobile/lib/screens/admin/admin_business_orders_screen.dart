@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
+import 'widgets/admin_pagination_bar.dart';
 import 'widgets/admin_section_topbar.dart';
 
 enum _OrderStatus { newOrder, accepted, preparing, ready, completed, cancelled }
@@ -109,6 +110,13 @@ class AdminBusinessOrdersScreen extends StatefulWidget {
 class _AdminBusinessOrdersScreenState extends State<AdminBusinessOrdersScreen> {
   final _searchController = TextEditingController();
   _OrderStatus? _statusFilter;
+
+  // Namunaviy jami buyurtmalar soni (Figma dizaynidagi "42" bilan mos) —
+  // sahifalash faqat UI ko'rinishi, chunki lokal ma'lumotda atigi 3 ta namuna bor.
+  static const _catalogTotal = 42;
+  static const _pageSize = 3;
+  int _currentPage = 1;
+  int get _totalPages => (_catalogTotal / _pageSize).ceil();
 
   @override
   void dispose() {
@@ -267,10 +275,25 @@ class _AdminBusinessOrdersScreenState extends State<AdminBusinessOrdersScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Text(
-                  '${orders.length} / ${_orders.length} buyurtma ko\'rsatilmoqda',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                child: Column(
+                  children: [
+                    Text(
+                      '${(_currentPage - 1) * _pageSize + 1}-${_currentPage * _pageSize} / $_catalogTotal buyurtma',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                    ),
+                    const SizedBox(height: 8),
+                    AdminPaginationBar(
+                      currentPage: _currentPage,
+                      totalPages: _totalPages,
+                      onPageChanged: (page) {
+                        setState(() => _currentPage = page);
+                        if (page != 1) {
+                          _showMessage('Namunada faqat 1-sahifa ma\'lumotlari mavjud');
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
+import 'widgets/admin_pagination_bar.dart';
 import 'widgets/admin_section_topbar.dart';
 
 class _ProductItem {
@@ -67,6 +68,13 @@ class _AdminBusinessProductsScreenState extends State<AdminBusinessProductsScree
   final _searchController = TextEditingController();
   String _filter = 'Barchasi';
   static const _filters = ['Barchasi', 'Ovqat', 'Ichimlik'];
+
+  // Namunaviy katalog hajmi (Figma dizaynidagi "42" bilan mos) — sahifalash
+  // faqat UI ko'rinishi, chunki lokal ma'lumotda atigi 3 ta namuna bor.
+  static const _catalogTotal = 42;
+  static const _pageSize = 3;
+  int _currentPage = 1;
+  int get _totalPages => (_catalogTotal / _pageSize).ceil();
 
   @override
   void dispose() {
@@ -189,10 +197,25 @@ class _AdminBusinessProductsScreenState extends State<AdminBusinessProductsScree
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Text(
-                  '${products.length} / ${_allProducts.length} mahsulot ko\'rsatilmoqda',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                child: Column(
+                  children: [
+                    Text(
+                      '${(_currentPage - 1) * _pageSize + 1}-${_currentPage * _pageSize} / $_catalogTotal mahsulot',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                    ),
+                    const SizedBox(height: 8),
+                    AdminPaginationBar(
+                      currentPage: _currentPage,
+                      totalPages: _totalPages,
+                      onPageChanged: (page) {
+                        setState(() => _currentPage = page);
+                        if (page != 1) {
+                          _showMessage('Namunada faqat 1-sahifa ma\'lumotlari mavjud');
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
