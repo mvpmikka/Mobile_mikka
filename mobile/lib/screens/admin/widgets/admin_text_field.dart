@@ -13,6 +13,9 @@ class AdminTextField extends StatelessWidget {
     this.maxLines = 1,
     this.keyboardType,
     this.validator,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.prefixIcon,
   });
 
   final String label;
@@ -21,6 +24,9 @@ class AdminTextField extends StatelessWidget {
   final int maxLines;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,8 @@ class AdminTextField extends StatelessWidget {
     );
     return TextFormField(
       controller: controller,
-      maxLines: maxLines,
+      maxLines: obscureText ? 1 : maxLines,
+      obscureText: obscureText,
       keyboardType: keyboardType,
       style: TextStyle(color: AppColors.darkText(context)),
       decoration: InputDecoration(
@@ -39,6 +46,8 @@ class AdminTextField extends StatelessWidget {
         fillColor: AppColors.surface(context),
         border: border,
         enabledBorder: border,
+        suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.adminGradientMid, width: 1.5),
