@@ -6,6 +6,7 @@ import '../../models/user.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
+import 'admin_business_register_screen.dart';
 import 'admin_categories_screen.dart';
 import 'admin_places_screen.dart';
 import 'admin_super_dashboard_screen.dart';
@@ -66,6 +67,17 @@ class AdminPanelScreen extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const AdminPlacesScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+            _AdminMenuCard(
+              icon: Icons.app_registration_outlined,
+              title: 'Biznesni ro\'yxatdan o\'tkazish',
+              subtitle: 'Yangi biznes uchun bosqichma-bosqich ro\'yxatdan o\'tish',
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AdminBusinessRegisterScreen()),
                 );
               },
             ),
