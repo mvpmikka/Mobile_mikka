@@ -6,6 +6,7 @@ import '../../models/admin_user.dart';
 import '../../models/user.dart';
 import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
+import 'widgets/admin_loading_indicator.dart';
 
 class AdminUsersScreen extends ConsumerStatefulWidget {
   const AdminUsersScreen({super.key});
@@ -84,7 +85,7 @@ class _AdminUsersScreenState extends ConsumerState<AdminUsersScreen> {
             Expanded(
               child: usersAsync.when(
                 loading: () => const Center(
-                  child: CircularProgressIndicator(color: AppColors.orange),
+                  child: AdminLoadingIndicator(),
                 ),
                 error: (e, _) => Center(
                   child: Text(

@@ -6,6 +6,9 @@ import '../../models/place.dart';
 import '../../models/product.dart';
 import '../../providers/product_provider.dart';
 import '../../theme/app_colors.dart';
+import 'widgets/admin_gradient_button.dart';
+import 'widgets/admin_loading_indicator.dart';
+import 'widgets/admin_text_field.dart';
 
 class AdminInventoryScreen extends ConsumerWidget {
   const AdminInventoryScreen({super.key, required this.place});

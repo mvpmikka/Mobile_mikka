@@ -6,6 +6,9 @@ import '../../models/order.dart';
 import '../../models/place.dart';
 import '../../providers/order_provider.dart';
 import '../../theme/app_colors.dart';
+import 'widgets/admin_gradient_button.dart';
+import 'widgets/admin_loading_indicator.dart';
+import 'widgets/admin_text_field.dart';
 
 String _formatUzs(int amount) {
   final digits = amount.abs().toString();
@@ -139,17 +142,17 @@ class AdminOrdersScreen extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
+                      AdminTextField(
+                        label: 'Mijoz ismi',
                         controller: nameController,
-                        decoration: const InputDecoration(labelText: 'Mijoz ismi'),
                         validator: (v) =>
                             (v == null || v.trim().isEmpty) ? 'Mijoz ismi kerak' : null,
                       ),
                       const SizedBox(height: 12),
-                      TextFormField(
+                      AdminTextField(
+                        label: 'Telefon (ixtiyoriy)',
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
-                        decoration: const InputDecoration(labelText: 'Telefon (ixtiyoriy)'),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -168,27 +171,27 @@ class AdminOrdersScreen extends ConsumerWidget {
                             children: [
                               Expanded(
                                 flex: 3,
-                                child: TextFormField(
+                                child: AdminTextField(
+                                  label: 'Nomi',
                                   controller: items[i].$1,
-                                  decoration: const InputDecoration(labelText: 'Nomi'),
                                   validator: (v) => (v == null || v.trim().isEmpty) ? '?' : null,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                child: TextFormField(
+                                child: AdminTextField(
+                                  label: 'Soni',
                                   controller: items[i].$2,
                                   keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(labelText: 'Soni'),
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 flex: 2,
-                                child: TextFormField(
+                                child: AdminTextField(
+                                  label: 'Narx',
                                   controller: items[i].$3,
                                   keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(labelText: 'Narx'),
                                   validator: (v) => (v == null || v.trim().isEmpty) ? '?' : null,
                                 ),
                               ),
@@ -212,43 +215,39 @@ class AdminOrdersScreen extends ConsumerWidget {
                         label: const Text('Mahsulot qo\'shish'),
                       ),
                       const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          style: FilledButton.styleFrom(backgroundColor: AppColors.orange),
-                          onPressed: () async {
-                            if (!(formKey.currentState?.validate() ?? false)) return;
-                            final orderItems = <OrderItem>[];
-                            for (final row in items) {
-                              final name = row.$1.text.trim();
-                              final qty = int.tryParse(row.$2.text) ?? 0;
-                              final price = int.tryParse(row.$3.text) ?? 0;
-                              if (name.isEmpty || qty <= 0) continue;
-                              orderItems.add(OrderItem(name: name, quantity: qty, unitPrice: price));
-                            }
-                            if (orderItems.isEmpty) return;
-                            try {
-                              await ref.read(orderServiceProvider).createOrder(
-                                    place.id,
-                                    customerName: nameController.text.trim(),
-                                    customerPhone: phoneController.text.trim().isEmpty
-                                        ? null
-                                        : phoneController.text.trim(),
-                                    items: orderItems,
-                                  );
-                              if (sheetContext.mounted) Navigator.of(sheetContext).pop(true);
-                            } on ApiException catch (e) {
-                              if (!sheetContext.mounted) return;
-                              ScaffoldMessenger.of(sheetContext).showSnackBar(
-                                SnackBar(
-                                  content: Text(e.message),
-                                  backgroundColor: const Color(0xFFCB4B4B),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text('Yaratish'),
-                        ),
+                      AdminGradientButton(
+                        label: 'Yaratish',
+                        onPressed: () async {
+                          if (!(formKey.currentState?.validate() ?? false)) return;
+                          final orderItems = <OrderItem>[];
+                          for (final row in items) {
+                            final name = row.$1.text.trim();
+                            final qty = int.tryParse(row.$2.text) ?? 0;
+                            final price = int.tryParse(row.$3.text) ?? 0;
+                            if (name.isEmpty || qty <= 0) continue;
+                            orderItems.add(OrderItem(name: name, quantity: qty, unitPrice: price));
+                          }
+                          if (orderItems.isEmpty) return;
+                          try {
+                            await ref.read(orderServiceProvider).createOrder(
+                                  place.id,
+                                  customerName: nameController.text.trim(),
+                                  customerPhone: phoneController.text.trim().isEmpty
+                                      ? null
+                                      : phoneController.text.trim(),
+                                  items: orderItems,
+                                );
+                            if (sheetContext.mounted) Navigator.of(sheetContext).pop(true);
+                          } on ApiException catch (e) {
+                            if (!sheetContext.mounted) return;
+                            ScaffoldMessenger.of(sheetContext).showSnackBar(
+                              SnackBar(
+                                content: Text(e.message),
+                                backgroundColor: const Color(0xFFCB4B4B),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -307,7 +306,7 @@ class AdminOrdersScreen extends ConsumerWidget {
               statsAsync.when(
                 loading: () => const SizedBox(
                   height: 36,
-                  child: Center(child: CircularProgressIndicator(color: AppColors.orange)),
+                  child: Center(child: AdminLoadingIndicator()),
                 ),
                 error: (_, _) => const SizedBox.shrink(),
                 data: (stats) {
@@ -366,7 +365,7 @@ class AdminOrdersScreen extends ConsumerWidget {
                 loading: () => const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: CircularProgressIndicator(color: AppColors.orange),
+                    child: AdminLoadingIndicator(),
                   ),
                 ),
                 error: (e, _) => Center(
