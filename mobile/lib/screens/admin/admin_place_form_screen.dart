@@ -9,7 +9,12 @@ import 'widgets/admin_gradient_button.dart';
 import 'widgets/admin_text_field.dart';
 
 class AdminPlaceFormScreen extends ConsumerStatefulWidget {
-  const AdminPlaceFormScreen({super.key});
+  const AdminPlaceFormScreen({super.key, this.initialAddress});
+
+  /// [AdminLocationSelectScreen]dan kelgan tayyor manzil matni (bo'lsa).
+  /// Faqat manzil maydonini oldindan to'ldirish uchun ishlatiladi — hech
+  /// qanday backend/servis chaqiruviga aloqasi yo'q.
+  final String? initialAddress;
 
   @override
   ConsumerState<AdminPlaceFormScreen> createState() =>
@@ -20,7 +25,8 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _addressController = TextEditingController();
+  late final _addressController =
+      TextEditingController(text: widget.initialAddress ?? '');
   final _latController = TextEditingController();
   final _lngController = TextEditingController();
   final _phoneController = TextEditingController();

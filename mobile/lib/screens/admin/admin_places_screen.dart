@@ -7,8 +7,8 @@ import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/place_category_icon.dart';
 import 'admin_inventory_screen.dart';
+import 'admin_location_select_screen.dart';
 import 'admin_orders_screen.dart';
-import 'admin_place_form_screen.dart';
 import 'widgets/admin_loading_indicator.dart';
 
 class AdminPlacesScreen extends ConsumerWidget {
@@ -183,7 +183,7 @@ class AdminPlacesScreen extends ConsumerWidget {
         backgroundColor: AppColors.orange,
         onPressed: () async {
           final created = await Navigator.of(context).push<bool>(
-            MaterialPageRoute(builder: (_) => const AdminPlaceFormScreen()),
+            MaterialPageRoute(builder: (_) => const AdminLocationSelectScreen()),
           );
           if (created == true) {
             ref.invalidate(adminPlacesProvider);
