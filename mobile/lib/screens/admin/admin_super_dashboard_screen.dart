@@ -5,6 +5,7 @@ import '../../core/api_exception.dart';
 import '../../models/super_admin_dashboard.dart';
 import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
+import 'widgets/admin_loading_indicator.dart';
 
 const _monthLabels = [
   'Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun',
@@ -31,7 +32,7 @@ class AdminSuperDashboardScreen extends ConsumerWidget {
       body: SafeArea(
         child: dashboardAsync.when(
           loading: () => const Center(
-            child: CircularProgressIndicator(color: AppColors.orange),
+            child: AdminLoadingIndicator(),
           ),
           error: (e, _) => Center(
             child: Text(
@@ -194,7 +195,10 @@ class _MonthlyGrowthChart extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [AppColors.orange, Color(0xFFF4A94F)],
+                            colors: [
+                              AppColors.adminGradientStart,
+                              AppColors.adminGradientEnd,
+                            ],
                           ),
                         ),
                       ),

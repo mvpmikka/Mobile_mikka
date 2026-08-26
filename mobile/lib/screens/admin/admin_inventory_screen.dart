@@ -57,65 +57,61 @@ class AdminInventoryScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                AdminTextField(
+                  label: 'Nomi',
                   controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Nomi'),
                   validator: (v) => (v == null || v.trim().isEmpty) ? 'Nomi kerak' : null,
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                AdminTextField(
+                  label: 'SKU',
                   controller: skuController,
-                  decoration: const InputDecoration(labelText: 'SKU'),
                   validator: (v) => (v == null || v.trim().isEmpty) ? 'SKU kerak' : null,
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
+                      child: AdminTextField(
+                        label: 'Miqdor',
                         controller: quantityController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Miqdor'),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: TextFormField(
+                      child: AdminTextField(
+                        label: 'Kam qolish chegarasi',
                         controller: thresholdController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: 'Kam qolish chegarasi'),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(backgroundColor: AppColors.orange),
-                    onPressed: () async {
-                      if (!(formKey.currentState?.validate() ?? false)) return;
-                      try {
-                        await ref.read(productServiceProvider).createProduct(
-                              place.id,
-                              name: nameController.text.trim(),
-                              sku: skuController.text.trim(),
-                              quantity: int.tryParse(quantityController.text) ?? 0,
-                              lowStockThreshold: int.tryParse(thresholdController.text) ?? 5,
-                            );
-                        if (sheetContext.mounted) Navigator.of(sheetContext).pop(true);
-                      } on ApiException catch (e) {
-                        if (!sheetContext.mounted) return;
-                        ScaffoldMessenger.of(sheetContext).showSnackBar(
-                          SnackBar(
-                            content: Text(e.message),
-                            backgroundColor: const Color(0xFFCB4B4B),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Qo\'shish'),
-                  ),
+                AdminGradientButton(
+                  label: 'Qo\'shish',
+                  onPressed: () async {
+                    if (!(formKey.currentState?.validate() ?? false)) return;
+                    try {
+                      await ref.read(productServiceProvider).createProduct(
+                            place.id,
+                            name: nameController.text.trim(),
+                            sku: skuController.text.trim(),
+                            quantity: int.tryParse(quantityController.text) ?? 0,
+                            lowStockThreshold: int.tryParse(thresholdController.text) ?? 5,
+                          );
+                      if (sheetContext.mounted) Navigator.of(sheetContext).pop(true);
+                    } on ApiException catch (e) {
+                      if (!sheetContext.mounted) return;
+                      ScaffoldMessenger.of(sheetContext).showSnackBar(
+                        SnackBar(
+                          content: Text(e.message),
+                          backgroundColor: const Color(0xFFCB4B4B),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -183,10 +179,10 @@ class AdminInventoryScreen extends ConsumerWidget {
                 style: TextStyle(color: AppColors.mutedText(sheetContext)),
               ),
               const SizedBox(height: 16),
-              TextFormField(
+              AdminTextField(
+                label: 'Miqdor',
                 controller: amountController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Miqdor'),
               ),
               const SizedBox(height: 16),
               Row(
@@ -199,10 +195,10 @@ class AdminInventoryScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(backgroundColor: AppColors.orange),
+                    child: AdminGradientButton(
+                      label: 'Restock',
+                      height: 40,
                       onPressed: () => submit(sheetContext, 1),
-                      child: const Text('Restock'),
                     ),
                   ),
                 ],
@@ -255,7 +251,7 @@ class AdminInventoryScreen extends ConsumerWidget {
                 loading: () => const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
-                    child: CircularProgressIndicator(color: AppColors.orange),
+                    child: AdminLoadingIndicator(),
                   ),
                 ),
                 error: (e, _) => Text(
@@ -327,7 +323,7 @@ class AdminInventoryScreen extends ConsumerWidget {
                 loading: () => const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: CircularProgressIndicator(color: AppColors.orange),
+                    child: AdminLoadingIndicator(),
                   ),
                 ),
                 error: (e, _) => Center(
