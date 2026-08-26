@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
+import 'admin_business_inventory_screen.dart';
+import 'admin_business_orders_screen.dart';
+import 'admin_business_place_detail_screen.dart';
+import 'admin_business_products_screen.dart';
 import 'admin_location_select_screen.dart';
 
 class _DashboardPlace {
@@ -506,7 +510,9 @@ class _AdminBusinessDashboardScreenState
                       title: 'So\'nggi buyurtmalar',
                       icon: Icons.receipt_long_outlined,
                       trailing: TextButton(
-                        onPressed: () => _showSoon('Barcha buyurtmalar'),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const AdminBusinessOrdersScreen()),
+                        ),
                         child: const Text('Barchasini ko\'rish'),
                       ),
                       child: Column(
@@ -541,9 +547,18 @@ class _AdminBusinessDashboardScreenState
       bottomNavigationBar: NavigationBar(
         selectedIndex: _bottomNavIndex,
         onDestinationSelected: (index) {
+          if (index == 4) {
+            _openMoreMenu();
+            return;
+          }
+          if (index == 1) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const AdminBusinessOrdersScreen()),
+            );
+            return;
+          }
           setState(() => _bottomNavIndex = index);
-          if (index != 0) _showSoon(['', 'Buyurtmalar', 'Bandlar', 'Chat'][index]);
-          if (index == 4) _openMoreMenu();
+          if (index != 0) _showSoon(['', '', 'Bandlar', 'Chat'][index]);
         },
         backgroundColor: AppColors.surface(context),
         indicatorColor: AppColors.adminGradientMid.withValues(alpha: 0.15),
@@ -590,7 +605,28 @@ class _AdminBusinessDashboardScreenState
               return InkWell(
                 onTap: () {
                   Navigator.of(sheetContext).pop();
-                  _showSoon(item.$2);
+                  switch (item.$2) {
+                    case 'Joy':
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBusinessPlaceDetailScreen(),
+                        ),
+                      );
+                    case 'Mahsulotlar':
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBusinessProductsScreen(),
+                        ),
+                      );
+                    case 'Ombor':
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBusinessInventoryScreen(),
+                        ),
+                      );
+                    default:
+                      _showSoon(item.$2);
+                  }
                 },
                 borderRadius: BorderRadius.circular(14),
                 child: Column(
