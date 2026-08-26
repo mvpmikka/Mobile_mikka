@@ -6,6 +6,7 @@ import '../../models/place.dart';
 import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/place_category_icon.dart';
+import 'widgets/admin_loading_indicator.dart';
 
 class AdminCategoriesScreen extends ConsumerStatefulWidget {
   const AdminCategoriesScreen({super.key});
@@ -105,7 +106,7 @@ class _AdminCategoriesScreenState extends ConsumerState<AdminCategoriesScreen> {
       body: SafeArea(
         child: categoriesAsync.when(
           loading: () => const Center(
-            child: CircularProgressIndicator(color: AppColors.orange),
+            child: AdminLoadingIndicator(),
           ),
           error: (e, _) => Center(
             child: Text(

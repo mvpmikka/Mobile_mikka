@@ -9,6 +9,7 @@ import '../../theme/place_category_icon.dart';
 import 'admin_inventory_screen.dart';
 import 'admin_orders_screen.dart';
 import 'admin_place_form_screen.dart';
+import 'widgets/admin_loading_indicator.dart';
 
 class AdminPlacesScreen extends ConsumerWidget {
   const AdminPlacesScreen({super.key});
@@ -69,7 +70,7 @@ class AdminPlacesScreen extends ConsumerWidget {
           onRefresh: () async => ref.invalidate(adminPlacesProvider),
           child: placesAsync.when(
             loading: () => const Center(
-              child: CircularProgressIndicator(color: AppColors.orange),
+              child: AdminLoadingIndicator(),
             ),
             error: (e, _) => Center(
               child: Text(

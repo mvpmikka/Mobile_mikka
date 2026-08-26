@@ -5,6 +5,8 @@ import '../../core/api_exception.dart';
 import '../../models/place.dart';
 import '../../providers/admin_provider.dart';
 import '../../theme/app_colors.dart';
+import 'widgets/admin_gradient_button.dart';
+import 'widgets/admin_text_field.dart';
 
 class AdminPlaceFormScreen extends ConsumerStatefulWidget {
   const AdminPlaceFormScreen({super.key});
@@ -95,7 +97,7 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              _Field(label: 'Nomi *', controller: _nameController, required: true),
+              AdminTextField(label: 'Nomi *', controller: _nameController, required: true),
               const SizedBox(height: 14),
               categoriesAsync.when(
                 loading: () => const LinearProgressIndicator(color: AppColors.orange),
@@ -123,13 +125,13 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
                 ),
               ),
               const SizedBox(height: 14),
-              _Field(
+              AdminTextField(
                 label: 'Tavsif',
                 controller: _descriptionController,
                 maxLines: 3,
               ),
               const SizedBox(height: 14),
-              _Field(label: 'Manzil (address)', controller: _addressController),
+              AdminTextField(label: 'Manzil (address)', controller: _addressController),
               const SizedBox(height: 4),
               Text(
                 'Manzil yoki lat+lng dan kamida bittasini kiriting.',
@@ -139,7 +141,7 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _Field(
+                    child: AdminTextField(
                       label: 'Latitude',
                       controller: _latController,
                       keyboardType: const TextInputType.numberWithOptions(
@@ -150,7 +152,7 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _Field(
+                    child: AdminTextField(
                       label: 'Longitude',
                       controller: _lngController,
                       keyboardType: const TextInputType.numberWithOptions(
@@ -162,84 +164,27 @@ class _AdminPlaceFormScreenState extends ConsumerState<AdminPlaceFormScreen> {
                 ],
               ),
               const SizedBox(height: 14),
-              _Field(
+              AdminTextField(
                 label: 'Telefon',
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 14),
-              _Field(
+              AdminTextField(
                 label: 'Veb-sayt',
                 controller: _websiteController,
                 keyboardType: TextInputType.url,
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: _isSubmitting ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.orange,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: _isSubmitting
-                      ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text(
-                          'Qo\'shish',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                ),
+              AdminGradientButton(
+                label: 'Qo\'shish',
+                isLoading: _isSubmitting,
+                onPressed: _isSubmitting ? null : _submit,
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _Field extends StatelessWidget {
-  const _Field({
-    required this.label,
-    required this.controller,
-    this.required = false,
-    this.maxLines = 1,
-    this.keyboardType,
-  });
-
-  final String label;
-  final TextEditingController controller;
-  final bool required;
-  final int maxLines;
-  final TextInputType? keyboardType;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      maxLines: maxLines,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      validator: required
-          ? (value) =>
-              (value == null || value.trim().isEmpty) ? 'Majburiy maydon' : null
-          : null,
     );
   }
 }
