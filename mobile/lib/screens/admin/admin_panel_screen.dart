@@ -10,6 +10,7 @@ import 'admin_categories_screen.dart';
 import 'admin_places_screen.dart';
 import 'admin_super_dashboard_screen.dart';
 import 'admin_users_screen.dart';
+import 'widgets/admin_loading_indicator.dart';
 
 class AdminPanelScreen extends ConsumerWidget {
   const AdminPanelScreen({super.key});
@@ -38,7 +39,7 @@ class AdminPanelScreen extends ConsumerWidget {
               loading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  child: CircularProgressIndicator(color: AppColors.orange),
+                  child: AdminLoadingIndicator(),
                 ),
               ),
               error: (e, _) => Text(

@@ -8,6 +8,20 @@ class AppColors {
 
   static const orange = Color(0xFFE97A3C);
 
+  /// Admin panel-only brand gradient (Figma). Kept separate from [orange]
+  /// so the rest of the app (login, register, user-facing screens) is
+  /// untouched — only widgets under screens/admin/widgets reference these.
+  static const adminGradientStart = Color(0xFFFD4404);
+  static const adminGradientMid = Color(0xFFFE5B01);
+  static const adminGradientAccent = Color(0xFFFD8204);
+  static const adminGradientEnd = Color(0xFFFD9A04);
+
+  static const adminBrandGradient = LinearGradient(
+    colors: [adminGradientStart, adminGradientMid, adminGradientAccent, adminGradientEnd],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
   static const _creamLight = Color(0xFFF8F1E6);
   static const _darkTextLight = Color(0xFF231A14);
   static const _mutedTextLight = Color(0xFF8A7E72);
