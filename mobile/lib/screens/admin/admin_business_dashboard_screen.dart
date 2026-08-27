@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
+import 'admin_business_bookings_screen.dart';
 import 'admin_business_inventory_screen.dart';
 import 'admin_business_orders_screen.dart';
 import 'admin_business_place_detail_screen.dart';
@@ -420,6 +421,12 @@ class _AdminBusinessDashboardScreenState
                     _Card(
                       title: 'Yaqinlashib kelayotgan bandlar',
                       icon: Icons.event_note_outlined,
+                      trailing: TextButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const AdminBusinessBookingsScreen()),
+                        ),
+                        child: const Text('Barchasini ko\'rish'),
+                      ),
                       child: Column(
                         children: [
                           Container(
