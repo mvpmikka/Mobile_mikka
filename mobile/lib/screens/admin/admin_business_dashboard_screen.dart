@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 import 'admin_business_bookings_screen.dart';
+import 'admin_business_customers_screen.dart';
 import 'admin_business_inventory_screen.dart';
 import 'admin_business_orders_screen.dart';
 import 'admin_business_place_detail_screen.dart';
@@ -592,6 +593,7 @@ class _AdminBusinessDashboardScreenState
       (Icons.storefront_outlined, 'Joy'),
       (Icons.inventory_2_outlined, 'Mahsulotlar'),
       (Icons.warehouse_outlined, 'Ombor'),
+      (Icons.people_outline, 'Mijozlar'),
       (Icons.star_border, 'Sharhlar'),
       (Icons.article_outlined, 'Kontent'),
       (Icons.bar_chart_outlined, 'Analitika'),
@@ -636,6 +638,12 @@ class _AdminBusinessDashboardScreenState
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const AdminBusinessInventoryScreen(),
+                        ),
+                      );
+                    case 'Mijozlar':
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBusinessCustomersScreen(),
                         ),
                       );
                     case 'Sharhlar':
