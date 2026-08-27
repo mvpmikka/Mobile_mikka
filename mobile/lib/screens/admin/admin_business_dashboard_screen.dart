@@ -6,6 +6,7 @@ import 'admin_business_inventory_screen.dart';
 import 'admin_business_orders_screen.dart';
 import 'admin_business_place_detail_screen.dart';
 import 'admin_business_products_screen.dart';
+import 'admin_business_reviews_screen.dart';
 import 'admin_location_select_screen.dart';
 
 class _DashboardPlace {
@@ -564,8 +565,14 @@ class _AdminBusinessDashboardScreenState
             );
             return;
           }
+          if (index == 2) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const AdminBusinessBookingsScreen()),
+            );
+            return;
+          }
           setState(() => _bottomNavIndex = index);
-          if (index != 0) _showSoon(['', '', 'Bandlar', 'Chat'][index]);
+          if (index != 0) _showSoon(['', '', '', 'Chat'][index]);
         },
         backgroundColor: AppColors.surface(context),
         indicatorColor: AppColors.adminGradientMid.withValues(alpha: 0.15),
@@ -629,6 +636,12 @@ class _AdminBusinessDashboardScreenState
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const AdminBusinessInventoryScreen(),
+                        ),
+                      );
+                    case 'Sharhlar':
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBusinessReviewsScreen(),
                         ),
                       );
                     default:
