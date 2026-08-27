@@ -36,6 +36,13 @@ export class PlaceController {
     return this.placeService.list(query);
   }
 
+  @Get('mine')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  listMine(@CurrentUser() currentUser: AuthenticatedUser) {
+    return this.placeService.listMine(currentUser.id);
+  }
+
   @Get(':id')
   @Header('Cache-Control', 'public, max-age=60')
   findOne(@Param('id') id: string) {

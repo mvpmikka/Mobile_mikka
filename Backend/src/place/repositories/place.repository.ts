@@ -55,6 +55,13 @@ export class PlaceRepository {
     return this.prisma.place.findUnique({ where: { id, deletedAt: null } });
   }
 
+  findByCreatedBy(createdById: string): Promise<Place[]> {
+    return this.prisma.place.findMany({
+      where: { createdById, deletedAt: null },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async findMany(
     params: FindManyParams,
   ): Promise<{ items: PlaceListItem[]; total: number }> {

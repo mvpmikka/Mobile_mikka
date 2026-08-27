@@ -24,6 +24,10 @@ export class PlaceService {
     return place;
   }
 
+  listMine(createdById: string): Promise<Place[]> {
+    return this.placeRepository.findByCreatedBy(createdById);
+  }
+
   async list(dto: ListPlacesDto): Promise<PlaceListResult> {
     if (dto.lat === undefined || dto.lng === undefined) {
       const { items, total } = await this.placeRepository.findMany({
