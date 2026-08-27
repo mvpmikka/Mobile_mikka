@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
 import 'admin_business_dashboard_screen.dart';
 import 'admin_business_forgot_password_screen.dart';
 import 'widgets/admin_brand_topbar.dart';
 import 'widgets/admin_text_field.dart';
 
-/// MIKKA Business uchun mobil "Kirish" ekrani. Butunlay sof UI — hech
-/// qanday autentifikatsiya/backend chaqiruvi yo'q, faqat maydonlarni
-/// tekshirib, boshqaruv paneliga (demo sifatida) o'tkazadi.
-class AdminBusinessLoginScreen extends StatefulWidget {
+/// MIKKA Business uchun mobil "Kirish" ekrani — haqiqiy autentifikatsiya:
+/// [authControllerProvider] orqali backendga kirish so'raladi, so'ng
+/// [AppUser.isAdmin] tekshiriladi (oddiy hisoblar business panelga
+/// kiritilmaydi).
+class AdminBusinessLoginScreen extends ConsumerStatefulWidget {
   const AdminBusinessLoginScreen({super.key});
 
   @override
-  State<AdminBusinessLoginScreen> createState() => _AdminBusinessLoginScreenState();
+  ConsumerState<AdminBusinessLoginScreen> createState() =>
+      _AdminBusinessLoginScreenState();
 }
 
-class _AdminBusinessLoginScreenState extends State<AdminBusinessLoginScreen> {
+class _AdminBusinessLoginScreenState
+    extends ConsumerState<AdminBusinessLoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isSubmitting = false;
 
   @override
   void dispose() {
@@ -32,15 +39,36 @@ class _AdminBusinessLoginScreenState extends State<AdminBusinessLoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _goToDashboard() {
-    if (_emailController.text.trim().isEmpty ||
-        _passwordController.text.trim().isEmpty) {
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    if (email.isEmpty || password.isEmpty) {
       _showMessage('Email va parolni kiriting');
       return;
     }
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const AdminBusinessDashboardScreen()),
-    );
+
+    setState(() => _isSubmitting = true);
+    try {
+      await ref.read(authControllerProvider.notifier).login(
+            email: email,
+            password: password,
+          );
+      if (!mounted) return;
+      final user = ref.read(authControllerProvider).value?.user;
+      if (user == null || !user.isAdmin) {
+        await ref.read(authControllerProvider.notifier).logout();
+        if (!mounted) return;
+        _showMessage('Bu hisob business panelga kirish huquqiga ega emas');
+        return;
+      }
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const AdminBusinessDashboardScreen()),
+      );
+    } on ApiException catch (e) {
+      _showMessage(e.message);
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
+    }
   }
 
   @override
@@ -133,7 +161,7 @@ class _AdminBusinessLoginScreenState extends State<AdminBusinessLoginScreen> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: ElevatedButton(
-                          onPressed: _goToDashboard,
+                          onPressed: _isSubmitting ? null : _login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
@@ -143,50 +171,23 @@ class _AdminBusinessLoginScreenState extends State<AdminBusinessLoginScreen> {
                               borderRadius: BorderRadius.circular(14),
                             ),
                           ),
-                          child: const Text(
-                            'KIRISH',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(child: Divider(color: AppColors.fieldBorder(context))),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'yoki',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppColors.mutedText(context),
-                            ),
-                          ),
-                        ),
-                        Expanded(child: Divider(color: AppColors.fieldBorder(context))),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 52,
-                      child: OutlinedButton.icon(
-                        onPressed: _goToDashboard,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.darkText(context),
-                          side: BorderSide(color: AppColors.fieldBorder(context)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        icon: const Icon(Icons.g_mobiledata, size: 24),
-                        label: const Text(
-                          'GOOGLE ORQALI DAVOM ETISH',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                          child: _isSubmitting
+                              ? const SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.4,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Text(
+                                  'KIRISH',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
                         ),
                       ),
                     ),

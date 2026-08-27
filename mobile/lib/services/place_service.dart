@@ -36,6 +36,17 @@ class PlaceService {
     }
   }
 
+  Future<List<BusinessPlace>> listMine() async {
+    try {
+      final response = await _apiClient.dio.get('/places/mine');
+      return (response.data as List<dynamic>)
+          .map((e) => BusinessPlace.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
   Future<PlaceDetail> getDetail(String placeId) async {
     try {
       final response = await _apiClient.dio.get('/places/$placeId');

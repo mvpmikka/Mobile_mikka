@@ -78,6 +78,32 @@ class PlaceDetail {
   }
 }
 
+/// Mirrors the backend's raw `Place` row as returned by `GET /places/mine`
+/// — the joined category/rating fields `Place` needs for the public list
+/// aren't selected there, so this is a lighter, separate shape.
+class BusinessPlace {
+  const BusinessPlace({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.status,
+  });
+
+  final String id;
+  final String name;
+  final String? address;
+  final String status;
+
+  factory BusinessPlace.fromJson(Map<String, dynamic> json) {
+    return BusinessPlace(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      address: json['address'] as String?,
+      status: json['status'] as String,
+    );
+  }
+}
+
 /// Mirrors the backend's rating summary (`GET /places/:id/rating`).
 class PlaceRating {
   const PlaceRating({required this.averageRating, required this.reviewCount});

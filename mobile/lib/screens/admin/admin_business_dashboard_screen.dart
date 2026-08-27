@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/order.dart';
+import '../../models/place.dart';
+import '../../models/product.dart';
+import '../../providers/order_provider.dart';
+import '../../providers/place_provider.dart';
+import '../../providers/product_provider.dart';
 import '../../theme/app_colors.dart';
 import 'admin_business_bookings_screen.dart';
 import 'admin_business_customers_screen.dart';
@@ -10,63 +17,22 @@ import 'admin_business_products_screen.dart';
 import 'admin_business_reviews_screen.dart';
 import 'admin_location_select_screen.dart';
 
-class _DashboardPlace {
-  const _DashboardPlace({
-    required this.name,
-    required this.address,
-    required this.initials,
-    required this.color,
-    required this.isOpen,
-  });
-
-  final String name;
-  final String address;
-  final String initials;
-  final Color color;
-  final bool isOpen;
-}
-
-const _places = [
-  _DashboardPlace(
-    name: 'Coffee Lab',
-    address: '124-uy, Markaziy ko\'cha, Markaz',
-    initials: 'CL',
-    color: Color(0xFF8A5A3B),
-    isOpen: true,
-  ),
-  _DashboardPlace(
-    name: 'Coffee Lab',
-    address: '800-uy, Mega Mall, 2-qavat',
-    initials: 'CM',
-    color: Color(0xFF3B6EA8),
-    isOpen: true,
-  ),
-  _DashboardPlace(
-    name: 'Bella Italia',
-    address: '45-uy, Shimoliy ko\'cha, Chekka hudud',
-    initials: 'BI',
-    color: Color(0xFF6B6B6B),
-    isOpen: false,
-  ),
-];
-
-const _weeklyTrend = [700.0, 700.0, 700.0, 950.0, 1300.0, 1450.0, 1400.0];
-const _weekDayLabels = ['Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan', 'Yak'];
-
-/// MIKKA Business mobil boshqaruv paneli — Figma dizayni asosidagi sof UI.
-/// Barcha ma'lumotlar (statistika, bandlar, ombor, buyurtmalar) lokal
-/// namunaviy qiymatlar — hech qanday backend/servis chaqiruvi yo'q.
-class AdminBusinessDashboardScreen extends StatefulWidget {
+/// MIKKA Business mobil boshqaruv paneli — Figma dizayni asosidagi UI,
+/// [myPlacesProvider]/[orderStatsProvider]/[productStatsProvider] orqali
+/// haqiqiy backend ma'lumotlariga ulangan. Backendda hali izlanmagan
+/// ko'rsatkichlar (tashriflar, profil ko'rishlar, bandlar) shu bosqichda
+/// ko'rsatilmaydi — soxta raqam qoldirmaslik uchun.
+class AdminBusinessDashboardScreen extends ConsumerStatefulWidget {
   const AdminBusinessDashboardScreen({super.key});
 
   @override
-  State<AdminBusinessDashboardScreen> createState() =>
+  ConsumerState<AdminBusinessDashboardScreen> createState() =>
       _AdminBusinessDashboardScreenState();
 }
 
 class _AdminBusinessDashboardScreenState
-    extends State<AdminBusinessDashboardScreen> {
-  int _selectedPlace = 0;
+    extends ConsumerState<AdminBusinessDashboardScreen> {
+  int _selectedPlaceIndex = 0;
   int _bottomNavIndex = 0;
 
   void _showSoon(String feature) {
@@ -75,7 +41,7 @@ class _AdminBusinessDashboardScreenState
     );
   }
 
-  void _openPlaceSwitcher() {
+  void _openPlaceSwitcher(List<BusinessPlace> places) {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: AppColors.surface(context),
@@ -104,19 +70,19 @@ class _AdminBusinessDashboardScreenState
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: _places.length,
+                itemCount: places.length,
                 itemBuilder: (_, index) {
-                  final place = _places[index];
-                  final isCurrent = index == _selectedPlace;
+                  final place = places[index];
+                  final isCurrent = index == _selectedPlaceIndex;
                   return ListTile(
                     onTap: () {
-                      setState(() => _selectedPlace = index);
+                      setState(() => _selectedPlaceIndex = index);
                       Navigator.of(sheetContext).pop();
                     },
                     leading: CircleAvatar(
-                      backgroundColor: place.color,
+                      backgroundColor: AppColors.adminGradientMid,
                       child: Text(
-                        place.initials,
+                        _initialsFor(place.name),
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -128,43 +94,12 @@ class _AdminBusinessDashboardScreenState
                       ),
                     ),
                     subtitle: Text(
-                      place.address,
+                      place.address ?? '',
                       style: TextStyle(fontSize: 12, color: AppColors.mutedText(sheetContext)),
                     ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 8,
-                              height: 8,
-                              margin: const EdgeInsets.only(right: 4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: place.isOpen
-                                    ? const Color(0xFF3F9142)
-                                    : AppColors.mutedText(sheetContext),
-                              ),
-                            ),
-                            Text(
-                              place.isOpen ? 'Ochiq' : 'Yopiq',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: AppColors.mutedText(sheetContext),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (isCurrent)
-                          const Padding(
-                            padding: EdgeInsets.only(top: 4),
-                            child: Icon(Icons.check_circle, size: 16, color: Color(0xFF3F9142)),
-                          ),
-                      ],
-                    ),
+                    trailing: isCurrent
+                        ? const Icon(Icons.check_circle, size: 18, color: Color(0xFF3F9142))
+                        : null,
                   );
                 },
               ),
@@ -198,9 +133,18 @@ class _AdminBusinessDashboardScreenState
     );
   }
 
+  static String _initialsFor(String name) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '?';
+    final words = trimmed.split(RegExp(r'\s+'));
+    if (words.length == 1) return words.first.substring(0, 1).toUpperCase();
+    return (words[0].substring(0, 1) + words[1].substring(0, 1)).toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final place = _places[_selectedPlace];
+    final placesAsync = ref.watch(myPlacesProvider);
+
     return Scaffold(
       backgroundColor: AppColors.cream(context),
       body: SafeArea(
@@ -248,26 +192,9 @@ class _AdminBusinessDashboardScreenState
                       ],
                     ),
                   ),
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      IconButton(
-                        onPressed: () => _showSoon('Bildirishnomalar'),
-                        icon: Icon(Icons.notifications_outlined, color: AppColors.darkText(context)),
-                      ),
-                      Positioned(
-                        top: 10,
-                        right: 10,
-                        child: Container(
-                          width: 8,
-                          height: 8,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFCB4B4B),
-                          ),
-                        ),
-                      ),
-                    ],
+                  IconButton(
+                    onPressed: () => _showSoon('Bildirishnomalar'),
+                    icon: Icon(Icons.notifications_outlined, color: AppColors.darkText(context)),
                   ),
                   CircleAvatar(
                     radius: 16,
@@ -278,276 +205,38 @@ class _AdminBusinessDashboardScreenState
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: _openPlaceSwitcher,
-                      borderRadius: BorderRadius.circular(14),
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface(context),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: AppColors.fieldBorder(context)),
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: place.color,
-                              radius: 16,
-                              child: Text(
-                                place.initials,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    place.name,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 13,
-                                      color: AppColors.darkText(context),
-                                    ),
-                                  ),
-                                  Text(
-                                    place.address,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 11, color: AppColors.mutedText(context)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Icon(Icons.unfold_more, size: 18, color: AppColors.mutedText(context)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Umumiy ko\'rinish',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.darkText(context),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => _showSoon('Sana filtri'),
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: AppColors.surface(context),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: AppColors.fieldBorder(context)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.calendar_today_outlined,
-                                    size: 14, color: AppColors.darkText(context)),
-                                const SizedBox(width: 6),
-                                Text('Bugun',
-                                    style: TextStyle(fontSize: 12, color: AppColors.darkText(context))),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Bugun joyingizda nima sodir bo\'lyapti.',
-                      style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
-                    ),
-                    const SizedBox(height: 16),
-                    GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 1.5,
-                      children: const [
-                        _StatCard(
-                          label: 'Bugungi tashriflar',
-                          value: '1,284',
-                          delta: '+12%',
-                          icon: Icons.groups_outlined,
-                        ),
-                        _StatCard(
-                          label: 'Profil ko\'rishlar',
-                          value: '3,421',
-                          delta: '+8%',
-                          icon: Icons.visibility_outlined,
-                        ),
-                        _StatCard(
-                          label: 'Buyurtmalar',
-                          value: '187',
-                          delta: '+4%',
-                          icon: Icons.receipt_long_outlined,
-                        ),
-                        _StatCard(
-                          label: 'Bandlar',
-                          value: '42',
-                          delta: 'Faol',
-                          icon: Icons.event_available_outlined,
-                          deltaIsNeutral: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    _Card(
-                      title: 'Tendentsiya',
-                      icon: Icons.show_chart,
-                      child: SizedBox(
-                        height: 160,
-                        child: _TrendChart(values: _weeklyTrend, labels: _weekDayLabels),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _Card(
-                      title: 'Yaqinlashib kelayotgan bandlar',
-                      icon: Icons.event_note_outlined,
-                      trailing: TextButton(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const AdminBusinessBookingsScreen()),
-                        ),
-                        child: const Text('Barchasini ko\'rish'),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.cream(context),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '19:00',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.adminGradientMid,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Aziz',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.darkText(context),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.person_outline,
-                                              size: 13, color: AppColors.mutedText(context)),
-                                          const SizedBox(width: 3),
-                                          Text('4 kishi',
-                                              style: TextStyle(
-                                                  fontSize: 12, color: AppColors.mutedText(context))),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () => _showSoon('Band tafsilotlari'),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: AppColors.darkText(context),
-                                    side: BorderSide(color: AppColors.fieldBorder(context)),
-                                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                                  ),
-                                  child: const Text('Ko\'rish'),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Bugun boshqa bandlar yo\'q',
-                            style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _Card(
-                      title: 'Ombor ogohlantirishlari',
-                      icon: Icons.warning_amber_outlined,
-                      titleColor: const Color(0xFFCB4B4B),
-                      child: Column(
-                        children: [
-                          _InventoryAlertRow(
-                            icon: Icons.restaurant_outlined,
-                            label: 'Kartoshka fri',
-                            badge: 'Tugagan',
-                            badgeColor: const Color(0xFFCB4B4B),
-                          ),
-                          const SizedBox(height: 10),
-                          _InventoryAlertRow(
-                            icon: Icons.local_drink_outlined,
-                            label: 'Kola',
-                            badge: 'Kam qoldi',
-                            badgeColor: AppColors.mutedText(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _Card(
-                      title: 'So\'nggi buyurtmalar',
-                      icon: Icons.receipt_long_outlined,
-                      trailing: TextButton(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const AdminBusinessOrdersScreen()),
-                        ),
-                        child: const Text('Barchasini ko\'rish'),
-                      ),
-                      child: Column(
-                        children: [
-                          _OrderRow(
-                            orderId: '#1024',
-                            items: 'Lavash',
-                            status: 'Tayyorlanmoqda',
-                            statusColor: AppColors.adminGradientMid,
-                            time: '14 daqiqa oldin',
-                            price: '65 000 so\'m',
-                          ),
-                          const SizedBox(height: 10),
-                          _OrderRow(
-                            orderId: '#1023',
-                            items: 'Burger Combo, Kola',
-                            status: 'Tayyor',
-                            statusColor: const Color(0xFF3F9142),
-                            time: '28 daqiqa oldin',
-                            price: '85 000 so\'m',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              child: placesAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => _ErrorState(
+                  message: 'Joylar yuklanmadi: $error',
+                  onRetry: () => ref.invalidate(myPlacesProvider),
                 ),
+                data: (places) {
+                  if (places.isEmpty) {
+                    return _EmptyPlacesState(
+                      onAddPlace: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const AdminLocationSelectScreen()),
+                      ),
+                    );
+                  }
+                  final index = _selectedPlaceIndex.clamp(0, places.length - 1);
+                  final place = places[index];
+                  return _DashboardBody(
+                    place: place,
+                    onSwitchPlace: () => _openPlaceSwitcher(places),
+                    onOpenOrders: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => AdminBusinessOrdersScreen(placeId: place.id),
+                      ),
+                    ),
+                    onOpenProducts: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => AdminBusinessProductsScreen(placeId: place.id),
+                      ),
+                    ),
+                    onDateFilter: () => _showSoon('Sana filtri'),
+                  );
+                },
               ),
             ),
           ],
@@ -561,8 +250,13 @@ class _AdminBusinessDashboardScreenState
             return;
           }
           if (index == 1) {
+            final places = placesAsync.valueOrNull;
+            if (places == null || places.isEmpty) return;
+            final place = places[_selectedPlaceIndex.clamp(0, places.length - 1)];
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const AdminBusinessOrdersScreen()),
+              MaterialPageRoute(
+                builder: (_) => AdminBusinessOrdersScreen(placeId: place.id),
+              ),
             );
             return;
           }
@@ -629,9 +323,16 @@ class _AdminBusinessDashboardScreenState
                         ),
                       );
                     case 'Mahsulotlar':
+                      final places = ref.read(myPlacesProvider).valueOrNull;
+                      if (places == null || places.isEmpty) {
+                        _showSoon('Mahsulotlar');
+                        return;
+                      }
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const AdminBusinessProductsScreen(),
+                          builder: (_) => AdminBusinessProductsScreen(
+                            placeId: places[_selectedPlaceIndex.clamp(0, places.length - 1)].id,
+                          ),
                         ),
                       );
                     case 'Ombor':
@@ -682,6 +383,338 @@ class _AdminBusinessDashboardScreenState
           ),
         );
       },
+    );
+  }
+}
+
+class _EmptyPlacesState extends StatelessWidget {
+  const _EmptyPlacesState({required this.onAddPlace});
+
+  final VoidCallback onAddPlace;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.storefront_outlined, size: 48, color: AppColors.mutedText(context)),
+            const SizedBox(height: 12),
+            Text(
+              'Sizda hali joy yo\'q',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: AppColors.darkText(context),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Boshqaruv panelidan foydalanish uchun avval biznesingizga tegishli joyni qo\'shing.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: onAddPlace,
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text('Yangi joy qo\'shish'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.mutedText(context)),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(onPressed: onRetry, child: const Text('Qayta urinish')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DashboardBody extends ConsumerWidget {
+  const _DashboardBody({
+    required this.place,
+    required this.onSwitchPlace,
+    required this.onOpenOrders,
+    required this.onOpenProducts,
+    required this.onDateFilter,
+  });
+
+  final BusinessPlace place;
+  final VoidCallback onSwitchPlace;
+  final VoidCallback onOpenOrders;
+  final VoidCallback onOpenProducts;
+  final VoidCallback onDateFilter;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderStatsAsync = ref.watch(orderStatsProvider(place.id));
+    final productStatsAsync = ref.watch(productStatsProvider(place.id));
+    final recentOrdersAsync = ref.watch(orderListProvider(place.id));
+    final lowStockAsync = ref.watch(
+      productListProvider(place.id).select((value) => value),
+    );
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: onSwitchPlace,
+            borderRadius: BorderRadius.circular(14),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.fieldBorder(context)),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: AppColors.adminGradientMid,
+                    radius: 16,
+                    child: Text(
+                      _AdminBusinessDashboardScreenState._initialsFor(place.name),
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          place.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                            color: AppColors.darkText(context),
+                          ),
+                        ),
+                        Text(
+                          place.address ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 11, color: AppColors.mutedText(context)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.unfold_more, size: 18, color: AppColors.mutedText(context)),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Umumiy ko\'rinish',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.darkText(context),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: onDateFilter,
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface(context),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.fieldBorder(context)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.calendar_today_outlined,
+                          size: 14, color: AppColors.darkText(context)),
+                      const SizedBox(width: 6),
+                      Text('Bugun',
+                          style: TextStyle(fontSize: 12, color: AppColors.darkText(context))),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Joyingizda nima sodir bo\'lyapti.',
+            style: TextStyle(fontSize: 13, color: AppColors.mutedText(context)),
+          ),
+          const SizedBox(height: 16),
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 1.5,
+            children: [
+              orderStatsAsync.when(
+                loading: () => const _StatCardLoading(
+                  label: 'Buyurtmalar',
+                  icon: Icons.receipt_long_outlined,
+                ),
+                error: (_, _) => const _StatCardError(
+                  label: 'Buyurtmalar',
+                  icon: Icons.receipt_long_outlined,
+                ),
+                data: (stats) {
+                  final total = stats.newCount +
+                      stats.acceptedCount +
+                      stats.preparingCount +
+                      stats.readyCount +
+                      stats.completedCount +
+                      stats.cancelledCount;
+                  return _StatCard(
+                    label: 'Buyurtmalar',
+                    value: '$total',
+                    delta: '${stats.newCount} yangi',
+                    icon: Icons.receipt_long_outlined,
+                    deltaIsNeutral: true,
+                  );
+                },
+              ),
+              productStatsAsync.when(
+                loading: () => const _StatCardLoading(
+                  label: 'Ombor ogohlantirishlari',
+                  icon: Icons.warning_amber_outlined,
+                ),
+                error: (_, _) => const _StatCardError(
+                  label: 'Ombor ogohlantirishlari',
+                  icon: Icons.warning_amber_outlined,
+                ),
+                data: (stats) => _StatCard(
+                  label: 'Ombor ogohlantirishlari',
+                  value: '${stats.lowStock + stats.outOfStock}',
+                  delta: '${stats.outOfStock} tugagan',
+                  icon: Icons.warning_amber_outlined,
+                  deltaIsNeutral: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _Card(
+            title: 'Ombor ogohlantirishlari',
+            icon: Icons.warning_amber_outlined,
+            titleColor: const Color(0xFFCB4B4B),
+            trailing: TextButton(
+              onPressed: onOpenProducts,
+              child: const Text('Barchasini ko\'rish'),
+            ),
+            child: lowStockAsync.when(
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              error: (error, _) => Text(
+                'Ombor holatini yuklab bo\'lmadi',
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+              ),
+              data: (page) {
+                final alerts = page.items
+                    .where((p) => p.status != ProductStatus.inStock)
+                    .take(3)
+                    .toList();
+                if (alerts.isEmpty) {
+                  return Text(
+                    'Ombor ogohlantirishlari yo\'q',
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                  );
+                }
+                return Column(
+                  children: [
+                    for (var i = 0; i < alerts.length; i++) ...[
+                      if (i > 0) const SizedBox(height: 10),
+                      _InventoryAlertRow(
+                        icon: Icons.inventory_2_outlined,
+                        label: alerts[i].name,
+                        badge: alerts[i].status.label,
+                        badgeColor: alerts[i].status == ProductStatus.outOfStock
+                            ? const Color(0xFFCB4B4B)
+                            : AppColors.mutedText(context),
+                      ),
+                    ],
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          _Card(
+            title: 'So\'nggi buyurtmalar',
+            icon: Icons.receipt_long_outlined,
+            trailing: TextButton(
+              onPressed: onOpenOrders,
+              child: const Text('Barchasini ko\'rish'),
+            ),
+            child: recentOrdersAsync.when(
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              error: (error, _) => Text(
+                'Buyurtmalarni yuklab bo\'lmadi',
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+              ),
+              data: (page) {
+                final orders = page.items.take(3).toList();
+                if (orders.isEmpty) {
+                  return Text(
+                    'Hali buyurtmalar yo\'q',
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                  );
+                }
+                return Column(
+                  children: [
+                    for (var i = 0; i < orders.length; i++) ...[
+                      if (i > 0) const SizedBox(height: 10),
+                      _OrderRow(order: orders[i]),
+                    ],
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -778,8 +811,6 @@ class _StatCard extends StatelessWidget {
                 child: Icon(icon, size: 16, color: AppColors.orange),
               ),
               const Spacer(),
-              if (!deltaIsNeutral)
-                const Icon(Icons.arrow_upward, size: 12, color: Color(0xFF3F9142)),
               Text(
                 delta,
                 style: TextStyle(
@@ -793,6 +824,84 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: AppColors.darkText(context),
+            ),
+          ),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCardLoading extends StatelessWidget {
+  const _StatCardLoading({required this.label, required this.icon});
+
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface(context),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.fieldBorder(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: AppColors.mutedText(context)),
+          const SizedBox(height: 10),
+          const SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCardError extends StatelessWidget {
+  const _StatCardError({required this.label, required this.icon});
+
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface(context),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.fieldBorder(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: AppColors.mutedText(context)),
+          const SizedBox(height: 10),
+          Text(
+            '—',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w800,
@@ -853,24 +962,23 @@ class _InventoryAlertRow extends StatelessWidget {
 }
 
 class _OrderRow extends StatelessWidget {
-  const _OrderRow({
-    required this.orderId,
-    required this.items,
-    required this.status,
-    required this.statusColor,
-    required this.time,
-    required this.price,
-  });
+  const _OrderRow({required this.order});
 
-  final String orderId;
-  final String items;
-  final String status;
-  final Color statusColor;
-  final String time;
-  final String price;
+  final Order order;
+
+  static const _statusColors = {
+    OrderStatus.newOrder: Color(0xFFCB4B4B),
+    OrderStatus.accepted: Color(0xFF3B6EA8),
+    OrderStatus.preparing: AppColors.adminGradientMid,
+    OrderStatus.ready: Color(0xFF3F9142),
+    OrderStatus.completed: Color(0xFF3F9142),
+    OrderStatus.cancelled: Color(0xFF6B6B6B),
+  };
 
   @override
   Widget build(BuildContext context) {
+    final statusColor = _statusColors[order.status] ?? AppColors.mutedText(context);
+    final itemsLabel = order.items.map((i) => i.name).join(', ');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
@@ -884,7 +992,7 @@ class _OrderRow extends StatelessWidget {
           Row(
             children: [
               Text(
-                orderId,
+                '#${order.id.substring(0, order.id.length.clamp(0, 6))}',
                 style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
               ),
               const Spacer(),
@@ -895,7 +1003,7 @@ class _OrderRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  status,
+                  order.status.label,
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: statusColor),
                 ),
               ),
@@ -903,16 +1011,21 @@ class _OrderRow extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            items,
+            itemsLabel.isEmpty ? order.customerName : itemsLabel,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.darkText(context)),
           ),
           const SizedBox(height: 4),
           Row(
             children: [
-              Text(time, style: TextStyle(fontSize: 11, color: AppColors.mutedText(context))),
+              Text(
+                order.customerName,
+                style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
+              ),
               const Spacer(),
               Text(
-                price,
+                '${order.totalAmount} so\'m',
                 style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.darkText(context)),
               ),
             ],
@@ -921,91 +1034,4 @@ class _OrderRow extends StatelessWidget {
       ),
     );
   }
-}
-
-class _TrendChart extends StatelessWidget {
-  const _TrendChart({required this.values, required this.labels});
-
-  final List<double> values;
-  final List<String> labels;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: CustomPaint(
-            size: Size.infinite,
-            painter: _TrendChartPainter(values: values),
-          ),
-        ),
-        const SizedBox(height: 6),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: labels
-              .map((label) => Text(
-                    label,
-                    style: TextStyle(fontSize: 10, color: AppColors.mutedText(context)),
-                  ))
-              .toList(),
-        ),
-      ],
-    );
-  }
-}
-
-class _TrendChartPainter extends CustomPainter {
-  _TrendChartPainter({required this.values});
-
-  final List<double> values;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (values.isEmpty) return;
-    final maxValue = values.reduce((a, b) => a > b ? a : b);
-    final stepX = size.width / (values.length - 1);
-
-    Offset pointAt(int index) {
-      final x = stepX * index;
-      final y = size.height - (values[index] / maxValue) * size.height;
-      return Offset(x, y);
-    }
-
-    final linePath = Path()..moveTo(pointAt(0).dx, pointAt(0).dy);
-    for (var i = 1; i < values.length; i++) {
-      linePath.lineTo(pointAt(i).dx, pointAt(i).dy);
-    }
-
-    final fillPath = Path.from(linePath)
-      ..lineTo(pointAt(values.length - 1).dx, size.height)
-      ..lineTo(pointAt(0).dx, size.height)
-      ..close();
-
-    final fillPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          AppColors.adminGradientMid.withValues(alpha: 0.25),
-          AppColors.adminGradientMid.withValues(alpha: 0.0),
-        ],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawPath(fillPath, fillPaint);
-
-    final linePaint = Paint()
-      ..color = AppColors.adminGradientMid
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.5
-      ..strokeCap = StrokeCap.round;
-    canvas.drawPath(linePath, linePaint);
-
-    final dotPaint = Paint()..color = AppColors.adminGradientMid;
-    for (var i = 0; i < values.length; i++) {
-      canvas.drawCircle(pointAt(i), 3, dotPaint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _TrendChartPainter oldDelegate) =>
-      oldDelegate.values != values;
 }

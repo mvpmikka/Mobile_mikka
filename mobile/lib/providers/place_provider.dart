@@ -31,6 +31,12 @@ final nearbyPlacesProvider = FutureProvider<List<Place>>((ref) async {
       .listNearby(lat: position.latitude, lng: position.longitude);
 });
 
+final myPlacesProvider = FutureProvider.autoDispose<List<BusinessPlace>>((
+  ref,
+) async {
+  return ref.watch(placeServiceProvider).listMine();
+});
+
 final placeDetailProvider = FutureProvider.family<PlaceDetail, String>((
   ref,
   placeId,
