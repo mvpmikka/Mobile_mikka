@@ -341,9 +341,16 @@ class _AdminBusinessDashboardScreenState
                         ),
                       );
                     case 'Ombor':
+                      final places = ref.read(myPlacesProvider).valueOrNull;
+                      if (places == null || places.isEmpty) {
+                        _showSoon('Ombor');
+                        return;
+                      }
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const AdminBusinessInventoryScreen(),
+                          builder: (_) => AdminBusinessInventoryScreen(
+                            placeId: places[_selectedPlaceIndex.clamp(0, places.length - 1)].id,
+                          ),
                         ),
                       );
                     case 'Mijozlar':

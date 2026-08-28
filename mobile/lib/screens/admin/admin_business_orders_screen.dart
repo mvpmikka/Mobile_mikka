@@ -16,6 +16,15 @@ const _statusColors = {
   OrderStatus.cancelled: Color(0xFF8A7E72),
 };
 
+String _fmtDateTime(DateTime d) {
+  final now = DateTime.now();
+  final time = '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
+  if (d.year == now.year && d.month == now.month && d.day == now.day) {
+    return 'Bugun, $time';
+  }
+  return '${d.day.toString().padLeft(2, '0')}.${d.month.toString().padLeft(2, '0')}.${d.year} $time';
+}
+
 /// MIKKA Business mobil "Buyurtmalar" ekrani — [orderListProvider]/
 /// [orderStatsProvider] orqali `/places/:placeId/orders` bilan ulangan.
 class AdminBusinessOrdersScreen extends ConsumerStatefulWidget {
@@ -57,6 +66,26 @@ class _AdminBusinessOrdersScreenState extends ConsumerState<AdminBusinessOrdersS
     } on ApiException catch (e) {
       _showMessage(e.message);
     }
+  }
+
+  void _openOrderDetail(Order order) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.cream(context),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) => _OrderDetailSheet(
+        order: order,
+        onAdvance: order.status.next == null
+            ? null
+            : () {
+                Navigator.of(sheetContext).pop();
+                _advanceStatus(order);
+              },
+      ),
+    );
   }
 
   Future<void> _createOrder() async {
@@ -184,7 +213,7 @@ class _AdminBusinessOrdersScreenState extends ConsumerState<AdminBusinessOrdersS
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (_, index) => _OrderCard(
                         order: page.items[index],
-                        onTap: () => _showMessage('Buyurtma tafsilotlari tez orada'),
+                        onTap: () => _openOrderDetail(page.items[index]),
                         onAdvance: () => _advanceStatus(page.items[index]),
                       ),
                     );
@@ -347,6 +376,143 @@ class _OrderCard extends StatelessWidget {
                   ),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OrderDetailSheet extends StatelessWidget {
+  const _OrderDetailSheet({required this.order, required this.onAdvance});
+
+  final Order order;
+  final VoidCallback? onAdvance;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = _statusColors[order.status] ?? AppColors.mutedText(context);
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          20,
+          16,
+          20,
+          MediaQuery.of(context).viewInsets.bottom + 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    order.customerName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.darkText(context),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    order.status.label,
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: color),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _fmtDateTime(order.createdAt),
+              style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+            ),
+            if (order.customerPhone != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                order.customerPhone!,
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+              ),
+            ],
+            const SizedBox(height: 16),
+            Text(
+              'Mahsulotlar',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: AppColors.darkText(context),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.surface(context),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.fieldBorder(context)),
+              ),
+              child: Column(
+                children: [
+                  for (final item in order.items)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${item.name} x${item.quantity}',
+                              style: TextStyle(color: AppColors.darkText(context)),
+                            ),
+                          ),
+                          Text(
+                            '${item.unitPrice * item.quantity} so\'m',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.darkText(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Text(
+                  'Jami',
+                  style: TextStyle(fontSize: 14, color: AppColors.mutedText(context)),
+                ),
+                const Spacer(),
+                Text(
+                  '${order.totalAmount} so\'m',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.darkText(context),
+                  ),
+                ),
+              ],
+            ),
+            if (onAdvance != null) ...[
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: onAdvance,
+                  style: FilledButton.styleFrom(backgroundColor: color),
+                  child: Text(order.status.next!.label),
+                ),
+              ),
+            ],
           ],
         ),
       ),
