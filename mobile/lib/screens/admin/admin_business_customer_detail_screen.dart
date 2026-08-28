@@ -1,33 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../models/booking.dart';
+import '../../models/customer.dart';
+import '../../models/order.dart';
+import '../../providers/customer_provider.dart';
 import '../../theme/app_colors.dart';
-import 'admin_business_customers_screen.dart';
+import 'admin_business_customers_screen.dart' show avatarColorFor;
 
-/// MIKKA Business mobil "Mijoz tafsilotlari" ekrani — Figma dizaynidagi
-/// panel bilan mos sof UI. Faoliyat/buyurtma/band/sharh tarixi lokal
-/// namunaviy ma'lumot — hech qanday backend/servis chaqiruvi yo'q.
-class AdminBusinessCustomerDetailScreen extends StatefulWidget {
-  const AdminBusinessCustomerDetailScreen({super.key, required this.customer});
+/// MIKKA Business mobil "Mijoz tafsilotlari" ekrani —
+/// [customerDetailProvider] orqali `/places/:placeId/customers/:phone`
+/// bilan ulangan.
+class AdminBusinessCustomerDetailScreen extends ConsumerStatefulWidget {
+  const AdminBusinessCustomerDetailScreen({
+    super.key,
+    required this.placeId,
+    required this.phone,
+  });
 
-  final AdminBusinessCustomer customer;
+  final String placeId;
+  final String phone;
 
   @override
-  State<AdminBusinessCustomerDetailScreen> createState() =>
+  ConsumerState<AdminBusinessCustomerDetailScreen> createState() =>
       _AdminBusinessCustomerDetailScreenState();
 }
 
-class _AdminBusinessCustomerDetailScreenState extends State<AdminBusinessCustomerDetailScreen> {
-  static const _tabs = ['Faoliyat', 'Buyurtmalar', 'Bandlar', 'Sharhlar'];
+class _AdminBusinessCustomerDetailScreenState
+    extends ConsumerState<AdminBusinessCustomerDetailScreen> {
+  static const _tabs = ['Faoliyat', 'Buyurtmalar', 'Bandlar'];
   int _selectedTab = 0;
-  late bool _isActive = widget.customer.isActive;
+  bool _busy = false;
+
+  CustomerDetailKey get _key => (placeId: widget.placeId, phone: widget.phone);
 
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  Future<void> _toggleBlock(bool isBlocked) async {
+    setState(() => _busy = true);
+    try {
+      final service = ref.read(customerServiceProvider);
+      if (isBlocked) {
+        await service.unblock(widget.placeId, widget.phone);
+      } else {
+        await service.block(widget.placeId, widget.phone);
+      }
+      ref.invalidate(customerDetailProvider(_key));
+      ref.invalidate(customerListProvider(widget.placeId));
+    } on ApiException catch (e) {
+      if (mounted) _showMessage(e.message);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final customer = widget.customer;
+    final detailAsync = ref.watch(customerDetailProvider(_key));
+
     return Scaffold(
       backgroundColor: AppColors.cream(context),
       body: SafeArea(
@@ -65,50 +98,75 @@ class _AdminBusinessCustomerDetailScreenState extends State<AdminBusinessCustome
                 ],
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: 16, bottom: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _CustomerHeroCard(
-                        customer: customer,
-                        isActive: _isActive,
-                        onMessage: () => _showMessage('Xabar yuborish tez orada qo\'shiladi'),
-                        onToggleBlock: () => setState(() => _isActive = !_isActive),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
+                child: detailAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: _StatTile(
-                              icon: Icons.directions_walk,
-                              value: '${customer.visits}',
-                              label: 'Jami tashriflar',
-                            ),
+                          Text(
+                            error is ApiException ? error.message : 'Mijoz topilmadi',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: AppColors.mutedText(context)),
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: _StatTile(
-                              icon: Icons.payments_outlined,
-                              value: '${customer.totalSpent} so\'m',
-                              label: 'Jami sarflangan',
-                            ),
+                          const SizedBox(height: 12),
+                          OutlinedButton(
+                            onPressed: () => ref.invalidate(customerDetailProvider(_key)),
+                            child: const Text('Qayta urinish'),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      _OrdersBookingsTile(orders: customer.orders, bookings: customer.bookings),
-                      const SizedBox(height: 16),
-                      _ContactInfoCard(customer: customer),
-                      const SizedBox(height: 20),
-                      _TabSelector(
-                        tabs: _tabs,
-                        selectedIndex: _selectedTab,
-                        onSelected: (index) => setState(() => _selectedTab = index),
-                      ),
-                      const SizedBox(height: 14),
-                      _TabContent(index: _selectedTab),
-                    ],
+                    ),
+                  ),
+                  data: (customer) => SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: 16, bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _CustomerHeroCard(
+                          customer: customer,
+                          busy: _busy,
+                          onToggleBlock: () => _toggleBlock(customer.isBlocked),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _StatTile(
+                                icon: Icons.receipt_long_outlined,
+                                value: '${customer.ordersCount}',
+                                label: 'Buyurtmalar',
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: _StatTile(
+                                icon: Icons.payments_outlined,
+                                value: '${customer.totalSpent} so\'m',
+                                label: 'Jami sarflangan',
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        _OrdersBookingsTile(
+                          orders: customer.ordersCount,
+                          bookings: customer.bookingsCount,
+                        ),
+                        const SizedBox(height: 16),
+                        _ContactInfoCard(customer: customer),
+                        const SizedBox(height: 20),
+                        _TabSelector(
+                          tabs: _tabs,
+                          selectedIndex: _selectedTab,
+                          onSelected: (index) => setState(() => _selectedTab = index),
+                        ),
+                        const SizedBox(height: 14),
+                        _TabContent(index: _selectedTab, customer: customer),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -123,18 +181,17 @@ class _AdminBusinessCustomerDetailScreenState extends State<AdminBusinessCustome
 class _CustomerHeroCard extends StatelessWidget {
   const _CustomerHeroCard({
     required this.customer,
-    required this.isActive,
-    required this.onMessage,
+    required this.busy,
     required this.onToggleBlock,
   });
 
-  final AdminBusinessCustomer customer;
-  final bool isActive;
-  final VoidCallback onMessage;
+  final CustomerDetail customer;
+  final bool busy;
   final VoidCallback onToggleBlock;
 
   @override
   Widget build(BuildContext context) {
+    final isActive = !customer.isBlocked;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -150,9 +207,11 @@ class _CustomerHeroCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 28,
-                backgroundColor: customer.avatarColor,
+                backgroundColor: avatarColorFor(customer.customerPhone),
                 child: Text(
-                  customer.name.substring(0, 1).toUpperCase(),
+                  customer.customerName.isEmpty
+                      ? '?'
+                      : customer.customerName.substring(0, 1).toUpperCase(),
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 20),
                 ),
               ),
@@ -162,7 +221,7 @@ class _CustomerHeroCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      customer.name,
+                      customer.customerName,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
@@ -170,7 +229,7 @@ class _CustomerHeroCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      customer.username,
+                      customer.customerPhone,
                       style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                     ),
                     const SizedBox(height: 6),
@@ -196,39 +255,18 @@ class _CustomerHeroCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: AppColors.adminBrandGradient,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: TextButton.icon(
-                    onPressed: onMessage,
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    icon: const Icon(Icons.chat_bubble_outline, size: 16),
-                    label: const Text('Xabar', style: TextStyle(fontWeight: FontWeight.w700)),
-                  ),
-                ),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: busy ? null : onToggleBlock,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFFCB4B4B),
+                side: const BorderSide(color: Color(0xFFCB4B4B)),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: onToggleBlock,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFCB4B4B),
-                    side: const BorderSide(color: Color(0xFFCB4B4B)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                  ),
-                  child: Text(isActive ? 'Bloklash' : 'Blokdan chiqarish'),
-                ),
-              ),
-            ],
+              child: Text(isActive ? 'Bloklash' : 'Blokdan chiqarish'),
+            ),
           ),
         ],
       ),
@@ -333,7 +371,7 @@ class _OrdersBookingsTile extends StatelessWidget {
 class _ContactInfoCard extends StatelessWidget {
   const _ContactInfoCard({required this.customer});
 
-  final AdminBusinessCustomer customer;
+  final CustomerDetail customer;
 
   @override
   Widget build(BuildContext context) {
@@ -347,16 +385,20 @@ class _ContactInfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ContactRow(icon: Icons.call_outlined, value: customer.phone),
+          _ContactRow(icon: Icons.call_outlined, value: customer.customerPhone),
           const SizedBox(height: 10),
-          _ContactRow(icon: Icons.location_on_outlined, value: customer.location),
-          const SizedBox(height: 10),
-          _ContactRow(icon: Icons.calendar_today_outlined, value: '${customer.customerSince} dan buyon mijoz'),
+          _ContactRow(
+            icon: Icons.access_time_outlined,
+            value: 'So\'nggi faoliyat: ${_fmtDate(customer.lastActivityAt)}',
+          ),
         ],
       ),
     );
   }
 }
+
+String _fmtDate(DateTime d) =>
+    '${d.day.toString().padLeft(2, '0')}.${d.month.toString().padLeft(2, '0')}.${d.year}';
 
 class _ContactRow extends StatelessWidget {
   const _ContactRow({required this.icon, required this.value});
@@ -427,66 +469,116 @@ class _TabSelector extends StatelessWidget {
   }
 }
 
-class _TimelineEntry {
-  const _TimelineEntry({required this.title, required this.time, required this.isLatest});
+class _ActivityEntry {
+  const _ActivityEntry({required this.title, required this.subtitle, required this.time, required this.at});
 
   final String title;
+  final String subtitle;
   final String time;
-  final bool isLatest;
+  final DateTime at;
 }
 
-const _activity = [
-  _TimelineEntry(title: 'Buyurtma berdi #ORD-102 • 45 000 so\'m', time: '2 soat oldin', isLatest: true),
-  _TimelineEntry(title: 'Band #BKG-05 ni yakunladi • 2 kishilik stol', time: 'Kecha', isLatest: false),
-  _TimelineEntry(title: '5 yulduzli sharh qoldirdi', time: '1 hafta oldin', isLatest: false),
-];
-
 class _TabContent extends StatelessWidget {
-  const _TabContent({required this.index});
+  const _TabContent({required this.index, required this.customer});
 
   final int index;
+  final CustomerDetail customer;
 
   @override
   Widget build(BuildContext context) {
     switch (index) {
       case 1:
-        return const _InfoRowCard(
-          icon: Icons.receipt_long_outlined,
-          title: '#ORD-102',
-          subtitle: '45 000 so\'m',
-          time: '2 soat oldin',
-        );
-      case 2:
-        return const _InfoRowCard(
-          icon: Icons.event_note_outlined,
-          title: '#BKG-05',
-          subtitle: 'Stol T04 • 2 kishi',
-          time: 'Kecha',
-        );
-      case 3:
-        return const _InfoRowCard(
-          icon: Icons.star_outline,
-          title: '5 yulduz',
-          subtitle: 'Zo\'r xizmat va mazali taomlar!',
-          time: '1 hafta oldin',
-        );
-      default:
+        if (customer.recentOrders.isEmpty) {
+          return _EmptyTabState(text: 'Buyurtmalar yo\'q');
+        }
         return Column(
           children: [
-            for (final entry in _activity) ...[
-              _ActivityRow(entry: entry),
-              if (entry != _activity.last) const SizedBox(height: 10),
+            for (final order in customer.recentOrders) ...[
+              _InfoRowCard(
+                icon: Icons.receipt_long_outlined,
+                title: order.items.map((i) => '${i.name} x${i.quantity}').join(', '),
+                subtitle: '${order.totalAmount} so\'m • ${order.status.label}',
+                time: _fmtDate(order.createdAt),
+              ),
+              if (order != customer.recentOrders.last) const SizedBox(height: 10),
+            ],
+          ],
+        );
+      case 2:
+        if (customer.recentBookings.isEmpty) {
+          return _EmptyTabState(text: 'Bandlar yo\'q');
+        }
+        return Column(
+          children: [
+            for (final booking in customer.recentBookings) ...[
+              _InfoRowCard(
+                icon: Icons.event_note_outlined,
+                title: [?booking.tableLabel, '${booking.guests} kishi'].join(' • '),
+                subtitle: '${_fmtDate(booking.bookingTime)} • ${booking.status.label}',
+                time: _fmtDate(booking.createdAt),
+              ),
+              if (booking != customer.recentBookings.last) const SizedBox(height: 10),
+            ],
+          ],
+        );
+      default:
+        final activity = _buildActivity(customer);
+        if (activity.isEmpty) {
+          return _EmptyTabState(text: 'Faoliyat yo\'q');
+        }
+        return Column(
+          children: [
+            for (final entry in activity) ...[
+              _ActivityRow(entry: entry, isLatest: entry == activity.first),
+              if (entry != activity.last) const SizedBox(height: 10),
             ],
           ],
         );
     }
   }
+
+  List<_ActivityEntry> _buildActivity(CustomerDetail customer) {
+    final entries = <_ActivityEntry>[
+      for (final order in customer.recentOrders)
+        _ActivityEntry(
+          title: 'Buyurtma berdi • ${order.totalAmount} so\'m',
+          subtitle: order.status.label,
+          time: _fmtDate(order.createdAt),
+          at: order.createdAt,
+        ),
+      for (final booking in customer.recentBookings)
+        _ActivityEntry(
+          title: 'Band qildi • ${booking.guests} kishilik',
+          subtitle: booking.status.label,
+          time: _fmtDate(booking.bookingTime),
+          at: booking.bookingTime,
+        ),
+    ]..sort((a, b) => b.at.compareTo(a.at));
+    return entries;
+  }
+}
+
+class _EmptyTabState extends StatelessWidget {
+  const _EmptyTabState({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Center(
+        child: Text(text, style: TextStyle(color: AppColors.mutedText(context))),
+      ),
+    );
+  }
 }
 
 class _ActivityRow extends StatelessWidget {
-  const _ActivityRow({required this.entry});
+  const _ActivityRow({required this.entry, required this.isLatest});
 
-  final _TimelineEntry entry;
+  final _ActivityEntry entry;
+  final bool isLatest;
 
   @override
   Widget build(BuildContext context) {
@@ -500,7 +592,7 @@ class _ActivityRow extends StatelessWidget {
             height: 10,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: entry.isLatest ? AppColors.adminGradientMid : AppColors.fieldBorder(context),
+              color: isLatest ? AppColors.adminGradientMid : AppColors.fieldBorder(context),
             ),
           ),
         ),
@@ -526,7 +618,7 @@ class _ActivityRow extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  entry.time,
+                  '${entry.subtitle} • ${entry.time}',
                   style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                 ),
               ],
@@ -577,7 +669,7 @@ class _InfoRowCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  title.isEmpty ? '—' : title,
                   style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.darkText(context)),
                 ),
                 Text(

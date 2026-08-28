@@ -1,99 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../models/customer.dart';
+import '../../providers/customer_provider.dart';
 import '../../theme/app_colors.dart';
 import 'admin_business_customer_detail_screen.dart';
-import 'widgets/admin_pagination_bar.dart';
 import 'widgets/admin_section_topbar.dart';
 
-/// A single customer summary shown in the list and passed through to the
-/// detail screen. Pure UI data holder — no backend/service shape.
-class AdminBusinessCustomer {
-  const AdminBusinessCustomer({
-    required this.name,
-    required this.username,
-    required this.phone,
-    required this.visits,
-    required this.orders,
-    required this.bookings,
-    required this.totalSpent,
-    required this.location,
-    required this.customerSince,
-    required this.isActive,
-    required this.avatarColor,
-  });
-
-  final String name;
-  final String username;
-  final String phone;
-  final int visits;
-  final int orders;
-  final int bookings;
-  final String totalSpent;
-  final String location;
-  final String customerSince;
-  final bool isActive;
-  final Color avatarColor;
-}
-
-const _customers = [
-  AdminBusinessCustomer(
-    name: 'Aziz Karimov',
-    username: '@aziz_k',
-    phone: '+998 90 123 45 67',
-    visits: 12,
-    orders: 8,
-    bookings: 4,
-    totalSpent: '450 000',
-    location: 'Toshkent, O\'zbekiston',
-    customerSince: 'Yanvar 2023',
-    isActive: true,
-    avatarColor: Color(0xFF3B6EA8),
-  ),
-  AdminBusinessCustomer(
-    name: 'Madina Usmanova',
-    username: '@madi_u',
-    phone: '+998 93 987 65 43',
-    visits: 5,
-    orders: 5,
-    bookings: 0,
-    totalSpent: '210 000',
-    location: 'Toshkent, O\'zbekiston',
-    customerSince: 'Mart 2023',
-    isActive: true,
-    avatarColor: Color(0xFF8A5A3B),
-  ),
-  AdminBusinessCustomer(
-    name: 'Bekzod Rakhimov',
-    username: '@bek_r',
-    phone: '+998 97 111 22 33',
-    visits: 2,
-    orders: 1,
-    bookings: 1,
-    totalSpent: '65 000',
-    location: 'Samarqand, O\'zbekiston',
-    customerSince: 'Iyun 2023',
-    isActive: false,
-    avatarColor: Color(0xFF6B6B6B),
-  ),
+const _avatarColors = [
+  Color(0xFF3B6EA8),
+  Color(0xFF8A5A3B),
+  Color(0xFF6B6B6B),
+  Color(0xFF3F9142),
+  Color(0xFFC9922E),
+  Color(0xFFCB4B4B),
 ];
 
-/// MIKKA Business mobil "Mijozlar" ekrani — Figma dizayni asosidagi sof UI.
-/// Mijozlar ro'yxati lokal namunaviy ma'lumot — hech qanday backend/servis
-/// chaqiruvi yo'q.
-class AdminBusinessCustomersScreen extends StatefulWidget {
-  const AdminBusinessCustomersScreen({super.key});
+Color avatarColorFor(String phone) => _avatarColors[phone.hashCode.abs() % _avatarColors.length];
+
+/// MIKKA Business mobil "Mijozlar" ekrani — [customerListProvider] orqali
+/// `/places/:placeId/customers` bilan ulangan.
+class AdminBusinessCustomersScreen extends ConsumerStatefulWidget {
+  const AdminBusinessCustomersScreen({super.key, required this.placeId});
+
+  final String placeId;
 
   @override
-  State<AdminBusinessCustomersScreen> createState() => _AdminBusinessCustomersScreenState();
+  ConsumerState<AdminBusinessCustomersScreen> createState() =>
+      _AdminBusinessCustomersScreenState();
 }
 
-class _AdminBusinessCustomersScreenState extends State<AdminBusinessCustomersScreen> {
+class _AdminBusinessCustomersScreenState extends ConsumerState<AdminBusinessCustomersScreen> {
   final _searchController = TextEditingController();
-
-  static const _catalogTotal = 124;
-  static const _pageSize = 3;
-  int _currentPage = 1;
-  int get _totalPages => (_catalogTotal / _pageSize).ceil();
 
   @override
   void dispose() {
@@ -105,19 +44,13 @@ class _AdminBusinessCustomersScreenState extends State<AdminBusinessCustomersScr
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  List<AdminBusinessCustomer> get _filtered {
-    final query = _searchController.text.trim().toLowerCase();
-    if (query.isEmpty) return _customers;
-    return _customers.where((customer) {
-      return customer.name.toLowerCase().contains(query) ||
-          customer.username.toLowerCase().contains(query) ||
-          customer.phone.toLowerCase().contains(query);
-    }).toList();
+  void _refresh() {
+    ref.invalidate(customerListProvider(widget.placeId));
   }
 
   @override
   Widget build(BuildContext context) {
-    final customers = _filtered;
+    final customersAsync = ref.watch(customerListProvider(widget.placeId));
 
     return Scaffold(
       backgroundColor: AppColors.cream(context),
@@ -132,7 +65,11 @@ class _AdminBusinessCustomersScreenState extends State<AdminBusinessCustomersScr
                 onNotification: () => _showMessage('Bildirishnomalar tez orada qo\'shiladi'),
                 searchController: _searchController,
                 searchHint: 'Ism, telefon bo\'yicha qidirish...',
-                onSearchChanged: (_) => setState(() {}),
+                onSearchChanged: (value) {
+                  ref.read(customerQueryProvider.notifier).update(
+                        (q) => q.copyWith(search: value, clearSearch: value.isEmpty),
+                      );
+                },
               ),
               const SizedBox(height: 8),
               Text(
@@ -141,51 +78,51 @@ class _AdminBusinessCustomersScreenState extends State<AdminBusinessCustomersScr
               ),
               const SizedBox(height: 12),
               Expanded(
-                child: customers.isEmpty
-                    ? Center(
+                child: customersAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => _ErrorState(
+                    message: error is ApiException ? error.message : 'Mijozlar yuklanmadi',
+                    onRetry: _refresh,
+                  ),
+                  data: (page) {
+                    if (page.items.isEmpty) {
+                      return Center(
                         child: Text(
                           'Mijoz topilmadi',
                           style: TextStyle(color: AppColors.mutedText(context)),
                         ),
-                      )
-                    : ListView.separated(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: customers.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (_, index) {
-                          final customer = customers[index];
-                          return _CustomerCard(
-                            customer: customer,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => AdminBusinessCustomerDetailScreen(customer: customer),
+                      );
+                    }
+                    return ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      itemCount: page.items.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (_, index) {
+                        final customer = page.items[index];
+                        return _CustomerCard(
+                          customer: customer,
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => AdminBusinessCustomerDetailScreen(
+                                placeId: widget.placeId,
+                                phone: customer.customerPhone,
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Column(
-                  children: [
-                    Text(
-                      '${(_currentPage - 1) * _pageSize + 1}-${_currentPage * _pageSize} / $_catalogTotal mijoz',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
-                    ),
-                    const SizedBox(height: 8),
-                    AdminPaginationBar(
-                      currentPage: _currentPage,
-                      totalPages: _totalPages,
-                      onPageChanged: (page) {
-                        setState(() => _currentPage = page);
-                        if (page != 1) {
-                          _showMessage('Namunada faqat 1-sahifa ma\'lumotlari mavjud');
-                        }
-                      },
-                    ),
-                  ],
+                child: Text(
+                  customersAsync.valueOrNull != null
+                      ? '${customersAsync.value!.items.length} / ${customersAsync.value!.total} mijoz'
+                      : '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                 ),
               ),
             ],
@@ -196,14 +133,43 @@ class _AdminBusinessCustomersScreenState extends State<AdminBusinessCustomersScr
   }
 }
 
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.mutedText(context)),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(onPressed: onRetry, child: const Text('Qayta urinish')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CustomerCard extends StatelessWidget {
   const _CustomerCard({required this.customer, required this.onTap});
 
-  final AdminBusinessCustomer customer;
+  final Customer customer;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final isActive = !customer.isBlocked;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -218,9 +184,9 @@ class _CustomerCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: customer.avatarColor,
+              backgroundColor: _avatarColorFor(customer.customerPhone),
               child: Text(
-                customer.name.substring(0, 1).toUpperCase(),
+                customer.customerName.isEmpty ? '?' : customer.customerName.substring(0, 1).toUpperCase(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
               ),
             ),
@@ -230,21 +196,21 @@ class _CustomerCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    customer.name,
+                    customer.customerName,
                     style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.darkText(context)),
                   ),
                   Text(
-                    '${customer.username} • ${customer.phone}',
+                    customer.customerPhone,
                     style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                   ),
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      _MiniStat(icon: Icons.directions_walk, value: '${customer.visits}'),
+                      _MiniStat(icon: Icons.receipt_long_outlined, value: '${customer.ordersCount}'),
                       const SizedBox(width: 12),
-                      _MiniStat(icon: Icons.receipt_long_outlined, value: '${customer.orders}'),
+                      _MiniStat(icon: Icons.event_note_outlined, value: '${customer.bookingsCount}'),
                       const SizedBox(width: 12),
-                      _MiniStat(icon: Icons.event_note_outlined, value: '${customer.bookings}'),
+                      _MiniStat(icon: Icons.payments_outlined, value: '${customer.totalSpent}'),
                     ],
                   ),
                 ],
@@ -254,16 +220,16 @@ class _CustomerCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: (customer.isActive ? const Color(0xFF3F9142) : const Color(0xFFCB4B4B))
+                color: (isActive ? const Color(0xFF3F9142) : const Color(0xFFCB4B4B))
                     .withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                customer.isActive ? 'FAOL' : 'BLOKLANGAN',
+                isActive ? 'FAOL' : 'BLOKLANGAN',
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: customer.isActive ? const Color(0xFF3F9142) : const Color(0xFFCB4B4B),
+                  color: isActive ? const Color(0xFF3F9142) : const Color(0xFFCB4B4B),
                 ),
               ),
             ),
