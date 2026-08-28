@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/api_exception.dart';
 import '../models/badge.dart' as models;
 import '../providers/auth_provider.dart';
 import '../providers/badge_provider.dart';
@@ -223,6 +224,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   );
                 },
               ),
+              _MenuTile(
+                icon: Icons.delete_forever_outlined,
+                label: 'Delete account',
+                destructive: true,
+                onTap: () => _confirmDeleteAccount(context),
+              ),
             ],
           ),
         ),
@@ -231,6 +238,49 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         currentIndex: _selectedNavIndex,
         onTap: _onNavTap,
       ),
+    );
+  }
+
+  Future<void> _confirmDeleteAccount(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Hisobni o\'chirish'),
+        content: const Text(
+          'Hisobingiz butunlay o\'chiriladi va uni tiklab bo\'lmaydi. '
+          'Barcha shaxsiy ma\'lumotlaringiz o\'chiriladi. Davom etasizmi?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Bekor qilish'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFCB4B4B),
+            ),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Hisobni o\'chirish'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    if (!context.mounted) return;
+
+    try {
+      await ref.read(authControllerProvider.notifier).deleteAccount();
+    } on ApiException catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message), backgroundColor: const Color(0xFFCB4B4B)),
+      );
+      return;
+    }
+    if (!context.mounted) return;
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+      (route) => false,
     );
   }
 

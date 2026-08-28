@@ -101,6 +101,15 @@ class AuthService {
     await _tokenStorage.clear();
   }
 
+  Future<void> deleteAccount() async {
+    try {
+      await _apiClient.dio.delete('/auth/me');
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+    await _tokenStorage.clear();
+  }
+
   Future<bool> hasStoredSession() async {
     return await _tokenStorage.readRefreshToken() != null;
   }

@@ -135,6 +135,12 @@ class AuthController extends AsyncNotifier<AuthState> {
     state = const AsyncData(AuthState.unauthenticated());
   }
 
+  Future<void> deleteAccount() async {
+    final authService = ref.read(authServiceProvider);
+    await authService.deleteAccount();
+    state = const AsyncData(AuthState.unauthenticated());
+  }
+
   Future<void> verifyEmail(String token) async {
     final authService = ref.read(authServiceProvider);
     await authService.verifyEmail(token);
