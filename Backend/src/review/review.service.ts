@@ -109,12 +109,27 @@ export class ReviewService {
 
   async getRatingSummary(placeId: string) {
     await this.requirePlace(placeId);
-    const summary = await this.ratingSummaryRepository.findByPlaceId(placeId);
+    const [summary, breakdown] = await Promise.all([
+      this.ratingSummaryRepository.findByPlaceId(placeId),
+      this.reviewRepository.getRatingBreakdown(placeId),
+    ]);
     return {
       placeId,
       averageRating: summary?.averageRating ?? 0,
       reviewCount: summary?.reviewCount ?? 0,
+      breakdown,
     };
+  }
+
+  // ADMIN-only (see ReviewController) — the place owner replying to a
+  // review left on their place. Scoped to placeId so an admin of place A
+  // can't reply to a review that belongs to place B.
+  async reply(placeId: string, id: string, reply: string): Promise<Review> {
+    const review = await this.findById(id);
+    if (review.placeId !== placeId) {
+      throw new NotFoundException('Review not found');
+    }
+    return this.reviewRepository.reply(id, reply);
   }
 
   private async requirePlace(placeId: string): Promise<void> {

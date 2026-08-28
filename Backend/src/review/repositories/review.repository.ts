@@ -90,6 +90,30 @@ export class ReviewRepository {
     });
   }
 
+  reply(id: string, reply: string): Promise<Review> {
+    return this.prisma.review.update({
+      where: { id },
+      data: { ownerReply: reply, ownerRepliedAt: new Date() },
+      include: { user: { select: reviewerSelect } },
+    });
+  }
+
+  // 1..5 -> count of reviews at that rating for the place, used to render
+  // the rating-breakdown bars — maintained on read (no trigger/denorm,
+  // unlike PlaceRatingSummary — a groupBy is cheap enough for this).
+  async getRatingBreakdown(placeId: string): Promise<Record<number, number>> {
+    const rows = await this.prisma.review.groupBy({
+      by: ['rating'],
+      where: { placeId, deletedAt: null },
+      _count: true,
+    });
+    const breakdown: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    for (const row of rows) {
+      breakdown[row.rating] = row._count;
+    }
+    return breakdown;
+  }
+
   // Read-only existence check against `places` — kept minimal and local to
   // this module rather than importing PlaceModule/PlaceService, per
   // CLAUDE.md's module-independence principle (same approach Search uses).

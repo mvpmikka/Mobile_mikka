@@ -13,6 +13,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../auth/strategies/jwt.strategy';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
@@ -24,6 +26,8 @@ import { updateReviewSchema } from './dto/update-review.dto';
 import type { UpdateReviewDto } from './dto/update-review.dto';
 import { listReviewsSchema } from './dto/list-reviews.dto';
 import type { ListReviewsDto } from './dto/list-reviews.dto';
+import { replyToReviewSchema } from './dto/reply-to-review.dto';
+import type { ReplyToReviewDto } from './dto/reply-to-review.dto';
 
 @Controller()
 export class ReviewController {
@@ -61,6 +65,19 @@ export class ReviewController {
     @Query(new ZodValidationPipe(listReviewsSchema)) query: ListReviewsDto,
   ) {
     return this.reviewService.listByUser(username, query.page, query.limit);
+  }
+
+  // ADMIN-only, mirroring OrderController/BookingController — the place
+  // owner replying to a review left on their place.
+  @Patch('places/:placeId/reviews/:id/reply')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  reply(
+    @Param('placeId') placeId: string,
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(replyToReviewSchema)) dto: ReplyToReviewDto,
+  ) {
+    return this.reviewService.reply(placeId, id, dto.reply);
   }
 
   @Patch('reviews/:id')
