@@ -105,16 +105,28 @@ class BusinessPlace {
 }
 
 /// Mirrors the backend's rating summary (`GET /places/:id/rating`).
+/// [breakdown] (rating 1..5 -> count) is only present on the standalone
+/// endpoint response, not on the `rating` object embedded in place list/
+/// detail JSON — defaults to empty there.
 class PlaceRating {
-  const PlaceRating({required this.averageRating, required this.reviewCount});
+  const PlaceRating({
+    required this.averageRating,
+    required this.reviewCount,
+    this.breakdown = const {},
+  });
 
   final double averageRating;
   final int reviewCount;
+  final Map<int, int> breakdown;
 
   factory PlaceRating.fromJson(Map<String, dynamic> json) {
+    final rawBreakdown = json['breakdown'] as Map<String, dynamic>?;
     return PlaceRating(
       averageRating: (json['averageRating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
+      breakdown: rawBreakdown == null
+          ? const {}
+          : rawBreakdown.map((k, v) => MapEntry(int.parse(k), v as int)),
     );
   }
 }

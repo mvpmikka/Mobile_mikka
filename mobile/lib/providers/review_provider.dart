@@ -14,3 +14,11 @@ final reviewsByUsernameProvider = FutureProvider.family<List<UserReview>, String
 ) async {
   return ref.watch(reviewServiceProvider).getForUser(username);
 });
+
+/// Admin "Sharhlar" screen — fetched in one large page and filtered/searched
+/// client-side (the backend list endpoint takes only page/limit, see
+/// ReviewController.list).
+final placeReviewListProvider =
+    FutureProvider.autoDispose.family<PlaceReviewPage, String>((ref, placeId) async {
+  return ref.watch(reviewServiceProvider).listByPlace(placeId, limit: 100);
+});

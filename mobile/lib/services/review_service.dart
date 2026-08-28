@@ -27,4 +27,31 @@ class ReviewService {
       throw ApiException.fromDio(e);
     }
   }
+
+  Future<PlaceReviewPage> listByPlace(
+    String placeId, {
+    int page = 1,
+    int limit = 20,
+  }) async {
+    try {
+      final response = await _apiClient.dio.get(
+        '/places/$placeId/reviews',
+        queryParameters: {'page': page, 'limit': limit},
+      );
+      return PlaceReviewPage.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<void> replyToReview(String placeId, String reviewId, String reply) async {
+    try {
+      await _apiClient.dio.patch(
+        '/places/$placeId/reviews/$reviewId/reply',
+        data: {'reply': reply},
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
 }
