@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   HttpCode,
@@ -13,6 +14,8 @@ import { Throttle } from '@nestjs/throttler';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentUser } from './decorators/current-user.decorator';
+import type { AuthenticatedUser } from './strategies/jwt.strategy';
 import { registerSchema } from './dto/register.dto';
 import type { RegisterDto } from './dto/register.dto';
 import { loginSchema } from './dto/login.dto';
@@ -70,6 +73,13 @@ export class AuthController {
     @Body(new ZodValidationPipe(refreshTokenSchema)) dto: RefreshTokenDto,
   ) {
     return this.authService.logout(dto.refreshToken);
+  }
+
+  @Delete('me')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  deleteAccount(@CurrentUser() currentUser: AuthenticatedUser) {
+    return this.authService.deleteAccount(currentUser.id);
   }
 
   @Post('verify-email')
