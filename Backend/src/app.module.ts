@@ -28,6 +28,8 @@ import { FollowModule } from './follow/follow.module';
 import { PostModule } from './post/post.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
+import { BookingModule } from './booking/booking.module';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { OrderModule } from './order/order.module';
     PostModule,
     ProductModule,
     OrderModule,
+    BookingModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
