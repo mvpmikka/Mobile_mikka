@@ -261,8 +261,13 @@ class _AdminBusinessDashboardScreenState
             return;
           }
           if (index == 2) {
+            final places = placesAsync.valueOrNull;
+            if (places == null || places.isEmpty) return;
+            final place = places[_selectedPlaceIndex.clamp(0, places.length - 1)];
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const AdminBusinessBookingsScreen()),
+              MaterialPageRoute(
+                builder: (_) => AdminBusinessBookingsScreen(placeId: place.id),
+              ),
             );
             return;
           }

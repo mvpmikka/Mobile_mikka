@@ -49,3 +49,19 @@ final bookingListProvider =
         date: query.date,
       );
 });
+
+/// Upcoming (PENDING/CONFIRMED, still in the future) bookings across all
+/// days, sorted soonest-first — used by the schedule view's "Navbatdagilar"
+/// card. Independent of [bookingQueryProvider]'s date filter.
+final upcomingBookingsProvider =
+    FutureProvider.autoDispose.family<List<Booking>, String>((ref, placeId) async {
+  final page = await ref.watch(bookingServiceProvider).listBookings(placeId, limit: 50);
+  final now = DateTime.now();
+  final upcoming = page.items
+      .where((b) =>
+          (b.status == BookingStatus.pending || b.status == BookingStatus.confirmed) &&
+          b.bookingTime.isAfter(now))
+      .toList()
+    ..sort((a, b) => a.bookingTime.compareTo(b.bookingTime));
+  return upcoming.take(3).toList();
+});
