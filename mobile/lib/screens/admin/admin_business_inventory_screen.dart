@@ -1,89 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../models/product.dart';
+import '../../providers/product_provider.dart';
 import '../../theme/app_colors.dart';
 import 'widgets/admin_section_topbar.dart';
 
-enum _StockStatus { available, low, out }
-
-class _InventoryItem {
-  const _InventoryItem({
-    required this.name,
-    required this.sku,
-    required this.quantity,
-    required this.unit,
-    required this.minQty,
-    required this.status,
-    required this.updatedAt,
-  });
-
-  final String name;
-  final String sku;
-  final num quantity;
-  final String unit;
-  final num minQty;
-  final _StockStatus status;
-  final String updatedAt;
+String _fmtDate(DateTime d) {
+  final now = DateTime.now();
+  final time = '${d.hour.toString().padLeft(2, '0')}:${d.minute.toString().padLeft(2, '0')}';
+  if (d.year == now.year && d.month == now.month && d.day == now.day) {
+    return 'Bugun, $time';
+  }
+  final yesterday = now.subtract(const Duration(days: 1));
+  if (d.year == yesterday.year && d.month == yesterday.month && d.day == yesterday.day) {
+    return 'Kecha, $time';
+  }
+  return '${d.day.toString().padLeft(2, '0')}.${d.month.toString().padLeft(2, '0')}.${d.year}';
 }
 
-const _inventory = [
-  _InventoryItem(
-    name: 'An\'anaviy non',
-    sku: 'BRD-001',
-    quantity: 24,
-    unit: 'dona',
-    minQty: 10,
-    status: _StockStatus.available,
-    updatedAt: 'Bugun, 08:30',
-  ),
-  _InventoryItem(
-    name: 'To\'liq yog\'li sut',
-    sku: 'MLK-002',
-    quantity: 18,
-    unit: 'l',
-    minQty: 5,
-    status: _StockStatus.available,
-    updatedAt: 'Kecha, 18:00',
-  ),
-  _InventoryItem(
-    name: 'Espresso donlari',
-    sku: 'COF-001',
-    quantity: 2.5,
-    unit: 'kg',
-    minQty: 5,
-    status: _StockStatus.low,
-    updatedAt: 'Bugun, 11:45',
-  ),
-  _InventoryItem(
-    name: 'Pomidor',
-    sku: 'VEG-012',
-    quantity: 12,
-    unit: 'kg',
-    minQty: 4,
-    status: _StockStatus.available,
-    updatedAt: 'Kecha, 07:15',
-  ),
-  _InventoryItem(
-    name: 'Dudlangan kurka go\'shti',
-    sku: 'MEA-004',
-    quantity: 0,
-    unit: 'kg',
-    minQty: 2.5,
-    status: _StockStatus.out,
-    updatedAt: 'Bugun, 14:10',
-  ),
-];
+/// MIKKA Business mobil "Ombor" ekrani — 1-bosqichda ulangan Mahsulot
+/// backendining boshqa ko'rinishi. [productListProvider]/[productStatsProvider]
+/// orqali `/places/:placeId/products` bilan ulangan.
+class AdminBusinessInventoryScreen extends ConsumerStatefulWidget {
+  const AdminBusinessInventoryScreen({super.key, required this.placeId});
 
-/// MIKKA Business mobil "Ombor" ekrani — Figma dizayni asosidagi sof UI.
-/// Barcha zaxira ma'lumotlari lokal namunaviy qiymatlar — hech qanday
-/// backend/servis chaqiruvi yo'q.
-class AdminBusinessInventoryScreen extends StatefulWidget {
-  const AdminBusinessInventoryScreen({super.key});
+  final String placeId;
 
   @override
-  State<AdminBusinessInventoryScreen> createState() => _AdminBusinessInventoryScreenState();
+  ConsumerState<AdminBusinessInventoryScreen> createState() =>
+      _AdminBusinessInventoryScreenState();
 }
 
-class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScreen> {
+class _AdminBusinessInventoryScreenState extends ConsumerState<AdminBusinessInventoryScreen> {
   final _searchController = TextEditingController();
 
   @override
@@ -96,17 +46,53 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  List<_InventoryItem> get _filtered {
-    final query = _searchController.text.trim().toLowerCase();
-    if (query.isEmpty) return _inventory;
-    return _inventory.where((item) => item.name.toLowerCase().contains(query)).toList();
+  void _refresh() {
+    ref.invalidate(productListProvider(widget.placeId));
+    ref.invalidate(productStatsProvider(widget.placeId));
+  }
+
+  Future<void> _restock(Product product) async {
+    final controller = TextEditingController();
+    final amount = await showDialog<int>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('${product.name} to\'ldirish'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Qo\'shiladigan miqdor'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Bekor qilish'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final value = int.tryParse(controller.text.trim());
+              Navigator.of(dialogContext).pop(value != null && value > 0 ? value : null);
+            },
+            child: const Text('Qo\'shish'),
+          ),
+        ],
+      ),
+    );
+    if (amount == null) return;
+    try {
+      await ref.read(productServiceProvider).adjustStock(widget.placeId, product.id, amount);
+      _refresh();
+      if (mounted) _showMessage('Zaxira yangilandi');
+    } on ApiException catch (e) {
+      if (mounted) _showMessage(e.message);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final lowCount = _inventory.where((item) => item.status == _StockStatus.low).length;
-    final outCount = _inventory.where((item) => item.status == _StockStatus.out).length;
-    final items = _filtered;
+    final productsAsync = ref.watch(productListProvider(widget.placeId));
+    final statsAsync = ref.watch(productStatsProvider(widget.placeId));
+    final stats = statsAsync.valueOrNull;
 
     return Scaffold(
       backgroundColor: AppColors.cream(context),
@@ -121,7 +107,11 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
                 onNotification: () => _showMessage('Bildirishnomalar tez orada qo\'shiladi'),
                 searchController: _searchController,
                 searchHint: 'Zaxirani qidirish...',
-                onSearchChanged: (_) => setState(() {}),
+                onSearchChanged: (value) {
+                  ref.read(productQueryProvider.notifier).update(
+                        (q) => q.copyWith(search: value),
+                      );
+                },
               ),
               const SizedBox(height: 12),
               Row(
@@ -129,7 +119,7 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
                   Expanded(
                     child: _SummaryCard(
                       label: 'JAMI MAHSULOT',
-                      value: '${_inventory.length}',
+                      value: '${stats?.totalProducts ?? '—'}',
                       icon: Icons.inventory_2_outlined,
                       color: const Color(0xFF3F9142),
                     ),
@@ -138,7 +128,7 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
                   Expanded(
                     child: _SummaryCard(
                       label: 'KAM QOLGAN',
-                      value: '$lowCount',
+                      value: '${stats?.lowStock ?? '—'}',
                       icon: Icons.warning_amber_outlined,
                       color: const Color(0xFFC9922E),
                     ),
@@ -147,7 +137,7 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
                   Expanded(
                     child: _SummaryCard(
                       label: 'TUGAGAN',
-                      value: '$outCount',
+                      value: '${stats?.outOfStock ?? '—'}',
                       icon: Icons.error_outline,
                       color: const Color(0xFFCB4B4B),
                     ),
@@ -155,65 +145,128 @@ class _AdminBusinessInventoryScreenState extends State<AdminBusinessInventoryScr
                 ],
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => _showMessage('Filtr tez orada qo\'shiladi'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.darkText(context),
-                        side: BorderSide(color: AppColors.fieldBorder(context)),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      icon: const Icon(Icons.filter_list, size: 16),
-                      label: const Text('Filtr'),
+              SizedBox(
+                height: 34,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _StatusChip(
+                      label: 'Barchasi',
+                      isSelected: ref.watch(productQueryProvider).status == null,
+                      onTap: () => ref.read(productQueryProvider.notifier).update(
+                            (q) => q.copyWith(clearStatus: true),
+                          ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: AppColors.adminBrandGradient,
-                        borderRadius: BorderRadius.circular(12),
+                    for (final status in ProductStatus.values) ...[
+                      const SizedBox(width: 8),
+                      _StatusChip(
+                        label: status.label,
+                        isSelected: ref.watch(productQueryProvider).status == status,
+                        onTap: () => ref.read(productQueryProvider.notifier).update(
+                              (q) => q.copyWith(status: status),
+                            ),
                       ),
-                      child: TextButton.icon(
-                        onPressed: () => _showMessage('Zaxirani sozlash tez orada qo\'shiladi'),
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        icon: const Icon(Icons.tune, size: 16),
-                        label: const Text('Zaxirani sozlash',
-                            style: TextStyle(fontWeight: FontWeight.w700)),
-                      ),
-                    ),
-                  ),
-                ],
+                    ],
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
               Expanded(
-                child: items.isEmpty
-                    ? Center(
+                child: productsAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => _ErrorState(
+                    message: error is ApiException ? error.message : 'Mahsulotlar yuklanmadi',
+                    onRetry: _refresh,
+                  ),
+                  data: (page) {
+                    if (page.items.isEmpty) {
+                      return Center(
                         child: Text(
                           'Mahsulot topilmadi',
                           style: TextStyle(color: AppColors.mutedText(context)),
                         ),
-                      )
-                    : ListView.separated(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: items.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (_, index) => _InventoryCard(
-                          item: items[index],
-                          onRestock: () => _showMessage('${items[index].name} to\'ldirish tez orada qo\'shiladi'),
-                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      itemCount: page.items.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (_, index) => _InventoryCard(
+                        product: page.items[index],
+                        onRestock: () => _restock(page.items[index]),
                       ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  productsAsync.valueOrNull != null
+                      ? '${productsAsync.value!.items.length} / ${productsAsync.value!.total} mahsulot'
+                      : '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.mutedText(context)),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(onPressed: onRetry, child: const Text('Qayta urinish')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.label, required this.isSelected, required this.onTap});
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final chipColor = AppColors.adminGradientMid;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) => onTap(),
+      selectedColor: chipColor.withValues(alpha: 0.15),
+      labelStyle: TextStyle(
+        color: isSelected ? chipColor : AppColors.mutedText(context),
+        fontWeight: FontWeight.w600,
+        fontSize: 12,
+      ),
+      side: BorderSide(color: isSelected ? chipColor : AppColors.fieldBorder(context)),
+      backgroundColor: AppColors.surface(context),
     );
   }
 }
@@ -270,26 +323,26 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _InventoryCard extends StatelessWidget {
-  const _InventoryCard({required this.item, required this.onRestock});
+  const _InventoryCard({required this.product, required this.onRestock});
 
-  final _InventoryItem item;
+  final Product product;
   final VoidCallback onRestock;
 
-  (String, Color) _statusMeta(BuildContext context) {
-    switch (item.status) {
-      case _StockStatus.available:
+  (String, Color) _statusMeta() {
+    switch (product.status) {
+      case ProductStatus.inStock:
         return ('Mavjud', const Color(0xFF3F9142));
-      case _StockStatus.low:
+      case ProductStatus.lowStock:
         return ('Kam qoldi', const Color(0xFFC9922E));
-      case _StockStatus.out:
+      case ProductStatus.outOfStock:
         return ('Tugagan', const Color(0xFFCB4B4B));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final (statusLabel, statusColor) = _statusMeta(context);
-    final needsRestock = item.status != _StockStatus.available;
+    final (statusLabel, statusColor) = _statusMeta();
+    final needsRestock = product.status != ProductStatus.inStock;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -316,12 +369,12 @@ class _InventoryCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.name,
+                  product.name,
                   style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.darkText(context)),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'SKU: ${item.sku} • Min: ${item.minQty} ${item.unit}',
+                  'SKU: ${product.sku} • Min: ${product.lowStockThreshold}',
                   style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                 ),
                 const SizedBox(height: 6),
@@ -341,7 +394,7 @@ class _InventoryCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        item.updatedAt,
+                        _fmtDate(product.updatedAt),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 10, color: AppColors.mutedText(context)),
                       ),
@@ -356,7 +409,7 @@ class _InventoryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '${item.quantity} ${item.unit}',
+                '${product.quantity}',
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 14,

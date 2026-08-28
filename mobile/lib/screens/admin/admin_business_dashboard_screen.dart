@@ -360,9 +360,16 @@ class _AdminBusinessDashboardScreenState
                         ),
                       );
                     case 'Sharhlar':
+                      final places = ref.read(myPlacesProvider).valueOrNull;
+                      if (places == null || places.isEmpty) {
+                        _showSoon('Sharhlar');
+                        return;
+                      }
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const AdminBusinessReviewsScreen(),
+                          builder: (_) => AdminBusinessReviewsScreen(
+                            placeId: places[_selectedPlaceIndex.clamp(0, places.length - 1)].id,
+                          ),
                         ),
                       );
                     default:

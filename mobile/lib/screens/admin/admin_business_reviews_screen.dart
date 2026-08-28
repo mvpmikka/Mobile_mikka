@@ -1,83 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/api_exception.dart';
+import '../../models/place.dart';
+import '../../models/review.dart';
+import '../../providers/place_provider.dart';
+import '../../providers/review_provider.dart';
 import '../../theme/app_colors.dart';
-import 'widgets/admin_pagination_bar.dart';
 import 'widgets/admin_section_topbar.dart';
 
-class _Review {
-  const _Review({
-    required this.id,
-    required this.customer,
-    required this.avatarColor,
-    required this.rating,
-    required this.comment,
-    required this.date,
-    this.reply,
-  });
-
-  final String id;
-  final String customer;
-  final Color avatarColor;
-  final int rating;
-  final String comment;
-  final String date;
-  final String? reply;
-}
-
-const _reviews = [
-  _Review(
-    id: '#R331',
-    customer: 'Madina',
-    avatarColor: Color(0xFF3B6EA8),
-    rating: 5,
-    comment: 'Ovqat juda mazali va xizmat tez edi! Albatta yana qaytaman.',
-    date: '2 kun oldin',
-  ),
-  _Review(
-    id: '#R328',
-    customer: 'Aziz',
-    avatarColor: Color(0xFF8A5A3B),
-    rating: 3,
-    comment: 'Yaxshi, lekin zalda biroz shovqinli edi.',
-    date: '5 kun oldin',
-    reply: 'Fikr-mulohazangiz uchun rahmat, buni hisobga olamiz!',
-  ),
-  _Review(
-    id: '#R320',
-    customer: 'Jasur',
-    avatarColor: Color(0xFF6B6B6B),
-    rating: 4,
-    comment: 'Yetkazib berish tez bo\'ldi, ammo taom biroz sovuq keldi.',
-    date: '1 hafta oldin',
-  ),
+const _avatarColors = [
+  Color(0xFF3B6EA8),
+  Color(0xFF8A5A3B),
+  Color(0xFF6B6B6B),
+  Color(0xFF3F9142),
+  Color(0xFFC9922E),
 ];
 
-// Namunaviy umumiy reyting statistikasi (Figma dizaynidagi uslub bilan mos)
-// — lokal ma'lumotda atigi 3 ta sharh bor, shuning uchun bu qiymatlar
-// faqat UI ko'rinishi uchun qattiq kodlangan.
-const _averageRating = 4.6;
-const _totalReviews = 128;
-const _ratingBreakdown = {5: 0.70, 4: 0.20, 3: 0.07, 2: 0.02, 1: 0.01};
+Color _avatarColorFor(String id) => _avatarColors[id.hashCode.abs() % _avatarColors.length];
 
-/// MIKKA Business mobil "Sharhlar" ekrani — Figma dizayni asosidagi sof UI.
-/// Sharhlar ro'yxati lokal namunaviy ma'lumot — hech qanday backend/servis
-/// chaqiruvi yo'q.
-class AdminBusinessReviewsScreen extends StatefulWidget {
-  const AdminBusinessReviewsScreen({super.key});
+String _fmtDate(DateTime d) =>
+    '${d.day.toString().padLeft(2, '0')}.${d.month.toString().padLeft(2, '0')}.${d.year}';
+
+/// MIKKA Business mobil "Sharhlar" ekrani — [placeReviewListProvider] orqali
+/// `/places/:placeId/reviews` va [placeRatingProvider] orqali
+/// `/places/:placeId/rating` bilan ulangan.
+class AdminBusinessReviewsScreen extends ConsumerStatefulWidget {
+  const AdminBusinessReviewsScreen({super.key, required this.placeId});
+
+  final String placeId;
 
   @override
-  State<AdminBusinessReviewsScreen> createState() => _AdminBusinessReviewsScreenState();
+  ConsumerState<AdminBusinessReviewsScreen> createState() =>
+      _AdminBusinessReviewsScreenState();
 }
 
-class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen> {
+class _AdminBusinessReviewsScreenState extends ConsumerState<AdminBusinessReviewsScreen> {
   final _searchController = TextEditingController();
   String _filter = 'Barchasi';
   static const _filters = ['Barchasi', 'Javobsiz', '5 yulduz', '4 yulduz', '3 va past'];
-
-  static const _catalogTotal = 128;
-  static const _pageSize = 3;
-  int _currentPage = 1;
-  int get _totalPages => (_catalogTotal / _pageSize).ceil();
 
   @override
   void dispose() {
@@ -89,27 +50,104 @@ class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen>
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  List<_Review> get _filtered {
+  void _refresh() {
+    ref.invalidate(placeReviewListProvider(widget.placeId));
+    ref.invalidate(placeRatingProvider(widget.placeId));
+  }
+
+  List<PlaceReview> _applyFilters(List<PlaceReview> reviews) {
     final query = _searchController.text.trim().toLowerCase();
-    return _reviews.where((review) {
+    return reviews.where((review) {
       final matchesFilter = switch (_filter) {
-        'Javobsiz' => review.reply == null,
+        'Javobsiz' => review.ownerReply == null,
         '5 yulduz' => review.rating == 5,
         '4 yulduz' => review.rating == 4,
         '3 va past' => review.rating <= 3,
         _ => true,
       };
       final matchesQuery = query.isEmpty ||
-          review.customer.toLowerCase().contains(query) ||
-          review.comment.toLowerCase().contains(query);
+          review.user.username.toLowerCase().contains(query) ||
+          (review.user.fullName?.toLowerCase().contains(query) ?? false) ||
+          (review.comment?.toLowerCase().contains(query) ?? false);
       return matchesFilter && matchesQuery;
     }).toList();
   }
 
+  Future<void> _openReplySheet(PlaceReview review) async {
+    final controller = TextEditingController();
+    final text = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface(context),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 16,
+            bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Javob berish',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.darkText(sheetContext),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                autofocus: true,
+                maxLines: 4,
+                decoration: const InputDecoration(hintText: 'Javobingizni yozing...'),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: AppColors.adminBrandGradient,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: TextButton(
+                    onPressed: () => Navigator.of(sheetContext).pop(controller.text.trim()),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text('Yuborish', style: TextStyle(fontWeight: FontWeight.w700)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (text == null || text.isEmpty) return;
+    try {
+      await ref.read(reviewServiceProvider).replyToReview(widget.placeId, review.id, text);
+      _refresh();
+      if (mounted) _showMessage('Javob yuborildi');
+    } on ApiException catch (e) {
+      if (mounted) _showMessage(e.message);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final reviews = _filtered;
-    final unansweredCount = _reviews.where((r) => r.reply == null).length;
+    final reviewsAsync = ref.watch(placeReviewListProvider(widget.placeId));
+    final ratingAsync = ref.watch(placeRatingProvider(widget.placeId));
+    final unansweredCount =
+        reviewsAsync.valueOrNull?.items.where((r) => r.ownerReply == null).length;
 
     return Scaffold(
       backgroundColor: AppColors.cream(context),
@@ -132,7 +170,7 @@ class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen>
                 style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
               ),
               const SizedBox(height: 12),
-              const _RatingSummaryCard(),
+              _RatingSummaryCard(rating: ratingAsync.valueOrNull),
               const SizedBox(height: 12),
               SizedBox(
                 height: 34,
@@ -143,8 +181,9 @@ class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen>
                   itemBuilder: (_, index) {
                     final filter = _filters[index];
                     final isSelected = filter == _filter;
-                    final label =
-                        filter == 'Javobsiz' ? '$filter ($unansweredCount)' : filter;
+                    final label = filter == 'Javobsiz' && unansweredCount != null
+                        ? '$filter ($unansweredCount)'
+                        : filter;
                     return ChoiceChip(
                       label: Text(label),
                       selected: isSelected,
@@ -169,44 +208,42 @@ class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen>
               ),
               const SizedBox(height: 12),
               Expanded(
-                child: reviews.isEmpty
-                    ? Center(
+                child: reviewsAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => _ErrorState(
+                    message: error is ApiException ? error.message : 'Sharhlar yuklanmadi',
+                    onRetry: _refresh,
+                  ),
+                  data: (page) {
+                    final reviews = _applyFilters(page.items);
+                    if (reviews.isEmpty) {
+                      return Center(
                         child: Text(
                           'Sharh topilmadi',
                           style: TextStyle(color: AppColors.mutedText(context)),
                         ),
-                      )
-                    : ListView.separated(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: reviews.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (_, index) => _ReviewCard(
-                          review: reviews[index],
-                          onReply: () => _showMessage('${reviews[index].id} ga javob berish tez orada'),
-                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      itemCount: reviews.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (_, index) => _ReviewCard(
+                        review: reviews[index],
+                        onReply: () => _openReplySheet(reviews[index]),
                       ),
+                    );
+                  },
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Column(
-                  children: [
-                    Text(
-                      '${(_currentPage - 1) * _pageSize + 1}-${_currentPage * _pageSize} / $_catalogTotal sharh',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
-                    ),
-                    const SizedBox(height: 8),
-                    AdminPaginationBar(
-                      currentPage: _currentPage,
-                      totalPages: _totalPages,
-                      onPageChanged: (page) {
-                        setState(() => _currentPage = page);
-                        if (page != 1) {
-                          _showMessage('Namunada faqat 1-sahifa ma\'lumotlari mavjud');
-                        }
-                      },
-                    ),
-                  ],
+                child: Text(
+                  reviewsAsync.valueOrNull != null
+                      ? '${reviewsAsync.value!.items.length} / ${reviewsAsync.value!.total} sharh'
+                      : '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
                 ),
               ),
             ],
@@ -217,11 +254,44 @@ class _AdminBusinessReviewsScreenState extends State<AdminBusinessReviewsScreen>
   }
 }
 
-class _RatingSummaryCard extends StatelessWidget {
-  const _RatingSummaryCard();
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.mutedText(context)),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(onPressed: onRetry, child: const Text('Qayta urinish')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RatingSummaryCard extends StatelessWidget {
+  const _RatingSummaryCard({required this.rating});
+
+  final PlaceRating? rating;
+
+  @override
+  Widget build(BuildContext context) {
+    final average = rating?.averageRating ?? 0;
+    final total = rating?.reviewCount ?? 0;
+    final breakdown = rating?.breakdown ?? const {};
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -235,7 +305,7 @@ class _RatingSummaryCard extends StatelessWidget {
           Column(
             children: [
               Text(
-                _averageRating.toStringAsFixed(1),
+                average.toStringAsFixed(1),
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w800,
@@ -245,7 +315,7 @@ class _RatingSummaryCard extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: List.generate(5, (i) {
-                  final filled = i < _averageRating.round();
+                  final filled = i < average.round();
                   return Icon(
                     filled ? Icons.star : Icons.star_border,
                     size: 13,
@@ -255,7 +325,7 @@ class _RatingSummaryCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                '$_totalReviews sharh',
+                '$total sharh',
                 style: TextStyle(fontSize: 10, color: AppColors.mutedText(context)),
               ),
             ],
@@ -278,7 +348,7 @@ class _RatingSummaryCard extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
-                              value: _ratingBreakdown[star],
+                              value: total > 0 ? (breakdown[star] ?? 0) / total : 0,
                               minHeight: 6,
                               backgroundColor: AppColors.cream(context),
                               valueColor:
@@ -301,11 +371,14 @@ class _RatingSummaryCard extends StatelessWidget {
 class _ReviewCard extends StatelessWidget {
   const _ReviewCard({required this.review, required this.onReply});
 
-  final _Review review;
+  final PlaceReview review;
   final VoidCallback onReply;
 
   @override
   Widget build(BuildContext context) {
+    final displayName = review.user.fullName?.isNotEmpty == true
+        ? review.user.fullName!
+        : review.user.username;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -320,9 +393,9 @@ class _ReviewCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: review.avatarColor,
+                backgroundColor: _avatarColorFor(review.user.id),
                 child: Text(
-                  review.customer.substring(0, 1).toUpperCase(),
+                  displayName.isEmpty ? '?' : displayName.substring(0, 1).toUpperCase(),
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                 ),
               ),
@@ -332,7 +405,7 @@ class _ReviewCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      review.customer,
+                      displayName,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: AppColors.darkText(context),
@@ -350,7 +423,7 @@ class _ReviewCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          review.date,
+                          _fmtDate(review.createdAt),
                           style: TextStyle(fontSize: 11, color: AppColors.mutedText(context)),
                         ),
                       ],
@@ -360,13 +433,15 @@ class _ReviewCard extends StatelessWidget {
               ),
             ],
           ),
+          if (review.comment != null && review.comment!.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Text(
+              review.comment!,
+              style: TextStyle(fontSize: 13, color: AppColors.darkText(context)),
+            ),
+          ],
           const SizedBox(height: 10),
-          Text(
-            review.comment,
-            style: TextStyle(fontSize: 13, color: AppColors.darkText(context)),
-          ),
-          const SizedBox(height: 10),
-          if (review.reply != null)
+          if (review.ownerReply != null)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(10),
@@ -388,7 +463,7 @@ class _ReviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    review.reply!,
+                    review.ownerReply!,
                     style: TextStyle(fontSize: 12, color: AppColors.darkText(context)),
                   ),
                 ],
