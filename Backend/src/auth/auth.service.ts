@@ -212,6 +212,15 @@ export class AuthService {
     return this.tokenService.revokeRefreshToken(rawRefreshToken);
   }
 
+  // Self-service deletion: the User-domain state change (soft-delete + PII
+  // scrub) plus an immediate session kill, mirroring AdminService.banUser's
+  // split — the reach into Auth's TokenService belongs here, not in
+  // UserService, since User has no business knowing about refresh tokens.
+  async deleteAccount(userId: string): Promise<void> {
+    await this.userService.deleteAccount(userId);
+    await this.tokenService.revokeAllForUser(userId);
+  }
+
   async verifyEmail(rawToken: string): Promise<void> {
     const record = await this.consumeVerificationToken(
       rawToken,
