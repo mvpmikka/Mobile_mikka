@@ -63,6 +63,16 @@ export type Order = Prisma.OrderModel
  */
 export type OrderItem = Prisma.OrderItemModel
 /**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model CustomerBlock
+ * 
+ */
+export type CustomerBlock = Prisma.CustomerBlockModel
+/**
  * Model Region
  * 
  */

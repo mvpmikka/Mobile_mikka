@@ -393,6 +393,8 @@ export const ModelName = {
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  Booking: 'Booking',
+  CustomerBlock: 'CustomerBlock',
   Region: 'Region',
   Review: 'Review',
   PlaceRatingSummary: 'PlaceRatingSummary',
@@ -431,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "storyView" | "post" | "postImage" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
+    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "booking" | "customerBlock" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "storyView" | "post" | "postImage" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1098,6 +1100,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrderItemCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrderItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    Booking: {
+      payload: Prisma.$BookingPayload<ExtArgs>
+      fields: Prisma.BookingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        findFirst: {
+          args: Prisma.BookingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        findMany: {
+          args: Prisma.BookingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        create: {
+          args: Prisma.BookingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        createMany: {
+          args: Prisma.BookingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        delete: {
+          args: Prisma.BookingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        update: {
+          args: Prisma.BookingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        deleteMany: {
+          args: Prisma.BookingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>[]
+        }
+        upsert: {
+          args: Prisma.BookingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingPayload>
+        }
+        aggregate: {
+          args: Prisma.BookingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBooking>
+        }
+        groupBy: {
+          args: Prisma.BookingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingCountAggregateOutputType> | number
+        }
+      }
+    }
+    CustomerBlock: {
+      payload: Prisma.$CustomerBlockPayload<ExtArgs>
+      fields: Prisma.CustomerBlockFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CustomerBlockFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CustomerBlockFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        findFirst: {
+          args: Prisma.CustomerBlockFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CustomerBlockFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        findMany: {
+          args: Prisma.CustomerBlockFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>[]
+        }
+        create: {
+          args: Prisma.CustomerBlockCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        createMany: {
+          args: Prisma.CustomerBlockCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CustomerBlockCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>[]
+        }
+        delete: {
+          args: Prisma.CustomerBlockDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        update: {
+          args: Prisma.CustomerBlockUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        deleteMany: {
+          args: Prisma.CustomerBlockDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CustomerBlockUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CustomerBlockUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>[]
+        }
+        upsert: {
+          args: Prisma.CustomerBlockUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerBlockPayload>
+        }
+        aggregate: {
+          args: Prisma.CustomerBlockAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCustomerBlock>
+        }
+        groupBy: {
+          args: Prisma.CustomerBlockGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomerBlockGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CustomerBlockCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomerBlockCountAggregateOutputType> | number
         }
       }
     }
@@ -2962,6 +3112,34 @@ export const OrderItemScalarFieldEnum = {
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  bookingTime: 'bookingTime',
+  guests: 'guests',
+  tableLabel: 'tableLabel',
+  note: 'note',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const CustomerBlockScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  customerPhone: 'customerPhone',
+  createdAt: 'createdAt'
+} as const
+
+export type CustomerBlockScalarFieldEnum = (typeof CustomerBlockScalarFieldEnum)[keyof typeof CustomerBlockScalarFieldEnum]
+
+
 export const RegionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2978,6 +3156,8 @@ export const ReviewScalarFieldEnum = {
   userId: 'userId',
   rating: 'rating',
   comment: 'comment',
+  ownerReply: 'ownerReply',
+  ownerRepliedAt: 'ownerRepliedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -3445,6 +3625,20 @@ export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
+ * Reference to a field of type 'BookingStatus'
+ */
+export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BookingStatus[]'
+ */
+export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ContentVisibility'
  */
 export type EnumContentVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentVisibility'>
@@ -3688,6 +3882,8 @@ export type GlobalOmitConfig = {
   product?: Prisma.ProductOmit
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
+  booking?: Prisma.BookingOmit
+  customerBlock?: Prisma.CustomerBlockOmit
   region?: Prisma.RegionOmit
   review?: Prisma.ReviewOmit
   placeRatingSummary?: Prisma.PlaceRatingSummaryOmit

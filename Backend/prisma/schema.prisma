@@ -248,6 +248,8 @@ model Place {
   messages      Message[]
   products      Product[]
   orders        Order[]
+  bookings      Booking[]
+  customerBlocks CustomerBlock[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -324,6 +326,59 @@ model OrderItem {
   @@map("order_items")
 }
 
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  SEATED
+  COMPLETED
+  CANCELLED
+
+  @@map("booking_status")
+}
+
+// Staff/POS-entered table reservations (Mikka Business admin panel) — same
+// free-text customerName/customerPhone shape as Order (no customer-facing
+// booking flow exists yet). No physical table/floor-plan model backs
+// tableLabel; it's a free-text note, not a foreign key.
+model Booking {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
+
+  customerName  String
+  customerPhone String?
+  bookingTime   DateTime
+  guests        Int
+  tableLabel    String?
+  note          String?
+  status        BookingStatus @default(PENDING)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([status])
+  @@index([bookingTime])
+  @@map("bookings")
+}
+
+// Mikka Business "block customer" action — a customer here is identified
+// only by phone number (Order/Booking.customerPhone are free text, not
+// linked to a User), so this is the minimal row needed to remember a block
+// decision per (place, phone). Block = upsert this row; unblock = delete it.
+model CustomerBlock {
+  id            String   @id @default(uuid())
+  placeId       String
+  place         Place    @relation(fields: [placeId], references: [id])
+  customerPhone String
+
+  createdAt DateTime @default(now())
+
+  @@unique([placeId, customerPhone])
+  @@map("customer_blocks")
+}
+
 // Administrative-area fallback for GET /places: when a radius search comes
 // up empty, we widen to "everywhere in the user's region" instead of just
 // returning nothing. `boundary` is `geometry` (not `geography`, unlike
@@ -363,6 +418,9 @@ model Review {
 
   rating  Int
   comment String?
+
+  ownerReply     String?
+  ownerRepliedAt DateTime?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

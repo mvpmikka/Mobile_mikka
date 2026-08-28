@@ -312,6 +312,8 @@ export type PlaceWhereInput = {
   messages?: Prisma.MessageListRelationFilter
   products?: Prisma.ProductListRelationFilter
   orders?: Prisma.OrderListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  customerBlocks?: Prisma.CustomerBlockListRelationFilter
 }
 
 export type PlaceOrderByWithRelationInput = {
@@ -342,6 +344,8 @@ export type PlaceOrderByWithRelationInput = {
   messages?: Prisma.MessageOrderByRelationAggregateInput
   products?: Prisma.ProductOrderByRelationAggregateInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
+  customerBlocks?: Prisma.CustomerBlockOrderByRelationAggregateInput
 }
 
 export type PlaceWhereUniqueInput = Prisma.AtLeast<{
@@ -375,6 +379,8 @@ export type PlaceWhereUniqueInput = Prisma.AtLeast<{
   messages?: Prisma.MessageListRelationFilter
   products?: Prisma.ProductListRelationFilter
   orders?: Prisma.OrderListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  customerBlocks?: Prisma.CustomerBlockListRelationFilter
 }, "id">
 
 export type PlaceOrderByWithAggregationInput = {
@@ -446,6 +452,8 @@ export type PlaceCreateInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateInput = {
@@ -473,6 +481,8 @@ export type PlaceUncheckedCreateInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUpdateInput = {
@@ -500,6 +510,8 @@ export type PlaceUpdateInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateInput = {
@@ -527,6 +539,8 @@ export type PlaceUncheckedUpdateInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateManyInput = {
@@ -788,6 +802,34 @@ export type PlaceUpdateOneRequiredWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutOrdersInput, Prisma.PlaceUpdateWithoutOrdersInput>, Prisma.PlaceUncheckedUpdateWithoutOrdersInput>
 }
 
+export type PlaceCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutBookingsInput, Prisma.PlaceUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutBookingsInput, Prisma.PlaceUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.PlaceUpsertWithoutBookingsInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutBookingsInput, Prisma.PlaceUpdateWithoutBookingsInput>, Prisma.PlaceUncheckedUpdateWithoutBookingsInput>
+}
+
+export type PlaceCreateNestedOneWithoutCustomerBlocksInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedCreateWithoutCustomerBlocksInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutCustomerBlocksInput
+  connect?: Prisma.PlaceWhereUniqueInput
+}
+
+export type PlaceUpdateOneRequiredWithoutCustomerBlocksNestedInput = {
+  create?: Prisma.XOR<Prisma.PlaceCreateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedCreateWithoutCustomerBlocksInput>
+  connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutCustomerBlocksInput
+  upsert?: Prisma.PlaceUpsertWithoutCustomerBlocksInput
+  connect?: Prisma.PlaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PlaceUpdateToOneWithWhereWithoutCustomerBlocksInput, Prisma.PlaceUpdateWithoutCustomerBlocksInput>, Prisma.PlaceUncheckedUpdateWithoutCustomerBlocksInput>
+}
+
 export type PlaceUpdateManyWithoutRegionNestedInput = {
   create?: Prisma.XOR<Prisma.PlaceCreateWithoutRegionInput, Prisma.PlaceUncheckedCreateWithoutRegionInput> | Prisma.PlaceCreateWithoutRegionInput[] | Prisma.PlaceUncheckedCreateWithoutRegionInput[]
   connectOrCreate?: Prisma.PlaceCreateOrConnectWithoutRegionInput | Prisma.PlaceCreateOrConnectWithoutRegionInput[]
@@ -944,6 +986,8 @@ export type PlaceCreateWithoutCreatedByInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutCreatedByInput = {
@@ -970,6 +1014,8 @@ export type PlaceUncheckedCreateWithoutCreatedByInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutCreatedByInput = {
@@ -1043,6 +1089,8 @@ export type PlaceCreateWithoutCategoryInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutCategoryInput = {
@@ -1069,6 +1117,8 @@ export type PlaceUncheckedCreateWithoutCategoryInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutCategoryInput = {
@@ -1121,6 +1171,8 @@ export type PlaceCreateWithoutProductsInput = {
   posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutProductsInput = {
@@ -1147,6 +1199,8 @@ export type PlaceUncheckedCreateWithoutProductsInput = {
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutProductsInput = {
@@ -1189,6 +1243,8 @@ export type PlaceUpdateWithoutProductsInput = {
   posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutProductsInput = {
@@ -1215,6 +1271,8 @@ export type PlaceUncheckedUpdateWithoutProductsInput = {
   posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutOrdersInput = {
@@ -1241,6 +1299,8 @@ export type PlaceCreateWithoutOrdersInput = {
   posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutOrdersInput = {
@@ -1267,6 +1327,8 @@ export type PlaceUncheckedCreateWithoutOrdersInput = {
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutOrdersInput = {
@@ -1309,6 +1371,8 @@ export type PlaceUpdateWithoutOrdersInput = {
   posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutOrdersInput = {
@@ -1335,6 +1399,264 @@ export type PlaceUncheckedUpdateWithoutOrdersInput = {
   posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutBookingsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address?: string | null
+  latitude: number
+  longitude: number
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  category: Prisma.PlaceCategoryCreateNestedOneWithoutPlacesInput
+  region?: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutPlacesCreatedInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
+  products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
+  orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  categoryId: string
+  address?: string | null
+  latitude: number
+  longitude: number
+  regionId?: string | null
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutBookingsInput, Prisma.PlaceUncheckedCreateWithoutBookingsInput>
+}
+
+export type PlaceUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutBookingsInput, Prisma.PlaceUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutBookingsInput, Prisma.PlaceUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutBookingsInput, Prisma.PlaceUncheckedUpdateWithoutBookingsInput>
+}
+
+export type PlaceUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  category?: Prisma.PlaceCategoryUpdateOneRequiredWithoutPlacesNestedInput
+  region?: Prisma.RegionUpdateOneWithoutPlacesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPlacesCreatedNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
+  products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceCreateWithoutCustomerBlocksInput = {
+  id?: string
+  name: string
+  description?: string | null
+  address?: string | null
+  latitude: number
+  longitude: number
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  category: Prisma.PlaceCategoryCreateNestedOneWithoutPlacesInput
+  region?: Prisma.RegionCreateNestedOneWithoutPlacesInput
+  createdBy: Prisma.UserCreateNestedOneWithoutPlacesCreatedInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
+  products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
+  orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceUncheckedCreateWithoutCustomerBlocksInput = {
+  id?: string
+  name: string
+  description?: string | null
+  categoryId: string
+  address?: string | null
+  latitude: number
+  longitude: number
+  regionId?: string | null
+  phone?: string | null
+  website?: string | null
+  status?: $Enums.PlaceStatus
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutPlaceInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedCreateNestedOneWithoutPlaceInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutPlaceInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutPlaceInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutPlaceInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+}
+
+export type PlaceCreateOrConnectWithoutCustomerBlocksInput = {
+  where: Prisma.PlaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedCreateWithoutCustomerBlocksInput>
+}
+
+export type PlaceUpsertWithoutCustomerBlocksInput = {
+  update: Prisma.XOR<Prisma.PlaceUpdateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedUpdateWithoutCustomerBlocksInput>
+  create: Prisma.XOR<Prisma.PlaceCreateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedCreateWithoutCustomerBlocksInput>
+  where?: Prisma.PlaceWhereInput
+}
+
+export type PlaceUpdateToOneWithWhereWithoutCustomerBlocksInput = {
+  where?: Prisma.PlaceWhereInput
+  data: Prisma.XOR<Prisma.PlaceUpdateWithoutCustomerBlocksInput, Prisma.PlaceUncheckedUpdateWithoutCustomerBlocksInput>
+}
+
+export type PlaceUpdateWithoutCustomerBlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  category?: Prisma.PlaceCategoryUpdateOneRequiredWithoutPlacesNestedInput
+  region?: Prisma.RegionUpdateOneWithoutPlacesNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutPlacesCreatedNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
+  products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+}
+
+export type PlaceUncheckedUpdateWithoutCustomerBlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutPlaceNestedInput
+  ratingSummary?: Prisma.PlaceRatingSummaryUncheckedUpdateOneWithoutPlaceNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutPlaceNestedInput
+  savedByUsers?: Prisma.SavedPlaceUncheckedUpdateManyWithoutPlaceNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutPlaceNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutRegionInput = {
@@ -1361,6 +1683,8 @@ export type PlaceCreateWithoutRegionInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutRegionInput = {
@@ -1387,6 +1711,8 @@ export type PlaceUncheckedCreateWithoutRegionInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutRegionInput = {
@@ -1439,6 +1765,8 @@ export type PlaceCreateWithoutReviewsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutReviewsInput = {
@@ -1465,6 +1793,8 @@ export type PlaceUncheckedCreateWithoutReviewsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutReviewsInput = {
@@ -1507,6 +1837,8 @@ export type PlaceUpdateWithoutReviewsInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutReviewsInput = {
@@ -1533,6 +1865,8 @@ export type PlaceUncheckedUpdateWithoutReviewsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutRatingSummaryInput = {
@@ -1559,6 +1893,8 @@ export type PlaceCreateWithoutRatingSummaryInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutRatingSummaryInput = {
@@ -1585,6 +1921,8 @@ export type PlaceUncheckedCreateWithoutRatingSummaryInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutRatingSummaryInput = {
@@ -1627,6 +1965,8 @@ export type PlaceUpdateWithoutRatingSummaryInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutRatingSummaryInput = {
@@ -1653,6 +1993,8 @@ export type PlaceUncheckedUpdateWithoutRatingSummaryInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutCheckInsInput = {
@@ -1679,6 +2021,8 @@ export type PlaceCreateWithoutCheckInsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutCheckInsInput = {
@@ -1705,6 +2049,8 @@ export type PlaceUncheckedCreateWithoutCheckInsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutCheckInsInput = {
@@ -1747,6 +2093,8 @@ export type PlaceUpdateWithoutCheckInsInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutCheckInsInput = {
@@ -1773,6 +2121,8 @@ export type PlaceUncheckedUpdateWithoutCheckInsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutSavedByUsersInput = {
@@ -1799,6 +2149,8 @@ export type PlaceCreateWithoutSavedByUsersInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutSavedByUsersInput = {
@@ -1825,6 +2177,8 @@ export type PlaceUncheckedCreateWithoutSavedByUsersInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutSavedByUsersInput = {
@@ -1867,6 +2221,8 @@ export type PlaceUpdateWithoutSavedByUsersInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutSavedByUsersInput = {
@@ -1893,6 +2249,8 @@ export type PlaceUncheckedUpdateWithoutSavedByUsersInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutStoriesInput = {
@@ -1919,6 +2277,8 @@ export type PlaceCreateWithoutStoriesInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutStoriesInput = {
@@ -1945,6 +2305,8 @@ export type PlaceUncheckedCreateWithoutStoriesInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutStoriesInput = {
@@ -1987,6 +2349,8 @@ export type PlaceUpdateWithoutStoriesInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutStoriesInput = {
@@ -2013,6 +2377,8 @@ export type PlaceUncheckedUpdateWithoutStoriesInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutPostsInput = {
@@ -2039,6 +2405,8 @@ export type PlaceCreateWithoutPostsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutPostsInput = {
@@ -2065,6 +2433,8 @@ export type PlaceUncheckedCreateWithoutPostsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutPostsInput = {
@@ -2107,6 +2477,8 @@ export type PlaceUpdateWithoutPostsInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutPostsInput = {
@@ -2133,6 +2505,8 @@ export type PlaceUncheckedUpdateWithoutPostsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateWithoutMessagesInput = {
@@ -2159,6 +2533,8 @@ export type PlaceCreateWithoutMessagesInput = {
   posts?: Prisma.PostCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceUncheckedCreateWithoutMessagesInput = {
@@ -2185,6 +2561,8 @@ export type PlaceUncheckedCreateWithoutMessagesInput = {
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutPlaceInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutPlaceInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutPlaceInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutPlaceInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedCreateNestedManyWithoutPlaceInput
 }
 
 export type PlaceCreateOrConnectWithoutMessagesInput = {
@@ -2227,6 +2605,8 @@ export type PlaceUpdateWithoutMessagesInput = {
   posts?: Prisma.PostUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutMessagesInput = {
@@ -2253,6 +2633,8 @@ export type PlaceUncheckedUpdateWithoutMessagesInput = {
   posts?: Prisma.PostUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateManyCreatedByInput = {
@@ -2296,6 +2678,8 @@ export type PlaceUpdateWithoutCreatedByInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutCreatedByInput = {
@@ -2322,6 +2706,8 @@ export type PlaceUncheckedUpdateWithoutCreatedByInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateManyWithoutCreatedByInput = {
@@ -2382,6 +2768,8 @@ export type PlaceUpdateWithoutCategoryInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutCategoryInput = {
@@ -2408,6 +2796,8 @@ export type PlaceUncheckedUpdateWithoutCategoryInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateManyWithoutCategoryInput = {
@@ -2451,6 +2841,8 @@ export type PlaceUpdateWithoutRegionInput = {
   messages?: Prisma.MessageUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceUncheckedUpdateWithoutRegionInput = {
@@ -2477,6 +2869,8 @@ export type PlaceUncheckedUpdateWithoutRegionInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutPlaceNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutPlaceNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutPlaceNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutPlaceNestedInput
+  customerBlocks?: Prisma.CustomerBlockUncheckedUpdateManyWithoutPlaceNestedInput
 }
 
 export type PlaceCreateManyRegionInput = {
@@ -2527,6 +2921,8 @@ export type PlaceCountOutputType = {
   messages: number
   products: number
   orders: number
+  bookings: number
+  customerBlocks: number
 }
 
 export type PlaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2538,6 +2934,8 @@ export type PlaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   messages?: boolean | PlaceCountOutputTypeCountMessagesArgs
   products?: boolean | PlaceCountOutputTypeCountProductsArgs
   orders?: boolean | PlaceCountOutputTypeCountOrdersArgs
+  bookings?: boolean | PlaceCountOutputTypeCountBookingsArgs
+  customerBlocks?: boolean | PlaceCountOutputTypeCountCustomerBlocksArgs
 }
 
 /**
@@ -2606,6 +3004,20 @@ export type PlaceCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.OrderWhereInput
 }
 
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * PlaceCountOutputType without action
+ */
+export type PlaceCountOutputTypeCountCustomerBlocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CustomerBlockWhereInput
+}
+
 
 export type PlaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2635,6 +3047,8 @@ export type PlaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   messages?: boolean | Prisma.Place$messagesArgs<ExtArgs>
   products?: boolean | Prisma.Place$productsArgs<ExtArgs>
   orders?: boolean | Prisma.Place$ordersArgs<ExtArgs>
+  bookings?: boolean | Prisma.Place$bookingsArgs<ExtArgs>
+  customerBlocks?: boolean | Prisma.Place$customerBlocksArgs<ExtArgs>
   _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["place"]>
 
@@ -2712,6 +3126,8 @@ export type PlaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   messages?: boolean | Prisma.Place$messagesArgs<ExtArgs>
   products?: boolean | Prisma.Place$productsArgs<ExtArgs>
   orders?: boolean | Prisma.Place$ordersArgs<ExtArgs>
+  bookings?: boolean | Prisma.Place$bookingsArgs<ExtArgs>
+  customerBlocks?: boolean | Prisma.Place$customerBlocksArgs<ExtArgs>
   _count?: boolean | Prisma.PlaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PlaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2740,6 +3156,8 @@ export type $PlacePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     messages: Prisma.$MessagePayload<ExtArgs>[]
     products: Prisma.$ProductPayload<ExtArgs>[]
     orders: Prisma.$OrderPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
+    customerBlocks: Prisma.$CustomerBlockPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3163,6 +3581,8 @@ export interface Prisma__PlaceClient<T, Null = never, ExtArgs extends runtime.Ty
   messages<T extends Prisma.Place$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   products<T extends Prisma.Place$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.Place$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Place$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customerBlocks<T extends Prisma.Place$customerBlocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Place$customerBlocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerBlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3835,6 +4255,54 @@ export type Place$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Place.bookings
+ */
+export type Place$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * Place.customerBlocks
+ */
+export type Place$customerBlocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CustomerBlock
+   */
+  select?: Prisma.CustomerBlockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CustomerBlock
+   */
+  omit?: Prisma.CustomerBlockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerBlockInclude<ExtArgs> | null
+  where?: Prisma.CustomerBlockWhereInput
+  orderBy?: Prisma.CustomerBlockOrderByWithRelationInput | Prisma.CustomerBlockOrderByWithRelationInput[]
+  cursor?: Prisma.CustomerBlockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CustomerBlockScalarFieldEnum | Prisma.CustomerBlockScalarFieldEnum[]
 }
 
 /**

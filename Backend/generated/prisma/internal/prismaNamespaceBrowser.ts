@@ -60,6 +60,8 @@ export const ModelName = {
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
+  Booking: 'Booking',
+  CustomerBlock: 'CustomerBlock',
   Region: 'Region',
   Review: 'Review',
   PlaceRatingSummary: 'PlaceRatingSummary',
@@ -237,6 +239,34 @@ export const OrderItemScalarFieldEnum = {
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  bookingTime: 'bookingTime',
+  guests: 'guests',
+  tableLabel: 'tableLabel',
+  note: 'note',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const CustomerBlockScalarFieldEnum = {
+  id: 'id',
+  placeId: 'placeId',
+  customerPhone: 'customerPhone',
+  createdAt: 'createdAt'
+} as const
+
+export type CustomerBlockScalarFieldEnum = (typeof CustomerBlockScalarFieldEnum)[keyof typeof CustomerBlockScalarFieldEnum]
+
+
 export const RegionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -253,6 +283,8 @@ export const ReviewScalarFieldEnum = {
   userId: 'userId',
   rating: 'rating',
   comment: 'comment',
+  ownerReply: 'ownerReply',
+  ownerRepliedAt: 'ownerRepliedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

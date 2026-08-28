@@ -40,6 +40,8 @@ export type ReviewMinAggregateOutputType = {
   userId: string | null
   rating: number | null
   comment: string | null
+  ownerReply: string | null
+  ownerRepliedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -51,6 +53,8 @@ export type ReviewMaxAggregateOutputType = {
   userId: string | null
   rating: number | null
   comment: string | null
+  ownerReply: string | null
+  ownerRepliedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -62,6 +66,8 @@ export type ReviewCountAggregateOutputType = {
   userId: number
   rating: number
   comment: number
+  ownerReply: number
+  ownerRepliedAt: number
   createdAt: number
   updatedAt: number
   deletedAt: number
@@ -83,6 +89,8 @@ export type ReviewMinAggregateInputType = {
   userId?: true
   rating?: true
   comment?: true
+  ownerReply?: true
+  ownerRepliedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -94,6 +102,8 @@ export type ReviewMaxAggregateInputType = {
   userId?: true
   rating?: true
   comment?: true
+  ownerReply?: true
+  ownerRepliedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -105,6 +115,8 @@ export type ReviewCountAggregateInputType = {
   userId?: true
   rating?: true
   comment?: true
+  ownerReply?: true
+  ownerRepliedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -203,6 +215,8 @@ export type ReviewGroupByOutputType = {
   userId: string
   rating: number
   comment: string | null
+  ownerReply: string | null
+  ownerRepliedAt: Date | null
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -237,6 +251,8 @@ export type ReviewWhereInput = {
   userId?: Prisma.StringFilter<"Review"> | string
   rating?: Prisma.IntFilter<"Review"> | number
   comment?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerReply?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerRepliedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
@@ -250,6 +266,8 @@ export type ReviewOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerReply?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerRepliedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -266,6 +284,8 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Review"> | string
   rating?: Prisma.IntFilter<"Review"> | number
   comment?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerReply?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerRepliedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
@@ -279,6 +299,8 @@ export type ReviewOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerReply?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerRepliedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -298,6 +320,8 @@ export type ReviewScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Review"> | string
   rating?: Prisma.IntWithAggregatesFilter<"Review"> | number
   comment?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
+  ownerReply?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
+  ownerRepliedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Review"> | Date | string | null
@@ -307,6 +331,8 @@ export type ReviewCreateInput = {
   id?: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -320,6 +346,8 @@ export type ReviewUncheckedCreateInput = {
   userId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -329,6 +357,8 @@ export type ReviewUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -342,6 +372,8 @@ export type ReviewUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -353,6 +385,8 @@ export type ReviewCreateManyInput = {
   userId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -362,6 +396,8 @@ export type ReviewUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -373,6 +409,8 @@ export type ReviewUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -394,6 +432,8 @@ export type ReviewCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  ownerReply?: Prisma.SortOrder
+  ownerRepliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -409,6 +449,8 @@ export type ReviewMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  ownerReply?: Prisma.SortOrder
+  ownerRepliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -420,6 +462,8 @@ export type ReviewMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   rating?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  ownerReply?: Prisma.SortOrder
+  ownerRepliedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -517,6 +561,8 @@ export type ReviewCreateWithoutUserInput = {
   id?: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -528,6 +574,8 @@ export type ReviewUncheckedCreateWithoutUserInput = {
   placeId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -568,6 +616,8 @@ export type ReviewScalarWhereInput = {
   userId?: Prisma.StringFilter<"Review"> | string
   rating?: Prisma.IntFilter<"Review"> | number
   comment?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerReply?: Prisma.StringNullableFilter<"Review"> | string | null
+  ownerRepliedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
@@ -577,6 +627,8 @@ export type ReviewCreateWithoutPlaceInput = {
   id?: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -588,6 +640,8 @@ export type ReviewUncheckedCreateWithoutPlaceInput = {
   userId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -624,6 +678,8 @@ export type ReviewCreateManyUserInput = {
   placeId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -633,6 +689,8 @@ export type ReviewUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -644,6 +702,8 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -654,6 +714,8 @@ export type ReviewUncheckedUpdateManyWithoutUserInput = {
   placeId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -664,6 +726,8 @@ export type ReviewCreateManyPlaceInput = {
   userId: string
   rating: number
   comment?: string | null
+  ownerReply?: string | null
+  ownerRepliedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -673,6 +737,8 @@ export type ReviewUpdateWithoutPlaceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -684,6 +750,8 @@ export type ReviewUncheckedUpdateWithoutPlaceInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -694,6 +762,8 @@ export type ReviewUncheckedUpdateManyWithoutPlaceInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   rating?: Prisma.IntFieldUpdateOperationsInput | number
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerReply?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerRepliedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -707,6 +777,8 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   userId?: boolean
   rating?: boolean
   comment?: boolean
+  ownerReply?: boolean
+  ownerRepliedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -720,6 +792,8 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   userId?: boolean
   rating?: boolean
   comment?: boolean
+  ownerReply?: boolean
+  ownerRepliedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -733,6 +807,8 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   userId?: boolean
   rating?: boolean
   comment?: boolean
+  ownerReply?: boolean
+  ownerRepliedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -746,12 +822,14 @@ export type ReviewSelectScalar = {
   userId?: boolean
   rating?: boolean
   comment?: boolean
+  ownerReply?: boolean
+  ownerRepliedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "placeId" | "userId" | "rating" | "comment" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "placeId" | "userId" | "rating" | "comment" | "ownerReply" | "ownerRepliedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   place?: boolean | Prisma.PlaceDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -777,6 +855,8 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     userId: string
     rating: number
     comment: string | null
+    ownerReply: string | null
+    ownerRepliedAt: Date | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -1210,6 +1290,8 @@ export interface ReviewFieldRefs {
   readonly userId: Prisma.FieldRef<"Review", 'String'>
   readonly rating: Prisma.FieldRef<"Review", 'Int'>
   readonly comment: Prisma.FieldRef<"Review", 'String'>
+  readonly ownerReply: Prisma.FieldRef<"Review", 'String'>
+  readonly ownerRepliedAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Review", 'DateTime'>
