@@ -52,6 +52,31 @@ export class UserRepository {
     return this.prisma.user.update({ where: { id }, data });
   }
 
+  // Self-service account deletion: soft-delete plus scrubbing every PII
+  // field, not just flipping deletedAt, so the account satisfies Apple
+  // 5.1.1(v)/Google Play's "actually deletes data" requirement rather than
+  // merely deactivating it. email/username stay non-null (many call sites
+  // — ReviewAuthor, search results, etc. — assume a live user has both) but
+  // become unguessable, unique placeholders derived from the id so the
+  // existing @unique constraints on both columns are trivially satisfied.
+  anonymizeAndSoftDelete(id: string): Promise<User> {
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        email: `deleted-${id}@deleted.mikka.app`,
+        username: `deleted_${id}`,
+        usernameUpdatedAt: null,
+        fullName: null,
+        gender: null,
+        birthDate: null,
+        avatarUrl: null,
+        bio: null,
+        profileCompleted: false,
+        deletedAt: new Date(),
+      },
+    });
+  }
+
   // Folds the cooldown check into the UPDATE's WHERE clause so the check
   // and the write happen as one atomic statement — no gap for a concurrent
   // request to read a stale "cooldown passed" state. Returns null if the

@@ -258,4 +258,11 @@ export class UserService {
     await this.getForAdmin(id);
     await this.userRepository.setBanned(id, false);
   }
+
+  // Pure User-domain state change (soft-delete + PII scrub), mirroring
+  // ban()'s split: session revocation is a cross-module concern and is
+  // orchestrated by the caller (AuthService), not here — see docs/foundation.md.
+  async deleteAccount(id: string): Promise<void> {
+    await this.userRepository.anonymizeAndSoftDelete(id);
+  }
 }
