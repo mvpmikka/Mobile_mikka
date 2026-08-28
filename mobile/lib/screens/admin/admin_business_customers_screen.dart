@@ -184,7 +184,7 @@ class _CustomerCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: _avatarColorFor(customer.customerPhone),
+              backgroundColor: avatarColorFor(customer.customerPhone),
               child: Text(
                 customer.customerName.isEmpty ? '?' : customer.customerName.substring(0, 1).toUpperCase(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),

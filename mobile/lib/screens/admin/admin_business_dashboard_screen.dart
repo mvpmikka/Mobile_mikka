@@ -347,9 +347,16 @@ class _AdminBusinessDashboardScreenState
                         ),
                       );
                     case 'Mijozlar':
+                      final places = ref.read(myPlacesProvider).valueOrNull;
+                      if (places == null || places.isEmpty) {
+                        _showSoon('Mijozlar');
+                        return;
+                      }
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const AdminBusinessCustomersScreen(),
+                          builder: (_) => AdminBusinessCustomersScreen(
+                            placeId: places[_selectedPlaceIndex.clamp(0, places.length - 1)].id,
+                          ),
                         ),
                       );
                     case 'Sharhlar':
