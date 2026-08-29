@@ -14,10 +14,16 @@ export class SmtpMailProvider implements IMailProvider {
 
   constructor(configService: ConfigService) {
     this.from = configService.get<string>('MAIL_FROM', '');
+    // @nestjs/config returns raw env strings — get<number>/get<boolean> only
+    // cast the TypeScript type, they don't parse the value. Without this,
+    // MAIL_SECURE="false" is a truthy string and gets treated as secure:true,
+    // which breaks the handshake on a STARTTLS port like 587.
+    const port = Number(configService.get<string>('MAIL_PORT', '587'));
+    const secure = configService.get<string>('MAIL_SECURE', '') === 'true';
     this.transporter = createTransport({
       host: configService.get<string>('MAIL_HOST'),
-      port: configService.get<number>('MAIL_PORT'),
-      secure: configService.get<boolean>('MAIL_SECURE'),
+      port,
+      secure,
       auth: {
         user: configService.get<string>('MAIL_USER'),
         pass: configService.get<string>('MAIL_PASSWORD'),
