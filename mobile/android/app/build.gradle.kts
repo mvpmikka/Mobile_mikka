@@ -59,6 +59,16 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            // R8 strips unused code and Gradle removes unused resources —
+            // this is what actually shrinks the release build (splitting
+            // by ABI only avoids bundling other architectures, it doesn't
+            // remove dead code/resources on its own).
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
