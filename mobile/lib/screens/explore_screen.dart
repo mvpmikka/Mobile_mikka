@@ -426,10 +426,22 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final placesAsync = ref.watch(nearbyPlacesProvider);
     final locationError = placesAsync.error;
 
+    // Bottom margin + shadow make this read as a card floating over the
+    // map, distinct from AppBottomNav below — without them, both use the
+    // same surface color and sit flush against each other, blending into
+    // one block.
     return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
       decoration: BoxDecoration(
         color: AppColors.surface(context),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
       child: Column(
