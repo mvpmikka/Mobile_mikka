@@ -1,4 +1,4 @@
-import { dns } from 'node:dns';
+import * as dns from 'node:dns';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createTransport, Transporter } from 'nodemailer';
