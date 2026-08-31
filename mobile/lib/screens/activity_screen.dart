@@ -5,11 +5,7 @@ import '../models/notification_item.dart';
 import '../providers/notification_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_bottom_nav.dart';
-import 'conversations_screen.dart';
-import 'explore_screen.dart';
-import 'friends_screen.dart';
-import 'profile_screen.dart';
-import 'shorts_screen.dart';
+import 'main_shell_screen.dart';
 
 class ActivityScreen extends ConsumerStatefulWidget {
   const ActivityScreen({super.key});

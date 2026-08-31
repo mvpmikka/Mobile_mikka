@@ -9,16 +9,11 @@ import '../providers/badge_provider.dart';
 import '../providers/friend_location_provider.dart';
 import '../providers/post_provider.dart';
 import '../theme/app_colors.dart';
-import '../widgets/app_bottom_nav.dart';
 import '../widgets/mikka_logo.dart';
 import '../widgets/segmented_tab_bar.dart';
 import 'admin/admin_panel_screen.dart';
-import 'conversations_screen.dart';
 import 'create_post_screen.dart';
 import 'edit_profile_screen.dart';
-import 'explore_screen.dart';
-import 'friends_screen.dart';
-import 'shorts_screen.dart';
 import 'welcome_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -29,7 +24,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  final _selectedNavIndex = 4;
   int _selectedTab = 0;
 
   @override
@@ -234,10 +228,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: _selectedNavIndex,
-        onTap: _onNavTap,
-      ),
     );
   }
 
@@ -292,27 +282,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     ).showSnackBar(const SnackBar(content: Text('Profil havolasi nusxalandi')));
   }
 
-  void _onNavTap(int index) {
-    if (index == _selectedNavIndex) return;
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ExploreScreen()),
-        );
-      case 1:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const FriendsScreen()),
-        );
-      case 2:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ShortsScreen()),
-        );
-      case 3:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
-        );
-    }
-  }
 }
 
 class _TabContent extends ConsumerWidget {
