@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createTransport, Transporter } from 'nodemailer';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { IMailProvider, MailMessage } from '../mail.interface';
 
 // Generic SMTP transport — every provider listed for Mikka (Resend,
@@ -20,7 +21,7 @@ export class SmtpMailProvider implements IMailProvider {
     // which breaks the handshake on a STARTTLS port like 587.
     const port = Number(configService.get<string>('MAIL_PORT', '587'));
     const secure = configService.get<string>('MAIL_SECURE', '') === 'true';
-    this.transporter = createTransport({
+    const options: SMTPTransport.Options & { family?: number } = {
       host: configService.get<string>('MAIL_HOST'),
       port,
       secure,
@@ -28,7 +29,15 @@ export class SmtpMailProvider implements IMailProvider {
         user: configService.get<string>('MAIL_USER'),
         pass: configService.get<string>('MAIL_PASSWORD'),
       },
-    });
+      // Render's containers have no outbound IPv6 route, but Node resolves
+      // smtp.gmail.com's AAAA (IPv6) record first and doesn't fall back to
+      // IPv4 on its own — connections hang until they finally hit
+      // ENETUNREACH. Forcing IPv4 skips that dead end entirely. (Not in
+      // @types/nodemailer's Options, but SMTPConnection forwards it as-is
+      // to net.connect/tls.connect, which do support it.)
+      family: 4,
+    };
+    this.transporter = createTransport(options);
   }
 
   async send(message: MailMessage): Promise<void> {
