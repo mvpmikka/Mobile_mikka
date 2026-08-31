@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/auth_provider.dart';
 import 'providers/call_provider.dart';
 import 'providers/chat_provider.dart';
-import 'screens/explore_screen.dart';
 import 'screens/incoming_call_screen.dart';
+import 'screens/main_shell_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/verify_email_screen.dart';
 import 'screens/welcome_screen.dart';
@@ -201,7 +201,7 @@ class _AuthGateState extends ConsumerState<AuthGate> {
         final user = state.user;
         if (user == null) return const WelcomeScreen();
         return user.isEmailVerified
-            ? const ExploreScreen()
+            ? const MainShellScreen()
             : VerifyEmailScreen(email: user.email);
       },
     );

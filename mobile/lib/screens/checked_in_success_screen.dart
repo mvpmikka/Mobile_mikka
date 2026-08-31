@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/place.dart';
 import '../theme/app_colors.dart';
-import 'explore_screen.dart';
+import 'main_shell_screen.dart';
 import 'place_detail_screen.dart';
 
 class CheckedInSuccessScreen extends StatelessWidget {
@@ -79,7 +79,7 @@ class CheckedInSuccessScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const ExploreScreen()),
+                      MaterialPageRoute(builder: (_) => const MainShellScreen()),
                       (route) => false,
                     );
                   },
