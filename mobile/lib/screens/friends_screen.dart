@@ -15,13 +15,9 @@ import '../providers/friend_location_provider.dart';
 import '../providers/user_search_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/avatar_marker.dart';
-import '../widgets/app_bottom_nav.dart';
 import 'conversations_screen.dart';
-import 'explore_screen.dart';
 import 'friend_profile_screen.dart';
 import 'message_thread_screen.dart';
-import 'profile_screen.dart';
-import 'shorts_screen.dart';
 
 class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
@@ -32,7 +28,6 @@ class FriendsScreen extends ConsumerStatefulWidget {
 
 class _FriendsScreenState extends ConsumerState<FriendsScreen> {
   bool _mapView = false;
-  final _selectedNavIndex = 1;
   final _searchController = TextEditingController();
   String _searchQuery = '';
   String _debouncedQuery = '';
@@ -153,10 +148,6 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: _selectedNavIndex,
-        onTap: _onNavTap,
       ),
     );
   }
@@ -433,27 +424,6 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
     );
   }
 
-  void _onNavTap(int index) {
-    if (index == _selectedNavIndex) return;
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ExploreScreen()),
-        );
-      case 2:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ShortsScreen()),
-        );
-      case 3:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
-        );
-      case 4:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ProfileScreen()),
-        );
-    }
-  }
 }
 
 class _ToggleIconButton extends StatelessWidget {

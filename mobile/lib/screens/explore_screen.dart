@@ -17,17 +17,13 @@ import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
 import '../utils/avatar_marker.dart';
 import '../utils/place_marker.dart';
-import '../widgets/app_bottom_nav.dart';
 import 'activity_screen.dart';
-import 'conversations_screen.dart';
 import 'filters_screen.dart';
-import 'friends_screen.dart';
 import 'message_thread_screen.dart';
 import 'nearby_places_screen.dart';
 import 'place_detail_screen.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
-import 'shorts_screen.dart';
 
 const _tashkentCenter = LatLng(41.311081, 69.240562);
 
@@ -49,7 +45,6 @@ class ExploreScreen extends ConsumerStatefulWidget {
 
 class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   int _selectedCategory = 0;
-  final _selectedNavIndex = 0;
   bool _nearbyPanelVisible = true;
   PlaceFilters _filters = const PlaceFilters();
 
@@ -186,10 +181,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             Expanded(child: _buildMap()),
           ],
         ),
-      ),
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: _selectedNavIndex,
-        onTap: _onNavTap,
       ),
     );
   }
@@ -533,31 +524,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     );
   }
 
-  void _onNavTap(int index) {
-    if (index == _selectedNavIndex) return;
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ExploreScreen()),
-        );
-      case 1:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const FriendsScreen()),
-        );
-      case 2:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ShortsScreen()),
-        );
-      case 3:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
-        );
-      case 4:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ProfileScreen()),
-        );
-    }
-  }
 }
 
 class _RoundIconButton extends StatelessWidget {
