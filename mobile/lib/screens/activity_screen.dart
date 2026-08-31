@@ -103,28 +103,10 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
 
   void _onNavTap(int index) {
     if (index == _selectedNavIndex) return;
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ExploreScreen()),
-        );
-      case 1:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const FriendsScreen()),
-        );
-      case 2:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ShortsScreen()),
-        );
-      case 3:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ConversationsScreen()),
-        );
-      case 4:
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ProfileScreen()),
-        );
-    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => MainShellScreen(initialIndex: index)),
+      (route) => false,
+    );
   }
 }
 

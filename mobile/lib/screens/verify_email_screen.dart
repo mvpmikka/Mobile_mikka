@@ -5,13 +5,13 @@ import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/mikka_logo.dart';
-import 'explore_screen.dart';
+import 'main_shell_screen.dart';
 
 /// Shown after register/login while the account's email is still
 /// unverified. Waits for the user to tap the verification link sent to
 /// their inbox — the deep link handler in main.dart calls
 /// [AuthController.verifyEmail], which flips [AppUser.isEmailVerified] and
-/// this screen reacts by navigating to [ExploreScreen] automatically.
+/// this screen reacts by navigating to [MainShellScreen] automatically.
 class VerifyEmailScreen extends ConsumerStatefulWidget {
   const VerifyEmailScreen({super.key, required this.email});
 
@@ -48,7 +48,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
       final user = next.value?.user;
       if (user != null && user.isEmailVerified) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const ExploreScreen()),
+          MaterialPageRoute(builder: (_) => const MainShellScreen()),
           (route) => false,
         );
       }

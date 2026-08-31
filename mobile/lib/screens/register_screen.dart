@@ -7,8 +7,8 @@ import '../core/api_exception.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/mikka_logo.dart';
-import 'explore_screen.dart';
 import 'login_screen.dart';
+import 'main_shell_screen.dart';
 import 'verify_email_screen.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -76,7 +76,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         MaterialPageRoute(
           builder: (_) => user != null && !user.isEmailVerified
               ? VerifyEmailScreen(email: user.email)
-              : const ExploreScreen(),
+              : const MainShellScreen(),
         ),
         (route) => false,
       );
@@ -97,7 +97,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (_) => user.isEmailVerified
-              ? const ExploreScreen()
+              ? const MainShellScreen()
               : VerifyEmailScreen(email: user.email),
         ),
         (route) => false,
