@@ -1,431 +1,951 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider        = "prisma-client"
   output          = "../generated/prisma"
-  previewFeatures = ["postgresqlExtensions"]
   moduleFormat    = "cjs"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider   = "postgresql"
-  extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions")]
+  extensions = [postgis, pg_trgm]
 }
 
-model BlockedUser {
-  id                               String   @id
-  blockerId                        String
-  blockedId                        String
-  createdAt                        DateTime @default(now())
-  User_BlockedUser_blockedIdToUser User     @relation("BlockedUser_blockedIdToUser", fields: [blockedId], references: [id])
-  User_BlockedUser_blockerIdToUser User     @relation("BlockedUser_blockerIdToUser", fields: [blockerId], references: [id])
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
 
-  @@unique([blockerId, blockedId])
+  @@map("role")
 }
 
-model Booking {
-  id         String        @id
-  packageId  String
-  pilgrimId  String
-  status     BookingStatus @default(PENDING)
-  totalPrice Float
-  paidAmount Float         @default(0)
-  notes      String?
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime
-  Package    Package       @relation(fields: [packageId], references: [id])
-  User       User          @relation(fields: [pilgrimId], references: [id])
-  Payment    Payment?
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+  GITHUB
+  APPLE
+
+  @@map("auth_provider")
 }
 
-model Company {
-  id          String    @id
-  userId      String    @unique
-  companyName String
-  licenseUrl  String
-  phone       String?
-  address     String?
-  isVerified  Boolean   @default(false)
-  rating      Float     @default(0)
-  reviewCount Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime
-  User        User      @relation(fields: [userId], references: [id])
-  Package     Package[]
-  Review      Review[]
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+
+  @@map("gender")
 }
 
-model Doctor {
-  id            String          @id
-  userId        String          @unique
-  specialty     String
-  licenseUrl    String?
-  isVerified    Boolean         @default(false)
-  isAvailable   Boolean         @default(true)
-  rating        Float           @default(0)
-  reviewCount   Int             @default(0)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime
-  User          User            @relation(fields: [userId], references: [id])
-  DoctorOrder   DoctorOrder[]
-  DoctorReview  DoctorReview[]
-  DoctorService DoctorService[]
+// Profile data only. This model must never gain an auth-mechanism-specific
+// column (password, providerId, etc.) — that belongs on AuthIdentity so new
+// providers never require a migration here.
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  isEmailVerified   Boolean   @default(false)
+  username          String?   @unique
+  usernameUpdatedAt DateTime?
+  fullName          String?
+  gender            Gender?
+  birthDate         DateTime?
+  avatarUrl         String?
+  bio               String?
+  profileCompleted  Boolean   @default(false)
+  role              Role      @default(USER)
+  // Reversible admin moderation action — distinct from deletedAt (permanent,
+  // no undelete flow exists). Banning also revokes all refresh tokens (see
+  // AdminService.banUser); the short-lived access token can still work until
+  // it naturally expires. See docs/foundation.md.
+  isBanned          Boolean   @default(false)
+
+  authIdentities         AuthIdentity[]
+  refreshTokens          RefreshToken[]
+  verificationTokens     VerificationToken[]
+  placesCreated          Place[]                   @relation("PlaceCreatedBy")
+  reviews                Review[]
+  checkIns               CheckIn[]
+  friendRequestsSent     FriendRequest[]           @relation("FriendRequestSent")
+  friendRequestsReceived FriendRequest[]           @relation("FriendRequestReceived")
+  friendshipsOwned       Friendship[]              @relation("FriendshipOwner")
+  friendshipsAsFriend    Friendship[]              @relation("FriendshipFriend")
+  blocksMade             Block[]                   @relation("BlockMade")
+  blocksReceived         Block[]                   @relation("BlockReceived")
+  privacySettings        PrivacySettings?
+  savedPlaces            SavedPlace[]
+  stories                Story[]
+  storyViews             StoryView[]
+  conversationsCreated   Conversation[]            @relation("ConversationCreatedBy")
+  conversationsJoined    ConversationParticipant[]
+  messagesSent           Message[]                 @relation("MessageSender")
+  messageReactions       MessageReaction[]
+  notifications          Notification[]
+  callsAsCaller          CallSession[]             @relation("CallCaller")
+  callsAsCallee          CallSession[]             @relation("CallCallee")
+  deviceTokens           DeviceToken[]
+  posts                  Post[]
+  following              Follow[]                  @relation("FollowMade")
+  followers              Follow[]                  @relation("FollowReceived")
+  badges                 UserBadge[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([deletedAt])
+  @@map("users")
 }
 
-model DoctorMessage {
-  id          String      @id
-  orderId     String
-  senderId    String
-  content     String
-  createdAt   DateTime    @default(now())
-  DoctorOrder DoctorOrder @relation(fields: [orderId], references: [id])
+// One row per (user, provider). LOCAL rows carry passwordHash and leave
+// providerUserId null; OAuth rows carry the provider's stable subject id
+// and leave passwordHash null. A user may hold multiple rows (e.g. signed
+// up with Google, later added a password) without touching User.
+model AuthIdentity {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider       AuthProvider
+  providerUserId String?
+  passwordHash   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerUserId])
+  @@unique([userId, provider])
+  @@map("auth_identities")
 }
 
-model DoctorOrder {
-  id            String            @id
-  serviceId     String
-  pilgrimId     String
-  doctorId      String
-  status        DoctorOrderStatus @default(PENDING)
-  totalPrice    Float
-  symptomsNote  String?
-  scheduledAt   DateTime?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime
-  DoctorMessage DoctorMessage[]
-  Doctor        Doctor            @relation(fields: [doctorId], references: [id])
-  User          User              @relation(fields: [pilgrimId], references: [id])
-  DoctorService DoctorService     @relation(fields: [serviceId], references: [id])
-  DoctorReview  DoctorReview?
+enum VerificationTokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+
+  @@map("verification_token_purpose")
 }
 
-model DoctorReview {
-  id          String      @id
-  orderId     String      @unique
-  pilgrimId   String
-  doctorId    String
-  stars       Int
-  comment     String?
-  createdAt   DateTime    @default(now())
-  Doctor      Doctor      @relation(fields: [doctorId], references: [id])
-  DoctorOrder DoctorOrder @relation(fields: [orderId], references: [id])
+// Session-like, rotating refresh tokens (opaque random string, stored
+// hashed — never the raw value). Every refresh both revokes the presented
+// token and issues a new one sharing the same familyId. A revoked token
+// presented again means theft/reuse: the whole family gets revoked.
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  familyId  String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
 }
 
-model DoctorService {
-  id              String        @id
-  doctorId        String
-  title           String
-  description     String?
-  price           Float
-  durationMinutes Int           @default(30)
-  isActive        Boolean       @default(true)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime
-  DoctorOrder     DoctorOrder[]
-  Doctor          Doctor        @relation(fields: [doctorId], references: [id])
-}
-
-model Document {
-  id         String   @id
+// Single-use tokens for email verification and password reset. Stored
+// hashed, like RefreshToken. consumedAt prevents replay of the same link.
+model VerificationToken {
+  id         String                   @id @default(uuid())
   userId     String
-  type       String
-  fileUrl    String
-  uploadedBy String
-  createdAt  DateTime @default(now())
-  User       User     @relation(fields: [userId], references: [id])
+  user       User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose    VerificationTokenPurpose
+  tokenHash  String                   @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, purpose])
+  @@map("verification_tokens")
 }
 
-model Driver {
-  id              String            @id
-  userId          String            @unique
-  vehicleType     VehicleType
-  vehicleModel    String
-  vehiclePlate    String
-  licenseUrl      String?
-  isVerified      Boolean           @default(false)
-  isAvailable     Boolean           @default(true)
-  rating          Float             @default(0)
-  reviewCount     Int               @default(0)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime
-  User            User              @relation(fields: [userId], references: [id])
-  TransportOrder  TransportOrder[]
-  TransportReview TransportReview[]
-  TransportRoute  TransportRoute[]
+enum PlaceStatus {
+  ACTIVE
+  PENDING
+  CLOSED
+
+  @@map("place_status")
 }
 
-model Group {
-  id            String          @id
-  name          String
-  packageId     String
-  guideId       String
-  isActive      Boolean         @default(true)
-  createdAt     DateTime        @default(now())
-  User          User            @relation(fields: [guideId], references: [id])
-  Package       Package         @relation(fields: [packageId], references: [id])
-  GroupLocation GroupLocation[]
-  GroupMember   GroupMember[]
-  GroupMessage  GroupMessage[]
+// Derived from quantity vs lowStockThreshold on every write (see
+// ProductService) — stored rather than computed at query time so the
+// inventory table can filter/sort by status without loading every row.
+enum ProductStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+
+  @@map("product_status")
 }
 
-model GroupLocation {
-  id        String   @id
-  groupId   String
+enum OrderStatus {
+  NEW
+  ACCEPTED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+
+  @@map("order_status")
+}
+
+// Flat, admin-managed taxonomy — no hierarchy, no user-submitted categories.
+// See CLAUDE.md "Place Philosophy".
+model PlaceCategory {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  slug   String  @unique
+  places Place[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([deletedAt])
+  @@map("place_categories")
+}
+
+// latitude/longitude are the source of truth for ordinary reads/writes.
+// `location` is a PostGIS geography column kept in sync by a DB trigger
+// (see migration) — used only by spatial queries (ST_DWithin/ST_Distance),
+// never written to directly from application code.
+model Place {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  categoryId String
+  category   PlaceCategory @relation(fields: [categoryId], references: [id])
+
+  address   String?
   latitude  Float
   longitude Float
-  accuracy  Float?
-  createdAt DateTime @default(now())
-  Group     Group    @relation(fields: [groupId], references: [id])
+  location  Unsupported("geography(Point, 4326)")?
+
+  // Resolved automatically by a DB trigger from latitude/longitude via
+  // point-in-polygon against Region.boundary (see migration) — never written
+  // to directly from application code. Null when no seeded region covers
+  // this point yet (see Region's own comment re: placeholder boundaries).
+  regionId String?
+  region   Region? @relation(fields: [regionId], references: [id])
+
+  phone   String?
+  website String?
+  status  PlaceStatus @default(ACTIVE)
+
+  createdById String
+  createdBy   User   @relation("PlaceCreatedBy", fields: [createdById], references: [id])
+
+  reviews       Review[]
+  ratingSummary PlaceRatingSummary?
+  checkIns      CheckIn[]
+  savedByUsers  SavedPlace[]
+  stories       Story[]
+  posts         Post[]
+  messages      Message[]
+  products      Product[]
+  orders        Order[]
+  bookings      Booking[]
+  customerBlocks CustomerBlock[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([categoryId])
+  @@index([deletedAt])
+  @@index([regionId])
+  @@map("places")
 }
 
-model GroupMember {
-  id        String   @id
-  groupId   String
-  pilgrimId String
-  createdAt DateTime @default(now())
-  Group     Group    @relation(fields: [groupId], references: [id])
-  User      User     @relation(fields: [pilgrimId], references: [id])
+// Per-place inventory (Mikka Business admin panel). No storefront reads this
+// yet — every route is admin-gated (see ProductController).
+model Product {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
 
-  @@unique([groupId, pilgrimId])
+  name              String
+  sku               String
+  quantity          Int           @default(0)
+  lowStockThreshold Int           @default(5)
+  status            ProductStatus @default(IN_STOCK)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([placeId, sku])
+  @@index([placeId])
+  @@index([status])
+  @@map("products")
 }
 
-model GroupMessage {
-  id        String   @id
-  groupId   String
-  senderId  String
-  content   String
-  createdAt DateTime @default(now())
-  Group     Group    @relation(fields: [groupId], references: [id])
+// Staff/POS-entered orders (Mikka Business admin panel) — there is no
+// customer-facing ordering flow yet, so customerName/customerPhone are
+// free-text entered by staff, not linked to a User. totalAmount is derived
+// from items on every write (same denormalized-for-listing pattern as
+// Product.status — see OrderService) rather than computed at query time.
+model Order {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
+
+  customerName  String
+  customerPhone String?
+  status        OrderStatus @default(NEW)
+  totalAmount   Int         @default(0)
+
+  items OrderItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([status])
+  @@map("orders")
 }
 
-model Notification {
-  id        String   @id
-  userId    String
-  title     String
-  body      String
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
+// name/unitPrice are a snapshot at order-creation time (no live Product
+// price link yet — the Products catalog/pricing section doesn't exist),
+// so later Product edits never retroactively change a past order's total.
+model OrderItem {
+  id      String @id @default(uuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-  @@index([userId, createdAt])
-}
+  name      String
+  quantity  Int
+  unitPrice Int
 
-model OtpCode {
-  id        String   @id
-  phone     String
-  code      String
-  expiresAt DateTime
-  used      Boolean  @default(false)
-  userId    String?
-  createdAt DateTime @default(now())
-  User      User?    @relation(fields: [userId], references: [id])
-}
-
-model Package {
-  id              String      @id
-  companyId       String
-  title           String
-  description     String?
-  type            PackageType @default(UMRA)
-  price           Float
-  depositAmount   Float?
-  departureDate   DateTime
-  returnDate      DateTime?
-  durationDays    Int
-  hotelName       String?
-  hotelStars      Int?
-  distanceToHaram Int?
-  flightType      String?
-  maxPilgrims     Int         @default(50)
-  imageUrls       String[]
-  isActive        Boolean     @default(true)
-  isFeatured      Boolean     @default(false)
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime
-  Booking         Booking[]
-  Group           Group[]
-  Company         Company     @relation(fields: [companyId], references: [id])
-}
-
-model Payment {
-  id            String    @id
-  bookingId     String    @unique
-  provider      String
-  transactionId String?
-  amount        Float
-  status        String    @default("pending")
-  paidAt        DateTime?
-  createdAt     DateTime  @default(now())
-  Booking       Booking   @relation(fields: [bookingId], references: [id])
-}
-
-model Report {
-  id                               String      @id
-  reporterId                       String
-  reportedUserId                   String
-  context                          ChatContext
-  contextId                        String?
-  messageId                        String?
-  reason                           String
-  status                           String      @default("PENDING")
-  createdAt                        DateTime    @default(now())
-  User_Report_reportedUserIdToUser User        @relation("Report_reportedUserIdToUser", fields: [reportedUserId], references: [id])
-  User_Report_reporterIdToUser     User        @relation("Report_reporterIdToUser", fields: [reporterId], references: [id])
-}
-
-model Review {
-  id        String   @id
-  pilgrimId String
-  companyId String
-  stars     Int
-  comment   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  Company   Company  @relation(fields: [companyId], references: [id])
-  User      User     @relation(fields: [pilgrimId], references: [id])
-
-  @@unique([pilgrimId, companyId])
-}
-
-model TelegramLink {
-  id        String   @id
-  phone     String   @unique
-  chatId    String
-  createdAt DateTime @default(now())
-}
-
-model TransportMessage {
-  id             String         @id
-  orderId        String
-  senderId       String
-  content        String
-  createdAt      DateTime       @default(now())
-  TransportOrder TransportOrder @relation(fields: [orderId], references: [id])
-}
-
-model TransportOrder {
-  id               String               @id
-  routeId          String
-  pilgrimId        String
-  driverId         String
-  seats            Int
-  status           TransportOrderStatus @default(PENDING)
-  totalPrice       Float
-  pickupNote       String?
-  scheduledAt      DateTime?
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime
-  TransportMessage TransportMessage[]
-  Driver           Driver               @relation(fields: [driverId], references: [id])
-  User             User                 @relation(fields: [pilgrimId], references: [id])
-  TransportRoute   TransportRoute       @relation(fields: [routeId], references: [id])
-  TransportReview  TransportReview?
-}
-
-model TransportReview {
-  id             String         @id
-  orderId        String         @unique
-  pilgrimId      String
-  driverId       String
-  stars          Int
-  comment        String?
-  createdAt      DateTime       @default(now())
-  Driver         Driver         @relation(fields: [driverId], references: [id])
-  TransportOrder TransportOrder @relation(fields: [orderId], references: [id])
-}
-
-model TransportRoute {
-  id             String           @id
-  driverId       String
-  fromCity       String
-  toCity         String
-  vehicleType    VehicleType
-  pricePerSeat   Float
-  totalSeats     Int
-  isActive       Boolean          @default(true)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime
-  TransportOrder TransportOrder[]
-  Driver         Driver           @relation(fields: [driverId], references: [id])
-}
-
-model User {
-  id                                      String           @id
-  phone                                   String?          @unique
-  email                                   String?          @unique
-  password                                String?
-  role                                    Role             @default(PILGRIM)
-  fullName                                String
-  fcmToken                                String?
-  isActive                                Boolean          @default(true)
-  createdAt                               DateTime         @default(now())
-  updatedAt                               DateTime
-  googleId                                String?          @unique
-  avatar                                  String?
-  appleId                                 String?          @unique
-  BlockedUser_BlockedUser_blockedIdToUser BlockedUser[]    @relation("BlockedUser_blockedIdToUser")
-  BlockedUser_BlockedUser_blockerIdToUser BlockedUser[]    @relation("BlockedUser_blockerIdToUser")
-  Booking                                 Booking[]
-  Company                                 Company?
-  Doctor                                  Doctor?
-  DoctorOrder                             DoctorOrder[]
-  Document                                Document[]
-  Driver                                  Driver?
-  Group                                   Group[]
-  GroupMember                             GroupMember[]
-  Notification                            Notification[]
-  OtpCode                                 OtpCode[]
-  Report_Report_reportedUserIdToUser      Report[]         @relation("Report_reportedUserIdToUser")
-  Report_Report_reporterIdToUser          Report[]         @relation("Report_reporterIdToUser")
-  Review                                  Review[]
-  TransportOrder                          TransportOrder[]
+  @@index([orderId])
+  @@map("order_items")
 }
 
 enum BookingStatus {
   PENDING
-  APPROVED
-  PAID
+  CONFIRMED
+  SEATED
+  COMPLETED
   CANCELLED
+
+  @@map("booking_status")
 }
 
-enum ChatContext {
+// Staff/POS-entered table reservations (Mikka Business admin panel) — same
+// free-text customerName/customerPhone shape as Order (no customer-facing
+// booking flow exists yet). No physical table/floor-plan model backs
+// tableLabel; it's a free-text note, not a foreign key.
+model Booking {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
+
+  customerName  String
+  customerPhone String?
+  bookingTime   DateTime
+  guests        Int
+  tableLabel    String?
+  note          String?
+  status        BookingStatus @default(PENDING)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([status])
+  @@index([bookingTime])
+  @@map("bookings")
+}
+
+// Mikka Business "block customer" action — a customer here is identified
+// only by phone number (Order/Booking.customerPhone are free text, not
+// linked to a User), so this is the minimal row needed to remember a block
+// decision per (place, phone). Block = upsert this row; unblock = delete it.
+model CustomerBlock {
+  id            String   @id @default(uuid())
+  placeId       String
+  place         Place    @relation(fields: [placeId], references: [id])
+  customerPhone String
+
+  createdAt DateTime @default(now())
+
+  @@unique([placeId, customerPhone])
+  @@map("customer_blocks")
+}
+
+// Administrative-area fallback for GET /places: when a radius search comes
+// up empty, we widen to "everywhere in the user's region" instead of just
+// returning nothing. `boundary` is `geometry` (not `geography`, unlike
+// Place.location) because point-in-polygon containment (ST_Contains) is a
+// planar check with no need for geography's distance semantics.
+//
+// Seeded with all 14 real Uzbekistan viloyat/city boundaries (ADM1, from
+// geoBoundaries.org — OSM-derived, ODbL) in the
+// `seed_real_uz_regions` migration — see docs/foundation.md section 7.
+model Region {
+  id       String                                      @id @default(uuid())
+  name     String                                      @unique
+  boundary Unsupported("geometry(MultiPolygon, 4326)")
+
+  places Place[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("regions")
+}
+
+// One review per (user, place) — enforced by a PARTIAL unique index added
+// by hand in the migration (WHERE "deletedAt" IS NULL), not declared here,
+// since Prisma has no `@@unique(..., where:)` syntax. Declaring a full
+// @@unique here would conflict with the actual partial index and risk the
+// same "unexpected drift" problem documented in docs/foundation.md for the
+// GiST/GIN indexes — so this table intentionally has no @@unique at all.
+// The application layer pre-checks via findFirst for a friendly error;
+// the partial index is the actual correctness guarantee.
+model Review {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  rating  Int
+  comment String?
+
+  ownerReply     String?
+  ownerRepliedAt DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([deletedAt])
+  @@map("reviews")
+}
+
+// Maintained entirely by a DB trigger on `reviews` (see migration) — never
+// written to directly from application code. A place with zero reviews
+// simply has no row here; the service layer treats "missing" as
+// { averageRating: 0, reviewCount: 0 }.
+model PlaceRatingSummary {
+  placeId       String   @id
+  place         Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  averageRating Float    @default(0)
+  reviewCount   Int      @default(0)
+  updatedAt     DateTime @updatedAt
+
+  @@map("place_rating_summaries")
+}
+
+// Immutable event log, not editable — no updatedAt. distanceMeters is the
+// verified distance at check-in time (server-computed via PostGIS against
+// the client-supplied coordinates), kept for audit even though the
+// accept/reject decision already happened in the service layer. Visibility
+// is owner-only for V1 — see docs/foundation.md; a place only exposes an
+// aggregate count until the Privacy module exists to gate anything finer.
+model CheckIn {
+  id      String @id @default(uuid())
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  latitude       Float
+  longitude      Float
+  distanceMeters Float
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([placeId])
+  @@index([userId])
+  @@index([deletedAt])
+  @@map("check_ins")
+}
+
+// A pending friend request only — no `status` column. Existence of the row
+// IS "pending"; the row is deleted the moment it's resolved (accepted,
+// declined, or canceled). Accepting also creates two `Friendship` rows in
+// the same transaction (see FriendRequestRepository); no history is kept
+// either way — CLAUDE.md's "keep V1 simple", not an oversight. No
+// deletedAt either: nothing here is ever worth restoring.
+model FriendRequest {
+  id          String @id @default(uuid())
+  requesterId String
+  requester   User   @relation("FriendRequestSent", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String
+  addressee   User   @relation("FriendRequestReceived", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId])
+  @@map("friend_requests")
+}
+
+// A confirmed, symmetric friendship. Deliberately denormalized: becoming
+// friends writes TWO rows (userId=A,friendId=B and userId=B,friendId=A) in
+// one transaction, instead of one row queried with `userAId OR userBId`.
+// Doubles storage but makes "list my friends" (the hot path — also read by
+// Chat/Story/Privacy later) a single indexed equality lookup on `userId`
+// instead of an OR across two columns. Unfriending deletes both rows.
+model Friendship {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation("FriendshipOwner", fields: [userId], references: [id], onDelete: Cascade)
+  friendId String
+  friend   User   @relation("FriendshipFriend", fields: [friendId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
+  @@map("friendships")
+}
+
+// Directional (blocker -> blocked), unlike Friendship. Narrow V1 scope —
+// see docs/foundation.md: this only prevents new FriendRequests between
+// the two (checked in both directions) and tears down any existing
+// Friendship/FriendRequest between them. It does NOT hide profiles,
+// reviews, or chat — those are Privacy/Chat module concerns for later.
+model Block {
+  id        String @id @default(uuid())
+  blockerId String
+  blocker   User   @relation("BlockMade", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String
+  blocked   User   @relation("BlockReceived", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+  @@index([blockedId])
+  @@map("blocks")
+}
+
+// Directional (follower -> following), independent of Friendship — modeled
+// on Block's shape, not Friendship's. Following someone doesn't require
+// mutual friendship and unfollowing/unfriending don't affect each other.
+// Followers/Following counts are computed on read (prisma.follow.count),
+// not denormalized — profile views aren't hot enough to need it (V1 simple).
+model Follow {
+  id          String @id @default(uuid())
+  followerId  String
+  follower    User   @relation("FollowMade", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User   @relation("FollowReceived", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+  @@map("follows")
+}
+
+// Renamed from CheckInVisibility (was check-in-specific) once Story also
+// needed the identical PUBLIC/FRIENDS/PRIVATE set — see docs/foundation.md.
+// PrivacyService.canView was always generic over this; only the enum name
+// was check-in-specific.
+enum ContentVisibility {
+  PUBLIC
+  FRIENDS
+  PRIVATE
+
+  @@map("content_visibility")
+}
+
+// One row per user, created lazily (only when a setting is actually
+// changed — see PrivacySettingsRepository.upsert). A missing row means
+// defaults, same "absence = default" pattern as PlaceRatingSummary: the
+// service layer treats "no row" as { checkInVisibility: FRIENDS,
+// storyVisibility: FRIENDS }, not an error. Kept as its own module (not
+// folded into User) because it owns visibility *decisions*, not just a
+// settings blob — see PrivacyService.canView and docs/foundation.md.
+model PrivacySettings {
+  userId            String            @id
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkInVisibility ContentVisibility @default(FRIENDS)
+  storyVisibility   ContentVisibility @default(FRIENDS)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("privacy_settings")
+}
+
+// Flat bookmark list — no folders/collections in V1 (CLAUDE.md: keep V1
+// simple). Hard delete, like Friendship/Block: unsaving has no product
+// need to be undone or audited. Save/unsave are both idempotent at the
+// service layer (upsert on save, deleteMany on unsave) — unlike
+// FriendRequest, this isn't a one-time social action, so retrying a
+// bookmark toggle should never surface as an error.
+model SavedPlace {
+  id      String @id @default(uuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, placeId])
+  @@index([placeId])
+  @@map("saved_places")
+}
+
+// `expiresAt` is computed once at creation (createdAt + 24h) and every
+// "active stories" query filters on it (WHERE expiresAt > now()), same
+// pattern as deletedAt elsewhere — no cron/cleanup job deletes expired
+// rows in V1 (see docs/foundation.md); they just stop appearing in
+// queries. `deletedAt` is separate, for early manual deletion by the
+// owner (or ADMIN moderation) before natural expiry. At least one of
+// text/imageUrl/placeId is required — enforced by the DTO (Prisma has no
+// declarative "at least one of" constraint), not by a DB CHECK.
+model Story {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  text     String?
+  imageUrl String?
+  placeId  String?
+  place    Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
+
+  views StoryView[]
+
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("stories")
+}
+
+// Who has seen a story — always owner-only to read (see StoryController),
+// regardless of the story's own visibility setting: that setting controls
+// who can see the *content*, not who gets to see the *audience list*.
+// Idempotent to write (viewing twice is a no-op, same reasoning as
+// SavedPlace) — the unique constraint is what makes a repeat "mark
+// viewed" call safe to upsert against.
+model StoryView {
+  id       String @id @default(uuid())
+  storyId  String
+  story    Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  viewerId String
+  viewer   User   @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+
+  viewedAt DateTime @default(now())
+
+  @@unique([storyId, viewerId])
+  @@map("story_views")
+}
+
+// Permanent (no expiresAt), unlike Story — the "Posts" grid on a profile.
+// Visibility reuses the same ContentVisibility enum/PrivacyService.canView
+// pattern as Story/CheckIn rather than inventing a fourth visibility knob.
+// At least one image required — enforced by the DTO (min 1), same "DTO not
+// DB CHECK" convention as Story's text/imageUrl/placeId.
+model Post {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  caption String?
+  placeId String?
+  place   Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
+
+  visibility ContentVisibility @default(FRIENDS)
+  images     PostImage[]
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([userId])
+  @@index([deletedAt])
+  @@map("posts")
+}
+
+// `position` orders the carousel (0-based). Images are uploaded individually
+// via the existing stateless POST /uploads/image beforehand — this table
+// only stores the resulting URLs, it never touches Supabase Storage itself.
+model PostImage {
+  id     String @id @default(uuid())
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  url          String
+  thumbnailUrl String?
+  position     Int
+
+  @@unique([postId, position])
+  @@map("post_images")
+}
+
+enum ConversationType {
+  PRIVATE
   GROUP
-  TRANSPORT
-  DOCTOR
+
+  @@map("conversation_type")
 }
 
-enum DoctorOrderStatus {
-  PENDING
+// PRIVATE conversations are get-or-created (see ChatService): creating a
+// second one between the same two people returns the existing row instead
+// of a duplicate thread. `name` is GROUP-only (null for PRIVATE — the
+// client derives a display name from the other participant). `updatedAt`
+// is bumped on every new message (not just edits) specifically so the
+// conversation list can sort "most recently active first" with a plain
+// ORDER BY, no separate lastMessageAt column to keep in sync.
+model Conversation {
+  id          String           @id @default(uuid())
+  type        ConversationType
+  name        String?
+  createdById String
+  createdBy   User             @relation("ConversationCreatedBy", fields: [createdById], references: [id])
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("conversations")
+}
+
+// `lastReadAt` drives the unread-count shown in the conversation list — no
+// per-message read receipt, V1 keeps it to "read up to this point in
+// time," same granularity as most chat apps' list view. `leftAt` marks a
+// participant as having left a GROUP (PRIVATE conversations don't support
+// leaving) without deleting history for the other participant(s); a left
+// member can't send new messages but their past ones remain.
+model ConversationParticipant {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  joinedAt   DateTime  @default(now())
+  lastReadAt DateTime?
+  leftAt     DateTime?
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@map("conversation_participants")
+}
+
+// Same flexible-fields pattern as Story (no rigid MessageType enum) — at
+// least one of text/imageUrl/placeId required, enforced by the DTO.
+// `replyTo` is a self-relation with onDelete: SetNull, so deleting the
+// original leaves the reply intact (pointing at nothing) rather than
+// cascading the deletion to every reply.
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  text     String?
+  imageUrl String?
+  placeId  String?
+  place    Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
+
+  replyToId String?
+  replyTo   Message?  @relation("MessageReply", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies   Message[] @relation("MessageReply")
+
+  reactions MessageReaction[]
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([conversationId])
+  @@map("messages")
+}
+
+// One reaction per user per message (Facebook-style, not Slack-style
+// multi-reaction) — reacting again with a different emoji replaces the
+// row (upsert on the unique key) rather than adding a second one.
+model MessageReaction {
+  id        String  @id @default(uuid())
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emoji     String
+
+  createdAt DateTime @default(now())
+
+  @@unique([messageId, userId])
+  @@map("message_reactions")
+}
+
+enum NotificationType {
+  FRIEND_REQUEST
+  NEW_MESSAGE
+  STORY_UPDATE
+  MISSED_CALL
+  FOLLOW
+  BADGE_EARNED
+
+  @@map("notification_type")
+}
+
+// Created exclusively by event listeners (see src/notification/listeners),
+// never by a direct call from Friendship/Chat/Story — those modules emit a
+// domain event via @nestjs/event-emitter and have no idea Notification
+// exists. `body` is fully rendered server-side at creation time (not
+// assembled client-side from `type`), same reasoning most notification
+// APIs use: rendering logic (usernames, pluralization, truncation) belongs
+// in one place, not duplicated per client. `data` carries whatever a
+// client needs to deep-link (e.g. { conversationId } for NEW_MESSAGE)
+// without parsing `body`. See docs/foundation.md.
+model Notification {
+  id     String           @id @default(uuid())
+  userId String
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type   NotificationType
+  body   String
+  data   Json?
+
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+enum CallType {
+  AUDIO
+  VIDEO
+
+  @@map("call_type")
+}
+
+enum CallStatus {
+  RINGING
   ACCEPTED
-  REJECTED
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
+  DECLINED
+  MISSED
+  ENDED
+  FAILED
+
+  @@map("call_status")
 }
 
-enum PackageType {
-  HAJ
-  UMRA
+// One row per call *attempt*, not a pure event log — CallService reads the
+// current status back (is either party already RINGING/ACCEPTED elsewhere?)
+// to reject a second concurrent call, so a row's status is live state, not
+// just history. conversationId is optional: a call can be started from
+// FriendsScreen directly (no open conversation yet) as well as from an
+// existing thread.
+model CallSession {
+  id             String  @id @default(uuid())
+  callerId       String
+  caller         User    @relation("CallCaller", fields: [callerId], references: [id], onDelete: Cascade)
+  calleeId       String
+  callee         User    @relation("CallCallee", fields: [calleeId], references: [id], onDelete: Cascade)
+  conversationId String?
+
+  type   CallType
+  status CallStatus @default(RINGING)
+
+  startedAt  DateTime  @default(now())
+  acceptedAt DateTime?
+  endedAt    DateTime?
+  endReason  String?
+
+  @@index([callerId])
+  @@index([calleeId])
+  @@map("call_sessions")
 }
 
-enum Role {
-  SUPERADMIN
-  COMPANY
-  GUIDE
-  PILGRIM
-  DRIVER
-  DOCTOR
+enum DevicePlatform {
+  ANDROID
+  IOS
+
+  @@map("device_platform")
 }
 
-enum TransportOrderStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
+// kind distinguishes Android's single FCM token from iOS's two tokens (a
+// regular FCM token for normal push, a separate PushKit/VoIP token used
+// only to wake CallKit for incoming calls) — same platform can hold both.
+enum DeviceTokenKind {
+  FCM
+  VOIP
+
+  @@map("device_token_kind")
 }
 
-enum VehicleType {
-  SEDAN
-  MINIVAN
-  BUS
+model DeviceToken {
+  id       String          @id @default(uuid())
+  userId   String
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform DevicePlatform
+  kind     DeviceTokenKind
+  token    String          @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("device_tokens")
+}
+
+// Which stat a badge's threshold is measured against. The evaluator logic
+// per type lives in code (services/evaluators/*.ts); only the numbers/params
+// are data-driven via BadgeDefinition, so adding a badge with an EXISTING
+// criteria type never needs a code change, just a new seeded row.
+enum BadgeCriteriaType {
+  CHECKIN_CATEGORY_COUNT
+  CHECKIN_REGION_DISTINCT_COUNT
+  REVIEW_COUNT
+
+  @@map("badge_criteria_type")
+}
+
+// Seeded, not user/admin-created in V1. `criteriaParams` holds type-specific
+// extras (e.g. { "categorySlugs": ["coffee"] } for CHECKIN_CATEGORY_COUNT) —
+// CHECKIN_REGION_DISTINCT_COUNT/REVIEW_COUNT ignore it.
+model BadgeDefinition {
+  id             String            @id @default(uuid())
+  code           String            @unique
+  name           String
+  description    String
+  iconUrl        String?
+  criteriaType   BadgeCriteriaType
+  threshold      Int
+  criteriaParams Json?
+
+  userBadges UserBadge[]
+
+  createdAt DateTime @default(now())
+
+  @@map("badge_definitions")
+}
+
+// Earned instance — written once by BadgeService.evaluateForUser when a
+// threshold is first met (re-evaluation is a no-op past that point, the
+// unique constraint below is what makes the upsert safe). Never deleted:
+// badges are permanent once earned, same "no undo" reasoning as CheckIn.
+model UserBadge {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeDefinitionId String
+  badgeDefinition   BadgeDefinition @relation(fields: [badgeDefinitionId], references: [id], onDelete: Cascade)
+
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, badgeDefinitionId])
+  @@index([userId])
+  @@map("user_badges")
 }
