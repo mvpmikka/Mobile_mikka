@@ -30,6 +30,7 @@ import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { BookingModule } from './booking/booking.module';
 import { CustomerModule } from './customer/customer.module';
+import { VerificationModule } from './verification/verification.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { CustomerModule } from './customer/customer.module';
     OrderModule,
     BookingModule,
     CustomerModule,
+    VerificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

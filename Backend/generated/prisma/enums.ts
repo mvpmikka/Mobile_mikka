@@ -55,6 +55,16 @@ export const PlaceStatus = {
 export type PlaceStatus = (typeof PlaceStatus)[keyof typeof PlaceStatus]
 
 
+export const PlaceVerificationStatus = {
+  NONE: 'NONE',
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type PlaceVerificationStatus = (typeof PlaceVerificationStatus)[keyof typeof PlaceVerificationStatus]
+
+
 export const ProductStatus = {
   IN_STOCK: 'IN_STOCK',
   LOW_STOCK: 'LOW_STOCK',

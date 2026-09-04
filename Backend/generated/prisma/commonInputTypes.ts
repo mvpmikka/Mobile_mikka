@@ -234,6 +234,13 @@ export type EnumPlaceStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel> | $Enums.PlaceStatus
 }
 
+export type EnumPlaceVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlaceVerificationStatus | Prisma.EnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel> | $Enums.PlaceVerificationStatus
+}
+
 export type FloatWithAggregatesFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
@@ -258,6 +265,16 @@ export type EnumPlaceStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel>
+}
+
+export type EnumPlaceVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlaceVerificationStatus | Prisma.EnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlaceVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlaceVerificationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel>
 }
 
 export type IntFilter<$PrismaModel = never> = {
@@ -758,6 +775,13 @@ export type NestedEnumPlaceStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel> | $Enums.PlaceStatus
 }
 
+export type NestedEnumPlaceVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlaceVerificationStatus | Prisma.EnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel> | $Enums.PlaceVerificationStatus
+}
+
 export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
@@ -782,6 +806,16 @@ export type NestedEnumPlaceStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPlaceStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPlaceVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PlaceVerificationStatus | Prisma.EnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PlaceVerificationStatus[] | Prisma.ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPlaceVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlaceVerificationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPlaceVerificationStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumProductStatusFilter<$PrismaModel = never> = {

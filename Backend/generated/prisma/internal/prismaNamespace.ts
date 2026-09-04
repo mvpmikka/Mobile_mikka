@@ -3061,6 +3061,11 @@ export const PlaceScalarFieldEnum = {
   phone: 'phone',
   website: 'website',
   status: 'status',
+  verificationStatus: 'verificationStatus',
+  verificationDocPath: 'verificationDocPath',
+  verificationSubmittedAt: 'verificationSubmittedAt',
+  verificationReviewedAt: 'verificationReviewedAt',
+  verificationRejectReason: 'verificationRejectReason',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -3579,6 +3584,20 @@ export type EnumPlaceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'PlaceStatus[]'
  */
 export type ListEnumPlaceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlaceStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlaceVerificationStatus'
+ */
+export type EnumPlaceVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlaceVerificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PlaceVerificationStatus[]'
+ */
+export type ListEnumPlaceVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlaceVerificationStatus[]'>
     
 
 

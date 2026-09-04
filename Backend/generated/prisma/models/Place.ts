@@ -48,6 +48,11 @@ export type PlaceMinAggregateOutputType = {
   phone: string | null
   website: string | null
   status: $Enums.PlaceStatus | null
+  verificationStatus: $Enums.PlaceVerificationStatus | null
+  verificationDocPath: string | null
+  verificationSubmittedAt: Date | null
+  verificationReviewedAt: Date | null
+  verificationRejectReason: string | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -66,6 +71,11 @@ export type PlaceMaxAggregateOutputType = {
   phone: string | null
   website: string | null
   status: $Enums.PlaceStatus | null
+  verificationStatus: $Enums.PlaceVerificationStatus | null
+  verificationDocPath: string | null
+  verificationSubmittedAt: Date | null
+  verificationReviewedAt: Date | null
+  verificationRejectReason: string | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -84,6 +94,11 @@ export type PlaceCountAggregateOutputType = {
   phone: number
   website: number
   status: number
+  verificationStatus: number
+  verificationDocPath: number
+  verificationSubmittedAt: number
+  verificationReviewedAt: number
+  verificationRejectReason: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -114,6 +129,11 @@ export type PlaceMinAggregateInputType = {
   phone?: true
   website?: true
   status?: true
+  verificationStatus?: true
+  verificationDocPath?: true
+  verificationSubmittedAt?: true
+  verificationReviewedAt?: true
+  verificationRejectReason?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -132,6 +152,11 @@ export type PlaceMaxAggregateInputType = {
   phone?: true
   website?: true
   status?: true
+  verificationStatus?: true
+  verificationDocPath?: true
+  verificationSubmittedAt?: true
+  verificationReviewedAt?: true
+  verificationRejectReason?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -150,6 +175,11 @@ export type PlaceCountAggregateInputType = {
   phone?: true
   website?: true
   status?: true
+  verificationStatus?: true
+  verificationDocPath?: true
+  verificationSubmittedAt?: true
+  verificationReviewedAt?: true
+  verificationRejectReason?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -255,6 +285,11 @@ export type PlaceGroupByOutputType = {
   phone: string | null
   website: string | null
   status: $Enums.PlaceStatus
+  verificationStatus: $Enums.PlaceVerificationStatus
+  verificationDocPath: string | null
+  verificationSubmittedAt: Date | null
+  verificationReviewedAt: Date | null
+  verificationRejectReason: string | null
   createdById: string
   createdAt: Date
   updatedAt: Date
@@ -296,6 +331,11 @@ export type PlaceWhereInput = {
   phone?: Prisma.StringNullableFilter<"Place"> | string | null
   website?: Prisma.StringNullableFilter<"Place"> | string | null
   status?: Prisma.EnumPlaceStatusFilter<"Place"> | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFilter<"Place"> | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.StringNullableFilter<"Place"> | string | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationReviewedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationRejectReason?: Prisma.StringNullableFilter<"Place"> | string | null
   createdById?: Prisma.StringFilter<"Place"> | string
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Place"> | Date | string
@@ -328,6 +368,11 @@ export type PlaceOrderByWithRelationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  verificationDocPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationRejectReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -363,6 +408,11 @@ export type PlaceWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.StringNullableFilter<"Place"> | string | null
   website?: Prisma.StringNullableFilter<"Place"> | string | null
   status?: Prisma.EnumPlaceStatusFilter<"Place"> | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFilter<"Place"> | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.StringNullableFilter<"Place"> | string | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationReviewedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationRejectReason?: Prisma.StringNullableFilter<"Place"> | string | null
   createdById?: Prisma.StringFilter<"Place"> | string
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Place"> | Date | string
@@ -395,6 +445,11 @@ export type PlaceOrderByWithAggregationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  verificationDocPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verificationRejectReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -421,6 +476,11 @@ export type PlaceScalarWhereWithAggregatesInput = {
   phone?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   status?: Prisma.EnumPlaceStatusWithAggregatesFilter<"Place"> | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusWithAggregatesFilter<"Place"> | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Place"> | Date | string | null
+  verificationReviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Place"> | Date | string | null
+  verificationRejectReason?: Prisma.StringNullableWithAggregatesFilter<"Place"> | string | null
   createdById?: Prisma.StringWithAggregatesFilter<"Place"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Place"> | Date | string
@@ -437,6 +497,11 @@ export type PlaceCreateInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -468,6 +533,11 @@ export type PlaceUncheckedCreateInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -495,6 +565,11 @@ export type PlaceUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -526,6 +601,11 @@ export type PlaceUncheckedUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -555,6 +635,11 @@ export type PlaceCreateManyInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -571,6 +656,11 @@ export type PlaceUpdateManyMutationInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -588,6 +678,11 @@ export type PlaceUncheckedUpdateManyInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -616,6 +711,11 @@ export type PlaceCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   website?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  verificationDocPath?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
+  verificationReviewedAt?: Prisma.SortOrder
+  verificationRejectReason?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -639,6 +739,11 @@ export type PlaceMaxOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   website?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  verificationDocPath?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
+  verificationReviewedAt?: Prisma.SortOrder
+  verificationRejectReason?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -657,6 +762,11 @@ export type PlaceMinOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   website?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
+  verificationDocPath?: Prisma.SortOrder
+  verificationSubmittedAt?: Prisma.SortOrder
+  verificationReviewedAt?: Prisma.SortOrder
+  verificationRejectReason?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -772,6 +882,10 @@ export type FloatFieldUpdateOperationsInput = {
 
 export type EnumPlaceStatusFieldUpdateOperationsInput = {
   set?: $Enums.PlaceStatus
+}
+
+export type EnumPlaceVerificationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PlaceVerificationStatus
 }
 
 export type PlaceCreateNestedOneWithoutProductsInput = {
@@ -972,6 +1086,11 @@ export type PlaceCreateWithoutCreatedByInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1002,6 +1121,11 @@ export type PlaceUncheckedCreateWithoutCreatedByInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1059,6 +1183,11 @@ export type PlaceScalarWhereInput = {
   phone?: Prisma.StringNullableFilter<"Place"> | string | null
   website?: Prisma.StringNullableFilter<"Place"> | string | null
   status?: Prisma.EnumPlaceStatusFilter<"Place"> | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFilter<"Place"> | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.StringNullableFilter<"Place"> | string | null
+  verificationSubmittedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationReviewedAt?: Prisma.DateTimeNullableFilter<"Place"> | Date | string | null
+  verificationRejectReason?: Prisma.StringNullableFilter<"Place"> | string | null
   createdById?: Prisma.StringFilter<"Place"> | string
   createdAt?: Prisma.DateTimeFilter<"Place"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Place"> | Date | string
@@ -1075,6 +1204,11 @@ export type PlaceCreateWithoutCategoryInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1104,6 +1238,11 @@ export type PlaceUncheckedCreateWithoutCategoryInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1157,6 +1296,11 @@ export type PlaceCreateWithoutProductsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1187,6 +1331,11 @@ export type PlaceUncheckedCreateWithoutProductsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1229,6 +1378,11 @@ export type PlaceUpdateWithoutProductsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1259,6 +1413,11 @@ export type PlaceUncheckedUpdateWithoutProductsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1285,6 +1444,11 @@ export type PlaceCreateWithoutOrdersInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1315,6 +1479,11 @@ export type PlaceUncheckedCreateWithoutOrdersInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1357,6 +1526,11 @@ export type PlaceUpdateWithoutOrdersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1387,6 +1561,11 @@ export type PlaceUncheckedUpdateWithoutOrdersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1413,6 +1592,11 @@ export type PlaceCreateWithoutBookingsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1443,6 +1627,11 @@ export type PlaceUncheckedCreateWithoutBookingsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1485,6 +1674,11 @@ export type PlaceUpdateWithoutBookingsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1515,6 +1709,11 @@ export type PlaceUncheckedUpdateWithoutBookingsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1541,6 +1740,11 @@ export type PlaceCreateWithoutCustomerBlocksInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1571,6 +1775,11 @@ export type PlaceUncheckedCreateWithoutCustomerBlocksInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1613,6 +1822,11 @@ export type PlaceUpdateWithoutCustomerBlocksInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1643,6 +1857,11 @@ export type PlaceUncheckedUpdateWithoutCustomerBlocksInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1669,6 +1888,11 @@ export type PlaceCreateWithoutRegionInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1698,6 +1922,11 @@ export type PlaceUncheckedCreateWithoutRegionInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1751,6 +1980,11 @@ export type PlaceCreateWithoutReviewsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1781,6 +2015,11 @@ export type PlaceUncheckedCreateWithoutReviewsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1823,6 +2062,11 @@ export type PlaceUpdateWithoutReviewsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1853,6 +2097,11 @@ export type PlaceUncheckedUpdateWithoutReviewsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1879,6 +2128,11 @@ export type PlaceCreateWithoutRatingSummaryInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -1909,6 +2163,11 @@ export type PlaceUncheckedCreateWithoutRatingSummaryInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1951,6 +2210,11 @@ export type PlaceUpdateWithoutRatingSummaryInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1981,6 +2245,11 @@ export type PlaceUncheckedUpdateWithoutRatingSummaryInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2007,6 +2276,11 @@ export type PlaceCreateWithoutCheckInsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2037,6 +2311,11 @@ export type PlaceUncheckedCreateWithoutCheckInsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2079,6 +2358,11 @@ export type PlaceUpdateWithoutCheckInsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2109,6 +2393,11 @@ export type PlaceUncheckedUpdateWithoutCheckInsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2135,6 +2424,11 @@ export type PlaceCreateWithoutSavedByUsersInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2165,6 +2459,11 @@ export type PlaceUncheckedCreateWithoutSavedByUsersInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2207,6 +2506,11 @@ export type PlaceUpdateWithoutSavedByUsersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2237,6 +2541,11 @@ export type PlaceUncheckedUpdateWithoutSavedByUsersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2263,6 +2572,11 @@ export type PlaceCreateWithoutStoriesInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2293,6 +2607,11 @@ export type PlaceUncheckedCreateWithoutStoriesInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2335,6 +2654,11 @@ export type PlaceUpdateWithoutStoriesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2365,6 +2689,11 @@ export type PlaceUncheckedUpdateWithoutStoriesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2391,6 +2720,11 @@ export type PlaceCreateWithoutPostsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2421,6 +2755,11 @@ export type PlaceUncheckedCreateWithoutPostsInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2463,6 +2802,11 @@ export type PlaceUpdateWithoutPostsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2493,6 +2837,11 @@ export type PlaceUncheckedUpdateWithoutPostsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2519,6 +2868,11 @@ export type PlaceCreateWithoutMessagesInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2549,6 +2903,11 @@ export type PlaceUncheckedCreateWithoutMessagesInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2591,6 +2950,11 @@ export type PlaceUpdateWithoutMessagesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2621,6 +2985,11 @@ export type PlaceUncheckedUpdateWithoutMessagesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2649,6 +3018,11 @@ export type PlaceCreateManyCreatedByInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -2664,6 +3038,11 @@ export type PlaceUpdateWithoutCreatedByInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2694,6 +3073,11 @@ export type PlaceUncheckedUpdateWithoutCreatedByInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2722,6 +3106,11 @@ export type PlaceUncheckedUpdateManyWithoutCreatedByInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2738,6 +3127,11 @@ export type PlaceCreateManyCategoryInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2754,6 +3148,11 @@ export type PlaceUpdateWithoutCategoryInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2783,6 +3182,11 @@ export type PlaceUncheckedUpdateWithoutCategoryInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2811,6 +3215,11 @@ export type PlaceUncheckedUpdateManyWithoutCategoryInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2827,6 +3236,11 @@ export type PlaceUpdateWithoutRegionInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2856,6 +3270,11 @@ export type PlaceUncheckedUpdateWithoutRegionInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2884,6 +3303,11 @@ export type PlaceCreateManyRegionInput = {
   phone?: string | null
   website?: string | null
   status?: $Enums.PlaceStatus
+  verificationStatus?: $Enums.PlaceVerificationStatus
+  verificationDocPath?: string | null
+  verificationSubmittedAt?: Date | string | null
+  verificationReviewedAt?: Date | string | null
+  verificationRejectReason?: string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2901,6 +3325,11 @@ export type PlaceUncheckedUpdateManyWithoutRegionInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumPlaceStatusFieldUpdateOperationsInput | $Enums.PlaceStatus
+  verificationStatus?: Prisma.EnumPlaceVerificationStatusFieldUpdateOperationsInput | $Enums.PlaceVerificationStatus
+  verificationDocPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationRejectReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3031,6 +3460,11 @@ export type PlaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   phone?: boolean
   website?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  verificationDocPath?: boolean
+  verificationSubmittedAt?: boolean
+  verificationReviewedAt?: boolean
+  verificationRejectReason?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3064,6 +3498,11 @@ export type PlaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   phone?: boolean
   website?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  verificationDocPath?: boolean
+  verificationSubmittedAt?: boolean
+  verificationReviewedAt?: boolean
+  verificationRejectReason?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3085,6 +3524,11 @@ export type PlaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   phone?: boolean
   website?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  verificationDocPath?: boolean
+  verificationSubmittedAt?: boolean
+  verificationReviewedAt?: boolean
+  verificationRejectReason?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3106,13 +3550,18 @@ export type PlaceSelectScalar = {
   phone?: boolean
   website?: boolean
   status?: boolean
+  verificationStatus?: boolean
+  verificationDocPath?: boolean
+  verificationSubmittedAt?: boolean
+  verificationReviewedAt?: boolean
+  verificationRejectReason?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type PlaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "categoryId" | "address" | "latitude" | "longitude" | "regionId" | "phone" | "website" | "status" | "createdById" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["place"]>
+export type PlaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "categoryId" | "address" | "latitude" | "longitude" | "regionId" | "phone" | "website" | "status" | "verificationStatus" | "verificationDocPath" | "verificationSubmittedAt" | "verificationReviewedAt" | "verificationRejectReason" | "createdById" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["place"]>
 export type PlaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.PlaceCategoryDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Place$regionArgs<ExtArgs>
@@ -3171,6 +3620,11 @@ export type $PlacePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     phone: string | null
     website: string | null
     status: $Enums.PlaceStatus
+    verificationStatus: $Enums.PlaceVerificationStatus
+    verificationDocPath: string | null
+    verificationSubmittedAt: Date | null
+    verificationReviewedAt: Date | null
+    verificationRejectReason: string | null
     createdById: string
     createdAt: Date
     updatedAt: Date
@@ -3623,6 +4077,11 @@ export interface PlaceFieldRefs {
   readonly phone: Prisma.FieldRef<"Place", 'String'>
   readonly website: Prisma.FieldRef<"Place", 'String'>
   readonly status: Prisma.FieldRef<"Place", 'PlaceStatus'>
+  readonly verificationStatus: Prisma.FieldRef<"Place", 'PlaceVerificationStatus'>
+  readonly verificationDocPath: Prisma.FieldRef<"Place", 'String'>
+  readonly verificationSubmittedAt: Prisma.FieldRef<"Place", 'DateTime'>
+  readonly verificationReviewedAt: Prisma.FieldRef<"Place", 'DateTime'>
+  readonly verificationRejectReason: Prisma.FieldRef<"Place", 'String'>
   readonly createdById: Prisma.FieldRef<"Place", 'String'>
   readonly createdAt: Prisma.FieldRef<"Place", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Place", 'DateTime'>
