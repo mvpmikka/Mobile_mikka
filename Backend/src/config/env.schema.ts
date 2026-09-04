@@ -71,6 +71,10 @@ export const envSchema = z.object({
   SUPABASE_URL: z.string().default(''),
   SUPABASE_SERVICE_ROLE_KEY: z.string().default(''),
   SUPABASE_STORAGE_BUCKET: z.string().default(''),
+  // Separate, non-public bucket for business-verification documents
+  // (ID/license). Never given a public URL — only short-lived signed URLs
+  // are issued, and only to the place owner or a SUPER_ADMIN reviewer.
+  SUPABASE_PRIVATE_STORAGE_BUCKET: z.string().default(''),
 
   CHECK_IN_MAX_DISTANCE_METERS: z.coerce.number().positive().default(200),
   CHECK_IN_COOLDOWN_MINUTES: z.coerce.number().positive().default(15),

@@ -170,6 +170,21 @@ enum PlaceStatus {
   @@map("place_status")
 }
 
+// Business-ownership verification (ID/license document review), separate
+// from PlaceStatus (which is about the place being open/closed). NONE means
+// no document has ever been submitted; PENDING/APPROVED/REJECTED track the
+// review lifecycle of the document in Supabase's private bucket (see
+// VerificationService — the document itself is never public, only a
+// short-lived signed URL is issued to the place owner or a SUPER_ADMIN).
+enum PlaceVerificationStatus {
+  NONE
+  PENDING
+  APPROVED
+  REJECTED
+
+  @@map("place_verification_status")
+}
+
 // Derived from quantity vs lowStockThreshold on every write (see
 // ProductService) — stored rather than computed at query time so the
 // inventory table can filter/sort by status without loading every row.
@@ -236,6 +251,15 @@ model Place {
   website String?
   status  PlaceStatus @default(ACTIVE)
 
+  // Business-ownership verification — see PlaceVerificationStatus. The doc
+  // itself lives at verificationDocPath inside the private Supabase bucket
+  // (never a public URL); rejectReason is only meaningful for REJECTED.
+  verificationStatus       PlaceVerificationStatus @default(NONE)
+  verificationDocPath      String?
+  verificationSubmittedAt  DateTime?
+  verificationReviewedAt   DateTime?
+  verificationRejectReason String?
+
   createdById String
   createdBy   User   @relation("PlaceCreatedBy", fields: [createdById], references: [id])
 
@@ -258,6 +282,7 @@ model Place {
   @@index([categoryId])
   @@index([deletedAt])
   @@index([regionId])
+  @@index([verificationStatus])
   @@map("places")
 }
 
