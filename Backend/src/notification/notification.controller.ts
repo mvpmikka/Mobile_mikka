@@ -40,7 +40,9 @@ export class NotificationController {
 
   @Patch('read-all')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async markAllRead(@CurrentUser() currentUser: AuthenticatedUser): Promise<void> {
+  async markAllRead(
+    @CurrentUser() currentUser: AuthenticatedUser,
+  ): Promise<void> {
     await this.notificationService.markAllRead(currentUser.id);
   }
 

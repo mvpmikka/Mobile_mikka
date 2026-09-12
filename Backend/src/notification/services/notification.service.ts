@@ -1,8 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NotificationRepository } from '../repositories/notification.repository';
 import { NotificationGateway } from '../notification.gateway';
-import type { Notification, NotificationType } from '../../../generated/prisma/client';
-import type { NotificationItem, PaginatedResult } from '../types/notification.type';
+import type {
+  Notification,
+  NotificationType,
+} from '../../../generated/prisma/client';
+import type {
+  NotificationItem,
+  PaginatedResult,
+} from '../types/notification.type';
 
 @Injectable()
 export class NotificationService {
@@ -40,7 +46,12 @@ export class NotificationService {
       page,
       limit,
     );
-    return { items: items.map((item) => this.toItem(item)), total, page, limit };
+    return {
+      items: items.map((item) => this.toItem(item)),
+      total,
+      page,
+      limit,
+    };
   }
 
   async unreadCount(userId: string): Promise<{ count: number }> {

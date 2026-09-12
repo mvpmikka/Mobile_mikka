@@ -51,7 +51,10 @@ export class BlockRepository {
   async blockAndCleanup(blockerId: string, blockedId: string): Promise<void> {
     await this.prisma.$transaction([
       this.prisma.block.create({
-        data: { blocker: { connect: { id: blockerId } }, blocked: { connect: { id: blockedId } } },
+        data: {
+          blocker: { connect: { id: blockerId } },
+          blocked: { connect: { id: blockedId } },
+        },
       }),
       this.prisma.friendship.deleteMany({
         where: {

@@ -67,10 +67,7 @@ export class StoryService {
     const privateFriendIds =
       await this.privacyService.filterOutPrivate(friendIds);
     const privateSet = new Set(privateFriendIds);
-    const ownerIds = [
-      userId,
-      ...friendIds.filter((id) => !privateSet.has(id)),
-    ];
+    const ownerIds = [userId, ...friendIds.filter((id) => !privateSet.has(id))];
 
     const { items, total } = await this.storyRepository.findManyByUsers(
       ownerIds,
@@ -158,7 +155,7 @@ export class StoryService {
     const story = await this.requireStory(storyId);
     if (story.userId !== requesterId) {
       throw new ForbiddenException(
-        'You can only view your own story\'s viewers',
+        "You can only view your own story's viewers",
       );
     }
     const { items, total } = await this.storyViewRepository.findManyByStory(

@@ -1,4 +1,8 @@
-import type { Booking, Order, OrderItem } from '../../../generated/prisma/client';
+import type {
+  Booking,
+  Order,
+  OrderItem,
+} from '../../../generated/prisma/client';
 
 export interface CustomerSummary {
   customerName: string;

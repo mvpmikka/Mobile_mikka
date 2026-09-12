@@ -77,7 +77,7 @@ export class CallGateway implements OnGatewayConnection, OnGatewayDisconnect {
       client.disconnect(true);
       return;
     }
-    client.data.userId = userId;
+    (client.data as { userId: string }).userId = userId;
     await client.join(userRoom(userId));
   }
 

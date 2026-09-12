@@ -59,10 +59,6 @@ export class SavedPlaceController {
     @Query(new ZodValidationPipe(listSavedPlacesSchema))
     query: ListSavedPlacesDto,
   ) {
-    return this.savedPlaceService.list(
-      currentUser.id,
-      query.page,
-      query.limit,
-    );
+    return this.savedPlaceService.list(currentUser.id, query.page, query.limit);
   }
 }

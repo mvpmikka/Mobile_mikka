@@ -2,7 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PlaceRepository } from '../../place/repositories/place.repository';
 import { CustomerRepository } from '../repositories/customer.repository';
 import type { ListCustomersDto } from '../dto/list-customers.dto';
-import type { CustomerDetail, CustomerListResult } from '../types/customer.type';
+import type {
+  CustomerDetail,
+  CustomerListResult,
+} from '../types/customer.type';
 
 @Injectable()
 export class CustomerService {
@@ -18,7 +21,10 @@ export class CustomerService {
     }
   }
 
-  async list(placeId: string, dto: ListCustomersDto): Promise<CustomerListResult> {
+  async list(
+    placeId: string,
+    dto: ListCustomersDto,
+  ): Promise<CustomerListResult> {
     await this.requirePlace(placeId);
 
     const byPhone = await this.customerRepository.listAggregate(placeId);

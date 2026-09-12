@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ReactionRepository } from '../repositories/reaction.repository';
 import { MessageRepository } from '../repositories/message.repository';
 import { ConversationRepository } from '../repositories/conversation.repository';
@@ -50,9 +54,12 @@ export class ReactionService {
     conversationId: string,
     messageId: string,
   ): Promise<void> {
-    const reactions = await this.reactionRepository.getReactionSummary(messageId);
+    const reactions =
+      await this.reactionRepository.getReactionSummary(messageId);
     const participantIds =
-      await this.conversationRepository.findActiveParticipantIds(conversationId);
+      await this.conversationRepository.findActiveParticipantIds(
+        conversationId,
+      );
     this.chatGateway.broadcastReactionUpdated(participantIds, {
       conversationId,
       messageId,

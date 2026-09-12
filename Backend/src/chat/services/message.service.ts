@@ -72,7 +72,9 @@ export class MessageService {
     }
 
     const participantIds =
-      await this.conversationRepository.findActiveParticipantIds(conversationId);
+      await this.conversationRepository.findActiveParticipantIds(
+        conversationId,
+      );
     const recipients = participantIds.filter((id) => id !== senderId);
     this.chatGateway.broadcastNewMessage(recipients, item);
 
@@ -101,12 +103,13 @@ export class MessageService {
     limit: number,
   ): Promise<PaginatedResult<MessageItem>> {
     await this.requireActiveParticipant(conversationId, userId);
-    const { items, total } = await this.messageRepository.findManyByConversation(
-      conversationId,
-      userId,
-      page,
-      limit,
-    );
+    const { items, total } =
+      await this.messageRepository.findManyByConversation(
+        conversationId,
+        userId,
+        page,
+        limit,
+      );
     return { items, total, page, limit };
   }
 
@@ -121,9 +124,10 @@ export class MessageService {
 
     await this.messageRepository.softDelete(id);
 
-    const participantIds = await this.conversationRepository.findActiveParticipantIds(
-      message.conversationId,
-    );
+    const participantIds =
+      await this.conversationRepository.findActiveParticipantIds(
+        message.conversationId,
+      );
     this.chatGateway.broadcastMessageDeleted(
       participantIds,
       message.conversationId,

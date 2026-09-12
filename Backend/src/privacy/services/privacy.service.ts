@@ -19,8 +19,7 @@ export class PrivacyService {
   ) {}
 
   async getSettings(userId: string): Promise<PrivacySettingsView> {
-    const settings =
-      await this.privacySettingsRepository.findByUserId(userId);
+    const settings = await this.privacySettingsRepository.findByUserId(userId);
     return {
       checkInVisibility: settings?.checkInVisibility ?? DEFAULT_VISIBILITY,
       storyVisibility: settings?.storyVisibility ?? DEFAULT_VISIBILITY,
@@ -73,9 +72,7 @@ export class PrivacyService {
   // excluded, even though canView's FRIENDS branch would otherwise allow
   // them. Only ever needs to exclude explicit PRIVATE, since every id
   // passed in is already known to be a friend (or the caller themself).
-  async filterOutPrivate(
-    ownerIds: string[],
-  ): Promise<string[]> {
+  async filterOutPrivate(ownerIds: string[]): Promise<string[]> {
     if (ownerIds.length === 0) {
       return [];
     }

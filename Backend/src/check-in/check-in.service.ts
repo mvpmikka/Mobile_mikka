@@ -116,9 +116,7 @@ export class CheckInService {
     page: number,
     limit: number,
   ): Promise<PaginatedResult<PublicCheckInItem>> {
-    const ownerId = await this.checkInRepository.findUserIdByUsername(
-      username,
-    );
+    const ownerId = await this.checkInRepository.findUserIdByUsername(username);
     if (!ownerId) {
       throw new NotFoundException('User not found');
     }

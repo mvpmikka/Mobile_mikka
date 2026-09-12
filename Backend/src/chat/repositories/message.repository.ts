@@ -87,7 +87,12 @@ export class MessageRepository {
   create(
     conversationId: string,
     senderId: string,
-    data: { text?: string; imageUrl?: string; placeId?: string; replyToId?: string },
+    data: {
+      text?: string;
+      imageUrl?: string;
+      placeId?: string;
+      replyToId?: string;
+    },
   ): Promise<Message> {
     return this.prisma.message.create({
       data: {
@@ -106,7 +111,10 @@ export class MessageRepository {
   // Returns the just-created message in the same shape the list endpoint
   // uses (MessageItem) — the create response and the gateway broadcast
   // payload both want this, not the raw Prisma row.
-  async findItemById(id: string, viewerId: string): Promise<MessageItem | null> {
+  async findItemById(
+    id: string,
+    viewerId: string,
+  ): Promise<MessageItem | null> {
     const row = await this.prisma.message.findUnique({
       where: { id },
       include: messageInclude,

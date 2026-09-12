@@ -4,7 +4,9 @@ import type { Prisma, Story } from '../../../generated/prisma/client';
 import type { StoryFeedItem } from '../types/story.type';
 
 const storyInclude = {
-  user: { select: { id: true, username: true, fullName: true, avatarUrl: true } },
+  user: {
+    select: { id: true, username: true, fullName: true, avatarUrl: true },
+  },
   place: { select: { id: true, name: true } },
 } as const;
 

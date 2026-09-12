@@ -21,7 +21,10 @@ export class SavedPlaceRepository {
   async save(userId: string, placeId: string): Promise<void> {
     await this.prisma.savedPlace.upsert({
       where: { userId_placeId: { userId, placeId } },
-      create: { user: { connect: { id: userId } }, place: { connect: { id: placeId } } },
+      create: {
+        user: { connect: { id: userId } },
+        place: { connect: { id: placeId } },
+      },
       update: {},
     });
   }

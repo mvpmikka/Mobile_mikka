@@ -102,11 +102,12 @@ export class FriendRequestService {
     page: number,
     limit: number,
   ): Promise<PaginatedResult<FriendRequestItem>> {
-    const { items, total } = await this.friendRequestRepository.findManyReceived(
-      addresseeId,
-      page,
-      limit,
-    );
+    const { items, total } =
+      await this.friendRequestRepository.findManyReceived(
+        addresseeId,
+        page,
+        limit,
+      );
     return { items, total, page, limit };
   }
 
@@ -138,9 +139,7 @@ export class FriendRequestService {
   async decline(id: string, currentUserId: string): Promise<void> {
     const request = await this.requireRequest(id);
     if (request.addresseeId !== currentUserId) {
-      throw new ForbiddenException(
-        'You can only decline requests sent to you',
-      );
+      throw new ForbiddenException('You can only decline requests sent to you');
     }
     await this.friendRequestRepository.delete(id);
   }

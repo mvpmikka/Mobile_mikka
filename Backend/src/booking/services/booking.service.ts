@@ -9,7 +9,10 @@ import { BookingStatus } from '../../../generated/prisma/client';
 import type { Booking } from '../../../generated/prisma/client';
 import type { CreateBookingDto } from '../dto/create-booking.dto';
 import type { ListBookingsDto } from '../dto/list-bookings.dto';
-import type { BookingListResult, BookingStats } from '../types/booking-list.type';
+import type {
+  BookingListResult,
+  BookingStats,
+} from '../types/booking-list.type';
 
 // Terminal states — once a booking reaches these, staff can no longer move
 // it (same reasoning as OrderService.TERMINAL_STATUSES).
@@ -40,7 +43,10 @@ export class BookingService {
     return booking;
   }
 
-  async list(placeId: string, dto: ListBookingsDto): Promise<BookingListResult> {
+  async list(
+    placeId: string,
+    dto: ListBookingsDto,
+  ): Promise<BookingListResult> {
     await this.requirePlace(placeId);
     const { items, total } = await this.bookingRepository.findMany({
       placeId,

@@ -26,7 +26,9 @@ export class VerificationRepository {
 
   review(
     placeId: string,
-    status: typeof PlaceVerificationStatus.APPROVED | typeof PlaceVerificationStatus.REJECTED,
+    status:
+      | typeof PlaceVerificationStatus.APPROVED
+      | typeof PlaceVerificationStatus.REJECTED,
     rejectReason: string | null,
   ): Promise<Place> {
     return this.prisma.place.update({

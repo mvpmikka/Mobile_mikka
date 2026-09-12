@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mikka_mobile/main.dart';
 import 'package:mikka_mobile/providers/auth_provider.dart';
+import 'package:mikka_mobile/widgets/mikka_logo.dart';
 
 // Bypasses the real AuthController (which hits secure storage/network) so
 // AuthGate resolves straight to unauthenticated without ever showing the
@@ -25,7 +26,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('mikka'), findsOneWidget);
+    expect(find.byType(MikkaLogo), findsOneWidget);
     expect(find.text('Get Started'), findsOneWidget);
     expect(find.text('Log In'), findsOneWidget);
   });

@@ -9,8 +9,18 @@ import type { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
-import { authenticateSocketUser, userRoom } from '../common/websocket/authenticate-socket';
+import {
+  authenticateSocketUser,
+  userRoom,
+} from '../common/websocket/authenticate-socket';
 import type { NotificationItem } from './types/notification.type';
+
+// socket.io types `Socket.data` as `any` by default — this narrows it for
+// the one field this gateway stores there, so writing it doesn't trip
+// @typescript-eslint/no-unsafe-member-access.
+interface NotificationSocketData {
+  userId?: string;
+}
 
 // Same per-user-room, push-only, JWT-handshake-auth design as ChatGateway
 // (see its comments for the full reasoning) — this gateway exists
@@ -47,7 +57,7 @@ export class NotificationGateway
       client.disconnect(true);
       return;
     }
-    client.data.userId = userId;
+    (client.data as NotificationSocketData).userId = userId;
     await client.join(userRoom(userId));
   }
 
@@ -57,6 +67,8 @@ export class NotificationGateway
   }
 
   push(recipientUserId: string, notification: NotificationItem): void {
-    this.server.to(userRoom(recipientUserId)).emit('notification', notification);
+    this.server
+      .to(userRoom(recipientUserId))
+      .emit('notification', notification);
   }
 }

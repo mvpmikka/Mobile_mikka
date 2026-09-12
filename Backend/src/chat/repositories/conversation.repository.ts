@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import type {
-  Conversation,
-  Prisma,
-} from '../../../generated/prisma/client';
+import type { Conversation, Prisma } from '../../../generated/prisma/client';
 import type { ChatProfileSummary, MessagePreview } from '../types/chat.type';
 
 const profileSelect = {
@@ -26,7 +23,11 @@ const lastMessageInclude = {
 } as const;
 
 export interface ConversationWithParticipants extends Conversation {
-  participants: { userId: string; lastReadAt: Date | null; user: ChatProfileSummary }[];
+  participants: {
+    userId: string;
+    lastReadAt: Date | null;
+    user: ChatProfileSummary;
+  }[];
   lastMessage: MessagePreview | null;
 }
 

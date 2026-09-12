@@ -163,7 +163,10 @@ export class ConversationService {
         'Cannot remove participants from a private conversation',
       );
     }
-    if (requesterId !== targetUserId && conversation.createdById !== requesterId) {
+    if (
+      requesterId !== targetUserId &&
+      conversation.createdById !== requesterId
+    ) {
       throw new ForbiddenException(
         'Only the group creator can remove other participants',
       );
@@ -178,7 +181,9 @@ export class ConversationService {
 
   private async requireFriend(userId: string, otherId: string): Promise<void> {
     if (userId === otherId) {
-      throw new BadRequestException("You can't start a conversation with yourself");
+      throw new BadRequestException(
+        "You can't start a conversation with yourself",
+      );
     }
     const areFriends = await this.friendshipRepository.exists(userId, otherId);
     if (!areFriends) {
@@ -209,9 +214,10 @@ export class ConversationService {
   private async toDetail(
     conversation: Conversation,
   ): Promise<ConversationDetail> {
-    const participants = await this.conversationRepository.findParticipantSummaries(
-      conversation.id,
-    );
+    const participants =
+      await this.conversationRepository.findParticipantSummaries(
+        conversation.id,
+      );
     return {
       id: conversation.id,
       type: conversation.type,

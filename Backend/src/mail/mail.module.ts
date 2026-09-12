@@ -45,7 +45,12 @@ const logger = new Logger('MailModule');
         );
         return consoleProvider;
       },
-      inject: [ConfigService, ConsoleMailProvider, SmtpMailProvider, BrevoMailProvider],
+      inject: [
+        ConfigService,
+        ConsoleMailProvider,
+        SmtpMailProvider,
+        BrevoMailProvider,
+      ],
     },
     MailService,
   ],

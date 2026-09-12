@@ -16,9 +16,7 @@ const RECENT_TAKE = 50;
 export class CustomerRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listAggregate(
-    placeId: string,
-  ): Promise<Map<string, CustomerSummary>> {
+  async listAggregate(placeId: string): Promise<Map<string, CustomerSummary>> {
     const [orders, bookings, blocks] = await Promise.all([
       this.prisma.order.findMany({
         where: { placeId, deletedAt: null, customerPhone: { not: null } },
@@ -75,10 +73,22 @@ export class CustomerRepository {
     };
 
     for (const order of orders) {
-      touch(order.customerPhone!, order.customerName, order.createdAt, order.totalAmount, true);
+      touch(
+        order.customerPhone!,
+        order.customerName,
+        order.createdAt,
+        order.totalAmount,
+        true,
+      );
     }
     for (const booking of bookings) {
-      touch(booking.customerPhone!, booking.customerName, booking.createdAt, 0, false);
+      touch(
+        booking.customerPhone!,
+        booking.customerName,
+        booking.createdAt,
+        0,
+        false,
+      );
     }
 
     return byPhone;
@@ -123,7 +133,8 @@ export class CustomerRepository {
     const latestOrder = recentOrders[0];
     const latestBooking = recentBookings[0];
     const latest =
-      !latestOrder || (latestBooking && latestBooking.createdAt > latestOrder.createdAt)
+      !latestOrder ||
+      (latestBooking && latestBooking.createdAt > latestOrder.createdAt)
         ? latestBooking
         : latestOrder;
 

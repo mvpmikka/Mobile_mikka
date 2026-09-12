@@ -5,7 +5,10 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { BlockRepository } from '../repositories/block.repository';
-import type { BlockedUserItem, PaginatedResult } from '../types/friendship.type';
+import type {
+  BlockedUserItem,
+  PaginatedResult,
+} from '../types/friendship.type';
 
 @Injectable()
 export class BlockService {

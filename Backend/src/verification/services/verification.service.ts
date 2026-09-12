@@ -76,7 +76,9 @@ export class VerificationService {
     return `verification/${placeId}.webp`;
   }
 
-  private async toStatusResult(place: Place): Promise<VerificationStatusResult> {
+  private async toStatusResult(
+    place: Place,
+  ): Promise<VerificationStatusResult> {
     const docUrl = place.verificationDocPath
       ? await this.storageService.getSignedUrl(
           place.verificationDocPath,
@@ -111,9 +113,7 @@ export class VerificationService {
     const processed = await this.imageProcessingService
       .process(buffer)
       .catch(() => {
-        throw new BadRequestException(
-          'The uploaded file is not a valid image',
-        );
+        throw new BadRequestException('The uploaded file is not a valid image');
       });
 
     const path = await this.storageService.uploadPrivate(

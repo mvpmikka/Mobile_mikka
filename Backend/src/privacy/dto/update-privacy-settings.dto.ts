@@ -12,7 +12,9 @@ export const updatePrivacySettingsSchema = z
     (data) =>
       data.checkInVisibility !== undefined ||
       data.storyVisibility !== undefined,
-    { message: 'At least one of checkInVisibility, storyVisibility is required' },
+    {
+      message: 'At least one of checkInVisibility, storyVisibility is required',
+    },
   );
 
 export type UpdatePrivacySettingsDto = z.infer<
