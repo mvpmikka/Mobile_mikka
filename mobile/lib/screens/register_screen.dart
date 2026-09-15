@@ -308,17 +308,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  'G',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFF4285F4),
-                                  ),
+                              children: [
+                                Image.asset(
+                                  'assets/icon/google_logo.png',
+                                  width: 20,
+                                  height: 20,
                                 ),
-                                SizedBox(width: 10),
-                                Text(
+                                const SizedBox(width: 10),
+                                const Text(
                                   'Google orqali davom etish',
                                   style: TextStyle(
                                     fontSize: 15,
