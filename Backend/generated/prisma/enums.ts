@@ -117,7 +117,6 @@ export type ConversationType = (typeof ConversationType)[keyof typeof Conversati
 export const NotificationType = {
   FRIEND_REQUEST: 'FRIEND_REQUEST',
   NEW_MESSAGE: 'NEW_MESSAGE',
-  STORY_UPDATE: 'STORY_UPDATE',
   MISSED_CALL: 'MISSED_CALL',
   FOLLOW: 'FOLLOW',
   BADGE_EARNED: 'BADGE_EARNED'

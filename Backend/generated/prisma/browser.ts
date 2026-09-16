@@ -128,11 +128,6 @@ export type SavedPlace = Prisma.SavedPlaceModel
  */
 export type Story = Prisma.StoryModel
 /**
- * Model StoryView
- * 
- */
-export type StoryView = Prisma.StoryViewModel
-/**
  * Model Post
  * 
  */

@@ -7,7 +7,6 @@ import type {
 
 export interface PrivacySettingsUpdate {
   checkInVisibility?: ContentVisibility;
-  storyVisibility?: ContentVisibility;
 }
 
 @Injectable()
@@ -32,18 +31,5 @@ export class PrivacySettingsRepository {
       create: { user: { connect: { id: userId } }, ...updates },
       update: { ...updates },
     });
-  }
-
-  // Given a candidate set of user ids (already known friends, or self),
-  // returns the subset who explicitly set storyVisibility to PRIVATE — a
-  // user with no PrivacySettings row at all defaults to FRIENDS (visible),
-  // so only an existing row with PRIVATE counts. Used to exclude those
-  // users from a friends feed even though they'd otherwise qualify.
-  async findPrivateStoryUserIds(userIds: string[]): Promise<string[]> {
-    const rows = await this.prisma.privacySettings.findMany({
-      where: { userId: { in: userIds }, storyVisibility: 'PRIVATE' },
-      select: { userId: true },
-    });
-    return rows.map((row) => row.userId);
   }
 }

@@ -27,7 +27,6 @@ export type AggregatePrivacySettings = {
 export type PrivacySettingsMinAggregateOutputType = {
   userId: string | null
   checkInVisibility: $Enums.ContentVisibility | null
-  storyVisibility: $Enums.ContentVisibility | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -35,7 +34,6 @@ export type PrivacySettingsMinAggregateOutputType = {
 export type PrivacySettingsMaxAggregateOutputType = {
   userId: string | null
   checkInVisibility: $Enums.ContentVisibility | null
-  storyVisibility: $Enums.ContentVisibility | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -43,7 +41,6 @@ export type PrivacySettingsMaxAggregateOutputType = {
 export type PrivacySettingsCountAggregateOutputType = {
   userId: number
   checkInVisibility: number
-  storyVisibility: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -53,7 +50,6 @@ export type PrivacySettingsCountAggregateOutputType = {
 export type PrivacySettingsMinAggregateInputType = {
   userId?: true
   checkInVisibility?: true
-  storyVisibility?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -61,7 +57,6 @@ export type PrivacySettingsMinAggregateInputType = {
 export type PrivacySettingsMaxAggregateInputType = {
   userId?: true
   checkInVisibility?: true
-  storyVisibility?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -69,7 +64,6 @@ export type PrivacySettingsMaxAggregateInputType = {
 export type PrivacySettingsCountAggregateInputType = {
   userId?: true
   checkInVisibility?: true
-  storyVisibility?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -150,7 +144,6 @@ export type PrivacySettingsGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type PrivacySettingsGroupByOutputType = {
   userId: string
   checkInVisibility: $Enums.ContentVisibility
-  storyVisibility: $Enums.ContentVisibility
   createdAt: Date
   updatedAt: Date
   _count: PrivacySettingsCountAggregateOutputType | null
@@ -179,7 +172,6 @@ export type PrivacySettingsWhereInput = {
   NOT?: Prisma.PrivacySettingsWhereInput | Prisma.PrivacySettingsWhereInput[]
   userId?: Prisma.StringFilter<"PrivacySettings"> | string
   checkInVisibility?: Prisma.EnumContentVisibilityFilter<"PrivacySettings"> | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFilter<"PrivacySettings"> | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFilter<"PrivacySettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PrivacySettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -188,7 +180,6 @@ export type PrivacySettingsWhereInput = {
 export type PrivacySettingsOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   checkInVisibility?: Prisma.SortOrder
-  storyVisibility?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -200,7 +191,6 @@ export type PrivacySettingsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PrivacySettingsWhereInput[]
   NOT?: Prisma.PrivacySettingsWhereInput | Prisma.PrivacySettingsWhereInput[]
   checkInVisibility?: Prisma.EnumContentVisibilityFilter<"PrivacySettings"> | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFilter<"PrivacySettings"> | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFilter<"PrivacySettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PrivacySettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -209,7 +199,6 @@ export type PrivacySettingsWhereUniqueInput = Prisma.AtLeast<{
 export type PrivacySettingsOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   checkInVisibility?: Prisma.SortOrder
-  storyVisibility?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PrivacySettingsCountOrderByAggregateInput
@@ -223,14 +212,12 @@ export type PrivacySettingsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PrivacySettingsScalarWhereWithAggregatesInput | Prisma.PrivacySettingsScalarWhereWithAggregatesInput[]
   userId?: Prisma.StringWithAggregatesFilter<"PrivacySettings"> | string
   checkInVisibility?: Prisma.EnumContentVisibilityWithAggregatesFilter<"PrivacySettings"> | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityWithAggregatesFilter<"PrivacySettings"> | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PrivacySettings"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PrivacySettings"> | Date | string
 }
 
 export type PrivacySettingsCreateInput = {
   checkInVisibility?: $Enums.ContentVisibility
-  storyVisibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutPrivacySettingsInput
@@ -239,14 +226,12 @@ export type PrivacySettingsCreateInput = {
 export type PrivacySettingsUncheckedCreateInput = {
   userId: string
   checkInVisibility?: $Enums.ContentVisibility
-  storyVisibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type PrivacySettingsUpdateInput = {
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutPrivacySettingsNestedInput
@@ -255,7 +240,6 @@ export type PrivacySettingsUpdateInput = {
 export type PrivacySettingsUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -263,14 +247,12 @@ export type PrivacySettingsUncheckedUpdateInput = {
 export type PrivacySettingsCreateManyInput = {
   userId: string
   checkInVisibility?: $Enums.ContentVisibility
-  storyVisibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type PrivacySettingsUpdateManyMutationInput = {
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -278,7 +260,6 @@ export type PrivacySettingsUpdateManyMutationInput = {
 export type PrivacySettingsUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -291,7 +272,6 @@ export type PrivacySettingsNullableScalarRelationFilter = {
 export type PrivacySettingsCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   checkInVisibility?: Prisma.SortOrder
-  storyVisibility?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -299,7 +279,6 @@ export type PrivacySettingsCountOrderByAggregateInput = {
 export type PrivacySettingsMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   checkInVisibility?: Prisma.SortOrder
-  storyVisibility?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -307,7 +286,6 @@ export type PrivacySettingsMaxOrderByAggregateInput = {
 export type PrivacySettingsMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   checkInVisibility?: Prisma.SortOrder
-  storyVisibility?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -350,14 +328,12 @@ export type EnumContentVisibilityFieldUpdateOperationsInput = {
 
 export type PrivacySettingsCreateWithoutUserInput = {
   checkInVisibility?: $Enums.ContentVisibility
-  storyVisibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type PrivacySettingsUncheckedCreateWithoutUserInput = {
   checkInVisibility?: $Enums.ContentVisibility
-  storyVisibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -380,14 +356,12 @@ export type PrivacySettingsUpdateToOneWithWhereWithoutUserInput = {
 
 export type PrivacySettingsUpdateWithoutUserInput = {
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PrivacySettingsUncheckedUpdateWithoutUserInput = {
   checkInVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
-  storyVisibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -397,7 +371,6 @@ export type PrivacySettingsUncheckedUpdateWithoutUserInput = {
 export type PrivacySettingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   checkInVisibility?: boolean
-  storyVisibility?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -406,7 +379,6 @@ export type PrivacySettingsSelect<ExtArgs extends runtime.Types.Extensions.Inter
 export type PrivacySettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   checkInVisibility?: boolean
-  storyVisibility?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -415,7 +387,6 @@ export type PrivacySettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type PrivacySettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
   checkInVisibility?: boolean
-  storyVisibility?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -424,12 +395,11 @@ export type PrivacySettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type PrivacySettingsSelectScalar = {
   userId?: boolean
   checkInVisibility?: boolean
-  storyVisibility?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PrivacySettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "checkInVisibility" | "storyVisibility" | "createdAt" | "updatedAt", ExtArgs["result"]["privacySettings"]>
+export type PrivacySettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "checkInVisibility" | "createdAt" | "updatedAt", ExtArgs["result"]["privacySettings"]>
 export type PrivacySettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -448,7 +418,6 @@ export type $PrivacySettingsPayload<ExtArgs extends runtime.Types.Extensions.Int
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: string
     checkInVisibility: $Enums.ContentVisibility
-    storyVisibility: $Enums.ContentVisibility
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["privacySettings"]>
@@ -877,7 +846,6 @@ export interface Prisma__PrivacySettingsClient<T, Null = never, ExtArgs extends 
 export interface PrivacySettingsFieldRefs {
   readonly userId: Prisma.FieldRef<"PrivacySettings", 'String'>
   readonly checkInVisibility: Prisma.FieldRef<"PrivacySettings", 'ContentVisibility'>
-  readonly storyVisibility: Prisma.FieldRef<"PrivacySettings", 'ContentVisibility'>
   readonly createdAt: Prisma.FieldRef<"PrivacySettings", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PrivacySettings", 'DateTime'>
 }

@@ -73,7 +73,6 @@ export const ModelName = {
   PrivacySettings: 'PrivacySettings',
   SavedPlace: 'SavedPlace',
   Story: 'Story',
-  StoryView: 'StoryView',
   Post: 'Post',
   PostImage: 'PostImage',
   Conversation: 'Conversation',
@@ -365,7 +364,6 @@ export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof 
 export const PrivacySettingsScalarFieldEnum = {
   userId: 'userId',
   checkInVisibility: 'checkInVisibility',
-  storyVisibility: 'storyVisibility',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -395,16 +393,6 @@ export const StoryScalarFieldEnum = {
 } as const
 
 export type StoryScalarFieldEnum = (typeof StoryScalarFieldEnum)[keyof typeof StoryScalarFieldEnum]
-
-
-export const StoryViewScalarFieldEnum = {
-  id: 'id',
-  storyId: 'storyId',
-  viewerId: 'viewerId',
-  viewedAt: 'viewedAt'
-} as const
-
-export type StoryViewScalarFieldEnum = (typeof StoryViewScalarFieldEnum)[keyof typeof StoryViewScalarFieldEnum]
 
 
 export const PostScalarFieldEnum = {

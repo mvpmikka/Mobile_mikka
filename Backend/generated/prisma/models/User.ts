@@ -285,7 +285,6 @@ export type UserWhereInput = {
   privacySettings?: Prisma.XOR<Prisma.PrivacySettingsNullableScalarRelationFilter, Prisma.PrivacySettingsWhereInput> | null
   savedPlaces?: Prisma.SavedPlaceListRelationFilter
   stories?: Prisma.StoryListRelationFilter
-  storyViews?: Prisma.StoryViewListRelationFilter
   conversationsCreated?: Prisma.ConversationListRelationFilter
   conversationsJoined?: Prisma.ConversationParticipantListRelationFilter
   messagesSent?: Prisma.MessageListRelationFilter
@@ -332,7 +331,6 @@ export type UserOrderByWithRelationInput = {
   privacySettings?: Prisma.PrivacySettingsOrderByWithRelationInput
   savedPlaces?: Prisma.SavedPlaceOrderByRelationAggregateInput
   stories?: Prisma.StoryOrderByRelationAggregateInput
-  storyViews?: Prisma.StoryViewOrderByRelationAggregateInput
   conversationsCreated?: Prisma.ConversationOrderByRelationAggregateInput
   conversationsJoined?: Prisma.ConversationParticipantOrderByRelationAggregateInput
   messagesSent?: Prisma.MessageOrderByRelationAggregateInput
@@ -382,7 +380,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   privacySettings?: Prisma.XOR<Prisma.PrivacySettingsNullableScalarRelationFilter, Prisma.PrivacySettingsWhereInput> | null
   savedPlaces?: Prisma.SavedPlaceListRelationFilter
   stories?: Prisma.StoryListRelationFilter
-  storyViews?: Prisma.StoryViewListRelationFilter
   conversationsCreated?: Prisma.ConversationListRelationFilter
   conversationsJoined?: Prisma.ConversationParticipantListRelationFilter
   messagesSent?: Prisma.MessageListRelationFilter
@@ -473,7 +470,6 @@ export type UserCreateInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -520,7 +516,6 @@ export type UserUncheckedCreateInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -567,7 +562,6 @@ export type UserUpdateInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -614,7 +608,6 @@ export type UserUncheckedUpdateInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1014,20 +1007,6 @@ export type UserUpdateOneRequiredWithoutStoriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoriesInput, Prisma.UserUpdateWithoutStoriesInput>, Prisma.UserUncheckedUpdateWithoutStoriesInput>
 }
 
-export type UserCreateNestedOneWithoutStoryViewsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStoryViewsInput, Prisma.UserUncheckedCreateWithoutStoryViewsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoryViewsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutStoryViewsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStoryViewsInput, Prisma.UserUncheckedCreateWithoutStoryViewsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStoryViewsInput
-  upsert?: Prisma.UserUpsertWithoutStoryViewsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStoryViewsInput, Prisma.UserUpdateWithoutStoryViewsInput>, Prisma.UserUncheckedUpdateWithoutStoryViewsInput>
-}
-
 export type UserCreateNestedOneWithoutPostsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
@@ -1199,7 +1178,6 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1245,7 +1223,6 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1307,7 +1284,6 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1353,7 +1329,6 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1399,7 +1374,6 @@ export type UserCreateWithoutRefreshTokensInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1445,7 +1419,6 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1507,7 +1480,6 @@ export type UserUpdateWithoutRefreshTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1553,7 +1525,6 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1599,7 +1570,6 @@ export type UserCreateWithoutVerificationTokensInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1645,7 +1615,6 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1707,7 +1676,6 @@ export type UserUpdateWithoutVerificationTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1753,7 +1721,6 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1799,7 +1766,6 @@ export type UserCreateWithoutPlacesCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -1845,7 +1811,6 @@ export type UserUncheckedCreateWithoutPlacesCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -1907,7 +1872,6 @@ export type UserUpdateWithoutPlacesCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -1953,7 +1917,6 @@ export type UserUncheckedUpdateWithoutPlacesCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -1999,7 +1962,6 @@ export type UserCreateWithoutReviewsInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2045,7 +2007,6 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2107,7 +2068,6 @@ export type UserUpdateWithoutReviewsInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2153,7 +2113,6 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2199,7 +2158,6 @@ export type UserCreateWithoutCheckInsInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2245,7 +2203,6 @@ export type UserUncheckedCreateWithoutCheckInsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2307,7 +2264,6 @@ export type UserUpdateWithoutCheckInsInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2353,7 +2309,6 @@ export type UserUncheckedUpdateWithoutCheckInsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2399,7 +2354,6 @@ export type UserCreateWithoutFriendRequestsSentInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2445,7 +2399,6 @@ export type UserUncheckedCreateWithoutFriendRequestsSentInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2496,7 +2449,6 @@ export type UserCreateWithoutFriendRequestsReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2542,7 +2494,6 @@ export type UserUncheckedCreateWithoutFriendRequestsReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2604,7 +2555,6 @@ export type UserUpdateWithoutFriendRequestsSentInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2650,7 +2600,6 @@ export type UserUncheckedUpdateWithoutFriendRequestsSentInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2707,7 +2656,6 @@ export type UserUpdateWithoutFriendRequestsReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -2753,7 +2701,6 @@ export type UserUncheckedUpdateWithoutFriendRequestsReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -2799,7 +2746,6 @@ export type UserCreateWithoutFriendshipsOwnedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2845,7 +2791,6 @@ export type UserUncheckedCreateWithoutFriendshipsOwnedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -2896,7 +2841,6 @@ export type UserCreateWithoutFriendshipsAsFriendInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -2942,7 +2886,6 @@ export type UserUncheckedCreateWithoutFriendshipsAsFriendInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -3004,7 +2947,6 @@ export type UserUpdateWithoutFriendshipsOwnedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3050,7 +2992,6 @@ export type UserUncheckedUpdateWithoutFriendshipsOwnedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3107,7 +3048,6 @@ export type UserUpdateWithoutFriendshipsAsFriendInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3153,7 +3093,6 @@ export type UserUncheckedUpdateWithoutFriendshipsAsFriendInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3199,7 +3138,6 @@ export type UserCreateWithoutBlocksMadeInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -3245,7 +3183,6 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -3296,7 +3233,6 @@ export type UserCreateWithoutBlocksReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -3342,7 +3278,6 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -3404,7 +3339,6 @@ export type UserUpdateWithoutBlocksMadeInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3450,7 +3384,6 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3507,7 +3440,6 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3553,7 +3485,6 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3600,7 +3531,6 @@ export type UserCreateWithoutFollowingInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -3646,7 +3576,6 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -3697,7 +3626,6 @@ export type UserCreateWithoutFollowersInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -3743,7 +3671,6 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -3805,7 +3732,6 @@ export type UserUpdateWithoutFollowingInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3851,7 +3777,6 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3908,7 +3833,6 @@ export type UserUpdateWithoutFollowersInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -3954,7 +3878,6 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -3999,7 +3922,6 @@ export type UserCreateWithoutPrivacySettingsInput = {
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -4045,7 +3967,6 @@ export type UserUncheckedCreateWithoutPrivacySettingsInput = {
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -4107,7 +4028,6 @@ export type UserUpdateWithoutPrivacySettingsInput = {
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -4153,7 +4073,6 @@ export type UserUncheckedUpdateWithoutPrivacySettingsInput = {
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -4199,7 +4118,6 @@ export type UserCreateWithoutSavedPlacesInput = {
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -4245,7 +4163,6 @@ export type UserUncheckedCreateWithoutSavedPlacesInput = {
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -4307,7 +4224,6 @@ export type UserUpdateWithoutSavedPlacesInput = {
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -4353,7 +4269,6 @@ export type UserUncheckedUpdateWithoutSavedPlacesInput = {
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -4399,7 +4314,6 @@ export type UserCreateWithoutStoriesInput = {
   blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -4445,7 +4359,6 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -4507,7 +4420,6 @@ export type UserUpdateWithoutStoriesInput = {
   blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -4553,207 +4465,6 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
-  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
-  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
-  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
-  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
-  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
-  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
-  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
-  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
-  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
-  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutStoryViewsInput = {
-  id?: string
-  email: string
-  isEmailVerified?: boolean
-  username?: string | null
-  usernameUpdatedAt?: Date | string | null
-  fullName?: string | null
-  gender?: $Enums.Gender | null
-  birthDate?: Date | string | null
-  avatarUrl?: string | null
-  bio?: string | null
-  profileCompleted?: boolean
-  role?: $Enums.Role
-  isBanned?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
-  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
-  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
-  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
-  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
-  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
-  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
-  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
-  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
-  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
-  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
-  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
-  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
-  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
-  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
-  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
-  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
-  posts?: Prisma.PostCreateNestedManyWithoutUserInput
-  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
-  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
-  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutStoryViewsInput = {
-  id?: string
-  email: string
-  isEmailVerified?: boolean
-  username?: string | null
-  usernameUpdatedAt?: Date | string | null
-  fullName?: string | null
-  gender?: $Enums.Gender | null
-  birthDate?: Date | string | null
-  avatarUrl?: string | null
-  bio?: string | null
-  profileCompleted?: boolean
-  role?: $Enums.Role
-  isBanned?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
-  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
-  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
-  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
-  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
-  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
-  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
-  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
-  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
-  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
-  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
-  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
-  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
-  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
-  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
-  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
-  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
-  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
-  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
-  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutStoryViewsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutStoryViewsInput, Prisma.UserUncheckedCreateWithoutStoryViewsInput>
-}
-
-export type UserUpsertWithoutStoryViewsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutStoryViewsInput, Prisma.UserUncheckedUpdateWithoutStoryViewsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutStoryViewsInput, Prisma.UserUncheckedCreateWithoutStoryViewsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutStoryViewsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutStoryViewsInput, Prisma.UserUncheckedUpdateWithoutStoryViewsInput>
-}
-
-export type UserUpdateWithoutStoryViewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
-  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
-  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
-  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
-  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
-  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
-  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
-  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
-  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
-  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
-  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
-  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
-  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
-  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
-  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
-  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
-  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
-  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
-  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
-  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
-  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutStoryViewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
-  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
-  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
-  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
-  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
-  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
-  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
-  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
-  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
-  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -4800,7 +4511,6 @@ export type UserCreateWithoutPostsInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -4846,7 +4556,6 @@ export type UserUncheckedCreateWithoutPostsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -4908,7 +4617,6 @@ export type UserUpdateWithoutPostsInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -4954,7 +4662,6 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -5000,7 +4707,6 @@ export type UserCreateWithoutConversationsCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
   messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
@@ -5046,7 +4752,6 @@ export type UserUncheckedCreateWithoutConversationsCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
@@ -5108,7 +4813,6 @@ export type UserUpdateWithoutConversationsCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
@@ -5154,7 +4858,6 @@ export type UserUncheckedUpdateWithoutConversationsCreatedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -5200,7 +4903,6 @@ export type UserCreateWithoutConversationsJoinedInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
   messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
@@ -5246,7 +4948,6 @@ export type UserUncheckedCreateWithoutConversationsJoinedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
   messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
@@ -5308,7 +5009,6 @@ export type UserUpdateWithoutConversationsJoinedInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
   messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
@@ -5354,7 +5054,6 @@ export type UserUncheckedUpdateWithoutConversationsJoinedInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
   messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -5400,7 +5099,6 @@ export type UserCreateWithoutMessagesSentInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
@@ -5446,7 +5144,6 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
@@ -5508,7 +5205,6 @@ export type UserUpdateWithoutMessagesSentInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
@@ -5554,7 +5250,6 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -5600,7 +5295,6 @@ export type UserCreateWithoutMessageReactionsInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -5646,7 +5340,6 @@ export type UserUncheckedCreateWithoutMessageReactionsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -5708,7 +5401,6 @@ export type UserUpdateWithoutMessageReactionsInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -5754,7 +5446,6 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -5800,7 +5491,6 @@ export type UserCreateWithoutNotificationsInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -5846,7 +5536,6 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -5908,7 +5597,6 @@ export type UserUpdateWithoutNotificationsInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -5954,7 +5642,6 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -6000,7 +5687,6 @@ export type UserCreateWithoutCallsAsCallerInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -6046,7 +5732,6 @@ export type UserUncheckedCreateWithoutCallsAsCallerInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -6097,7 +5782,6 @@ export type UserCreateWithoutCallsAsCalleeInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -6143,7 +5827,6 @@ export type UserUncheckedCreateWithoutCallsAsCalleeInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -6205,7 +5888,6 @@ export type UserUpdateWithoutCallsAsCallerInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -6251,7 +5933,6 @@ export type UserUncheckedUpdateWithoutCallsAsCallerInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -6308,7 +5989,6 @@ export type UserUpdateWithoutCallsAsCalleeInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -6354,7 +6034,6 @@ export type UserUncheckedUpdateWithoutCallsAsCalleeInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -6400,7 +6079,6 @@ export type UserCreateWithoutDeviceTokensInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -6446,7 +6124,6 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -6508,7 +6185,6 @@ export type UserUpdateWithoutDeviceTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -6554,7 +6230,6 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -6600,7 +6275,6 @@ export type UserCreateWithoutBadgesInput = {
   privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
@@ -6646,7 +6320,6 @@ export type UserUncheckedCreateWithoutBadgesInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
   savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
   stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
-  storyViews?: Prisma.StoryViewUncheckedCreateNestedManyWithoutViewerInput
   conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
   messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
@@ -6708,7 +6381,6 @@ export type UserUpdateWithoutBadgesInput = {
   privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
@@ -6754,7 +6426,6 @@ export type UserUncheckedUpdateWithoutBadgesInput = {
   privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
   savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
   stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
-  storyViews?: Prisma.StoryViewUncheckedUpdateManyWithoutViewerNestedInput
   conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
   conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
   messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
@@ -6788,7 +6459,6 @@ export type UserCountOutputType = {
   blocksReceived: number
   savedPlaces: number
   stories: number
-  storyViews: number
   conversationsCreated: number
   conversationsJoined: number
   messagesSent: number
@@ -6818,7 +6488,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   blocksReceived?: boolean | UserCountOutputTypeCountBlocksReceivedArgs
   savedPlaces?: boolean | UserCountOutputTypeCountSavedPlacesArgs
   stories?: boolean | UserCountOutputTypeCountStoriesArgs
-  storyViews?: boolean | UserCountOutputTypeCountStoryViewsArgs
   conversationsCreated?: boolean | UserCountOutputTypeCountConversationsCreatedArgs
   conversationsJoined?: boolean | UserCountOutputTypeCountConversationsJoinedArgs
   messagesSent?: boolean | UserCountOutputTypeCountMessagesSentArgs
@@ -6944,13 +6613,6 @@ export type UserCountOutputTypeCountStoriesArgs<ExtArgs extends runtime.Types.Ex
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountStoryViewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StoryViewWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountConversationsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ConversationWhereInput
 }
@@ -7065,7 +6727,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   privacySettings?: boolean | Prisma.User$privacySettingsArgs<ExtArgs>
   savedPlaces?: boolean | Prisma.User$savedPlacesArgs<ExtArgs>
   stories?: boolean | Prisma.User$storiesArgs<ExtArgs>
-  storyViews?: boolean | Prisma.User$storyViewsArgs<ExtArgs>
   conversationsCreated?: boolean | Prisma.User$conversationsCreatedArgs<ExtArgs>
   conversationsJoined?: boolean | Prisma.User$conversationsJoinedArgs<ExtArgs>
   messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
@@ -7155,7 +6816,6 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   privacySettings?: boolean | Prisma.User$privacySettingsArgs<ExtArgs>
   savedPlaces?: boolean | Prisma.User$savedPlacesArgs<ExtArgs>
   stories?: boolean | Prisma.User$storiesArgs<ExtArgs>
-  storyViews?: boolean | Prisma.User$storyViewsArgs<ExtArgs>
   conversationsCreated?: boolean | Prisma.User$conversationsCreatedArgs<ExtArgs>
   conversationsJoined?: boolean | Prisma.User$conversationsJoinedArgs<ExtArgs>
   messagesSent?: boolean | Prisma.User$messagesSentArgs<ExtArgs>
@@ -7191,7 +6851,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     privacySettings: Prisma.$PrivacySettingsPayload<ExtArgs> | null
     savedPlaces: Prisma.$SavedPlacePayload<ExtArgs>[]
     stories: Prisma.$StoryPayload<ExtArgs>[]
-    storyViews: Prisma.$StoryViewPayload<ExtArgs>[]
     conversationsCreated: Prisma.$ConversationPayload<ExtArgs>[]
     conversationsJoined: Prisma.$ConversationParticipantPayload<ExtArgs>[]
     messagesSent: Prisma.$MessagePayload<ExtArgs>[]
@@ -7631,7 +7290,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   privacySettings<T extends Prisma.User$privacySettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$privacySettingsArgs<ExtArgs>>): Prisma.Prisma__PrivacySettingsClient<runtime.Types.Result.GetResult<Prisma.$PrivacySettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   savedPlaces<T extends Prisma.User$savedPlacesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedPlacesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedPlacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stories<T extends Prisma.User$storiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  storyViews<T extends Prisma.User$storyViewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storyViewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoryViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversationsCreated<T extends Prisma.User$conversationsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversationsJoined<T extends Prisma.User$conversationsJoinedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$conversationsJoinedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messagesSent<T extends Prisma.User$messagesSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8434,30 +8092,6 @@ export type User$storiesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.StoryScalarFieldEnum | Prisma.StoryScalarFieldEnum[]
-}
-
-/**
- * User.storyViews
- */
-export type User$storyViewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StoryView
-   */
-  select?: Prisma.StoryViewSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the StoryView
-   */
-  omit?: Prisma.StoryViewOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StoryViewInclude<ExtArgs> | null
-  where?: Prisma.StoryViewWhereInput
-  orderBy?: Prisma.StoryViewOrderByWithRelationInput | Prisma.StoryViewOrderByWithRelationInput[]
-  cursor?: Prisma.StoryViewWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StoryViewScalarFieldEnum | Prisma.StoryViewScalarFieldEnum[]
 }
 
 /**
