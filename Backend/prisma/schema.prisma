@@ -75,8 +75,10 @@ model User {
   blocksReceived         Block[]                   @relation("BlockReceived")
   privacySettings        PrivacySettings?
   savedPlaces            SavedPlace[]
+  // Story feature was removed (see PostRepository.findExpiredStoriesByUser
+  // comment); this relation stays only because that Memories query still
+  // reads from the stories table.
   stories                Story[]
-  storyViews             StoryView[]
   conversationsCreated   Conversation[]            @relation("ConversationCreatedBy")
   conversationsJoined    ConversationParticipant[]
   messagesSent           Message[]                 @relation("MessageSender")
@@ -573,10 +575,9 @@ model Follow {
   @@map("follows")
 }
 
-// Renamed from CheckInVisibility (was check-in-specific) once Story also
-// needed the identical PUBLIC/FRIENDS/PRIVATE set — see docs/foundation.md.
-// PrivacyService.canView was always generic over this; only the enum name
-// was check-in-specific.
+// Originally shared with Story's visibility setting (hence the generic
+// name, not CheckInVisibility) — Story is gone but PrivacyService.canView
+// stays generic over this since CheckIn still needs it.
 enum ContentVisibility {
   PUBLIC
   FRIENDS
@@ -588,15 +589,14 @@ enum ContentVisibility {
 // One row per user, created lazily (only when a setting is actually
 // changed — see PrivacySettingsRepository.upsert). A missing row means
 // defaults, same "absence = default" pattern as PlaceRatingSummary: the
-// service layer treats "no row" as { checkInVisibility: FRIENDS,
-// storyVisibility: FRIENDS }, not an error. Kept as its own module (not
-// folded into User) because it owns visibility *decisions*, not just a
-// settings blob — see PrivacyService.canView and docs/foundation.md.
+// service layer treats "no row" as { checkInVisibility: FRIENDS }, not an
+// error. Kept as its own module (not folded into User) because it owns
+// visibility *decisions*, not just a settings blob — see
+// PrivacyService.canView and docs/foundation.md.
 model PrivacySettings {
   userId            String            @id
   user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   checkInVisibility ContentVisibility @default(FRIENDS)
-  storyVisibility   ContentVisibility @default(FRIENDS)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -624,14 +624,11 @@ model SavedPlace {
   @@map("saved_places")
 }
 
-// `expiresAt` is computed once at creation (createdAt + 24h) and every
-// "active stories" query filters on it (WHERE expiresAt > now()), same
-// pattern as deletedAt elsewhere — no cron/cleanup job deletes expired
-// rows in V1 (see docs/foundation.md); they just stop appearing in
-// queries. `deletedAt` is separate, for early manual deletion by the
-// owner (or ADMIN moderation) before natural expiry. At least one of
-// text/imageUrl/placeId is required — enforced by the DTO (Prisma has no
-// declarative "at least one of" constraint), not by a DB CHECK.
+// Story feature itself was removed. This model stays only because
+// PostRepository.findExpiredStoriesByUser (the "Memories" feature) still
+// reads from the stories table — that query is currently broken in
+// production since the table was already dropped there, but the code is
+// being kept as-is rather than removed.
 model Story {
   id     String @id @default(uuid())
   userId String
@@ -642,8 +639,6 @@ model Story {
   placeId  String?
   place    Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
 
-  views StoryView[]
-
   expiresAt DateTime
   createdAt DateTime  @default(now())
   deletedAt DateTime?
@@ -651,25 +646,6 @@ model Story {
   @@index([userId])
   @@index([expiresAt])
   @@map("stories")
-}
-
-// Who has seen a story — always owner-only to read (see StoryController),
-// regardless of the story's own visibility setting: that setting controls
-// who can see the *content*, not who gets to see the *audience list*.
-// Idempotent to write (viewing twice is a no-op, same reasoning as
-// SavedPlace) — the unique constraint is what makes a repeat "mark
-// viewed" call safe to upsert against.
-model StoryView {
-  id       String @id @default(uuid())
-  storyId  String
-  story    Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
-  viewerId String
-  viewer   User   @relation(fields: [viewerId], references: [id], onDelete: Cascade)
-
-  viewedAt DateTime @default(now())
-
-  @@unique([storyId, viewerId])
-  @@map("story_views")
 }
 
 // Permanent (no expiresAt), unlike Story — the "Posts" grid on a profile.
@@ -815,7 +791,6 @@ model MessageReaction {
 enum NotificationType {
   FRIEND_REQUEST
   NEW_MESSAGE
-  STORY_UPDATE
   MISSED_CALL
   FOLLOW
   BADGE_EARNED

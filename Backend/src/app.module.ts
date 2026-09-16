@@ -19,7 +19,6 @@ import { FriendshipModule } from './friendship/friendship.module';
 import { PrivacyModule } from './privacy/privacy.module';
 import { SavedPlaceModule } from './saved-place/saved-place.module';
 import { AdminModule } from './admin/admin.module';
-import { StoryModule } from './story/story.module';
 import { ChatModule } from './chat/chat.module';
 import { NotificationModule } from './notification/notification.module';
 import { CallModule } from './call/call.module';
@@ -41,8 +40,8 @@ import { VerificationModule } from './verification/verification.module';
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 20 }]),
     // Global so any module can inject EventEmitter2 to emit, or use
     // @OnEvent(...) to listen, without importing this module directly —
-    // see FriendshipModule/ChatModule/StoryModule's emitters and
-    // NotificationModule's listeners.
+    // see FriendshipModule/ChatModule's emitters and NotificationModule's
+    // listeners.
     EventEmitterModule.forRoot(),
     PrismaModule,
     MailModule,
@@ -57,7 +56,6 @@ import { VerificationModule } from './verification/verification.module';
     PrivacyModule,
     SavedPlaceModule,
     AdminModule,
-    StoryModule,
     ChatModule,
     NotificationModule,
     CallModule,
