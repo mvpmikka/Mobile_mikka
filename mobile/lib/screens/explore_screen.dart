@@ -319,7 +319,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
           final category = _categories[index];
           final selected = index == _selectedCategory;
           return GestureDetector(
-            onTap: () => setState(() => _selectedCategory = index),
+            onTap: category.label == 'More'
+                ? _openFilters
+                : () => setState(() => _selectedCategory = index),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
