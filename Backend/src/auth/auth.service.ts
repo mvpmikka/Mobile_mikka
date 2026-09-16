@@ -163,6 +163,15 @@ export class AuthService {
       }
       if (existingUser) {
         await this.syncRoleFromEnv(existingUser);
+        // Google is re-verified on every login, so its picture claim is
+        // fresh each time — backfill it if the user never got one (e.g.
+        // account created before this ever ran), but never overwrite a
+        // picture the user already has (they may have set their own).
+        if (!existingUser.avatarUrl && profile.avatarUrl) {
+          await this.userService.update(existingUser.id, {
+            avatarUrl: profile.avatarUrl,
+          });
+        }
       }
       return this.tokenService.issueTokenPair(existingIdentity.userId);
     }
@@ -181,6 +190,13 @@ export class AuthService {
         fullName: profile.fullName,
         avatarUrl: profile.avatarUrl,
         isEmailVerified: profile.emailVerified,
+      });
+    } else if (!user.avatarUrl && profile.avatarUrl) {
+      // Pre-existing account (e.g. registered by email first) linking
+      // Google for the first time — same backfill-only-if-missing
+      // reasoning as the existingIdentity branch above.
+      user = await this.userService.update(user.id, {
+        avatarUrl: profile.avatarUrl,
       });
     }
 
