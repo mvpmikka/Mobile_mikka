@@ -11,9 +11,13 @@ import '../providers/post_provider.dart';
 import '../theme/app_colors.dart';
 import '../widgets/mikka_logo.dart';
 import '../widgets/segmented_tab_bar.dart';
+import 'activity_screen.dart';
 import 'admin/admin_panel_screen.dart';
 import 'create_post_screen.dart';
 import 'edit_profile_screen.dart';
+import 'help_support_screen.dart';
+import 'privacy_screen.dart';
+import 'saved_places_screen.dart';
 import 'welcome_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -191,10 +195,42 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(height: 16),
               _TabContent(selectedTab: _selectedTab, username: username),
               const SizedBox(height: 24),
-              _MenuTile(icon: Icons.bookmark_outline, label: 'Saved Places', onTap: () {}),
-              _MenuTile(icon: Icons.notifications_none, label: 'Notifications', onTap: () {}),
-              _MenuTile(icon: Icons.privacy_tip_outlined, label: 'Privacy', onTap: () {}),
-              _MenuTile(icon: Icons.help_outline, label: 'Help & Support', onTap: () {}),
+              _MenuTile(
+                icon: Icons.bookmark_outline,
+                label: 'Saved Places',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const SavedPlacesScreen()),
+                  );
+                },
+              ),
+              _MenuTile(
+                icon: Icons.notifications_none,
+                label: 'Notifications',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ActivityScreen()),
+                  );
+                },
+              ),
+              _MenuTile(
+                icon: Icons.privacy_tip_outlined,
+                label: 'Privacy',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const PrivacyScreen()),
+                  );
+                },
+              ),
+              _MenuTile(
+                icon: Icons.help_outline,
+                label: 'Help & Support',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+                  );
+                },
+              ),
               if (user?.isAdmin == true)
                 _MenuTile(
                   icon: Icons.admin_panel_settings_outlined,

@@ -62,21 +62,25 @@ class _PrivacyScreenState extends ConsumerState<PrivacyScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              ..._options.map(
-                (option) => RadioListTile<CheckInVisibility>(
-                  contentPadding: EdgeInsets.zero,
-                  activeColor: AppColors.orange,
-                  title: Text(
-                    option.label,
-                    style: TextStyle(color: AppColors.darkText(context)),
-                  ),
-                  value: option.value,
-                  groupValue: settings.checkInVisibility,
-                  onChanged: _saving
-                      ? null
-                      : (value) {
-                          if (value != null) _update(value);
-                        },
+              RadioGroup<CheckInVisibility>(
+                groupValue: settings.checkInVisibility,
+                onChanged: (value) {
+                  if (!_saving && value != null) _update(value);
+                },
+                child: Column(
+                  children: _options
+                      .map(
+                        (option) => RadioListTile<CheckInVisibility>(
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: AppColors.orange,
+                          title: Text(
+                            option.label,
+                            style: TextStyle(color: AppColors.darkText(context)),
+                          ),
+                          value: option.value,
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ],

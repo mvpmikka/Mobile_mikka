@@ -164,8 +164,12 @@ class _NotificationTile extends StatelessWidget {
         return Icons.person_add_alt_1;
       case NotificationType.newMessage:
         return Icons.chat_bubble_outline;
-      case NotificationType.storyUpdate:
-        return Icons.camera_alt_outlined;
+      case NotificationType.missedCall:
+        return Icons.call_missed;
+      case NotificationType.follow:
+        return Icons.favorite_border;
+      case NotificationType.badgeEarned:
+        return Icons.emoji_events_outlined;
       case NotificationType.unknown:
         return Icons.notifications_none;
     }

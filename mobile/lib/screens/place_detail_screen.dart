@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/api_exception.dart';
 import '../models/place.dart';
 import '../providers/place_provider.dart';
+import '../providers/saved_place_provider.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
 import 'check_in_screen.dart';
@@ -17,13 +19,20 @@ class PlaceDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
-  bool _saved = false;
+  bool? _savedOverride;
+  bool _togglingSaved = false;
 
   @override
   Widget build(BuildContext context) {
     final place = widget.place;
     final detailAsync = ref.watch(placeDetailProvider(place.id));
     final ratingAsync = ref.watch(placeRatingProvider(place.id));
+    final savedPlacesAsync = ref.watch(savedPlacesProvider);
+    final bool isSaved = _savedOverride ??
+        savedPlacesAsync.maybeWhen<bool>(
+          data: (items) => items.any((p) => p.id == place.id),
+          orElse: () => false,
+        );
 
     return Scaffold(
       backgroundColor: AppColors.cream(context),
@@ -57,10 +66,8 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                       Row(
                         children: [
                           _CircleIconButton(
-                            icon: _saved
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            onTap: () => setState(() => _saved = !_saved),
+                            icon: isSaved ? Icons.favorite : Icons.favorite_border,
+                            onTap: _togglingSaved ? () {} : () => _toggleSaved(isSaved),
                           ),
                           const SizedBox(width: 10),
                           _CircleIconButton(
@@ -220,6 +227,30 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _toggleSaved(bool currentlySaved) async {
+    setState(() {
+      _savedOverride = !currentlySaved;
+      _togglingSaved = true;
+    });
+    try {
+      final service = ref.read(savedPlaceServiceProvider);
+      if (currentlySaved) {
+        await service.unsave(widget.place.id);
+      } else {
+        await service.save(widget.place.id);
+      }
+      ref.invalidate(savedPlacesProvider);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      setState(() => _savedOverride = currentlySaved);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } finally {
+      if (mounted) setState(() => _togglingSaved = false);
+    }
   }
 }
 
