@@ -154,14 +154,12 @@ class _PlaceDetailScreenState extends ConsumerState<PlaceDetailScreen> {
                         ),
                       detailAsync.maybeWhen(
                         data: (detail) => detail.address != null
-                            ? Padding(
-                                padding: EdgeInsets.only(
+                            ? _InfoPill(
+                                icon: Icons.map_outlined,
+                                label: 'Manzil',
+                                sub: detail.address!,
+                                margin: EdgeInsets.only(
                                   left: place.distanceLabel != null ? 10 : 0,
-                                ),
-                                child: _InfoPill(
-                                  icon: Icons.map_outlined,
-                                  label: 'Manzil',
-                                  sub: detail.address!,
                                 ),
                               )
                             : const SizedBox.shrink(),
@@ -278,16 +276,23 @@ class _CircleIconButton extends StatelessWidget {
 }
 
 class _InfoPill extends StatelessWidget {
-  const _InfoPill({required this.icon, required this.label, required this.sub});
+  const _InfoPill({
+    required this.icon,
+    required this.label,
+    required this.sub,
+    this.margin = EdgeInsets.zero,
+  });
 
   final IconData icon;
   final String label;
   final String sub;
+  final EdgeInsetsGeometry margin;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        margin: margin,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: AppColors.surface(context),

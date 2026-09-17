@@ -130,7 +130,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   }
 
   void _openPlace(Place place) {
-    debugPrint('MARKER_TAP place=${place.id} ${place.name}');
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => PlaceDetailScreen(place: place)),
     );
@@ -387,7 +386,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         FutureBuilder<Set<Marker>>(
           future: _markersFuture,
           builder: (context, snapshot) {
-            debugPrint('MAP_BUILD markers=${snapshot.data?.length}');
             return GoogleMap(
               initialCameraPosition: const CameraPosition(
                 target: _tashkentCenter,
@@ -397,7 +395,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
-              onTap: (_) => debugPrint('MAP_TAP raw'),
             );
           },
         ),
