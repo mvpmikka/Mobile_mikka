@@ -1,4 +1,11 @@
-enum NotificationType { friendRequest, newMessage, storyUpdate, unknown }
+enum NotificationType {
+  friendRequest,
+  newMessage,
+  missedCall,
+  follow,
+  badgeEarned,
+  unknown,
+}
 
 NotificationType _typeFromJson(String raw) {
   switch (raw) {
@@ -6,8 +13,12 @@ NotificationType _typeFromJson(String raw) {
       return NotificationType.friendRequest;
     case 'NEW_MESSAGE':
       return NotificationType.newMessage;
-    case 'STORY_UPDATE':
-      return NotificationType.storyUpdate;
+    case 'MISSED_CALL':
+      return NotificationType.missedCall;
+    case 'FOLLOW':
+      return NotificationType.follow;
+    case 'BADGE_EARNED':
+      return NotificationType.badgeEarned;
     default:
       return NotificationType.unknown;
   }
