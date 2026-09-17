@@ -2,9 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../models/place.dart';
+import '../models/uzbekistan_city.dart';
 import '../services/location_service.dart';
 import '../services/place_service.dart';
 import 'auth_provider.dart';
+
+// Null means "use my real GPS position" (the app's original behavior).
+// Set when the user manually picks a city from ExploreScreen's location
+// dropdown — overrides the search point without touching the device's
+// actual location permission/GPS state.
+final selectedCityProvider = StateProvider<UzbekistanCity?>((ref) => null);
 
 final placeServiceProvider = Provider<PlaceService>((ref) {
   return PlaceService(apiClient: ref.watch(apiClientProvider));
@@ -22,6 +29,14 @@ final currentPositionProvider = FutureProvider<Position?>((ref) async {
 });
 
 final nearbyPlacesProvider = FutureProvider<List<Place>>((ref) async {
+  final selectedCity = ref.watch(selectedCityProvider);
+  if (selectedCity != null) {
+    return ref.watch(placeServiceProvider).listNearby(
+          lat: selectedCity.center.latitude,
+          lng: selectedCity.center.longitude,
+        );
+  }
+
   final position = await ref.watch(currentPositionProvider.future);
   if (position == null) {
     throw const LocationUnavailableException();

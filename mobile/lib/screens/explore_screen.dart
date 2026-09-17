@@ -8,6 +8,7 @@ import '../models/check_in.dart';
 import '../models/friend.dart';
 import '../models/place.dart';
 import '../models/place_filters.dart';
+import '../models/uzbekistan_city.dart';
 import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 import '../providers/friend_location_provider.dart';
@@ -50,6 +51,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   String? _markersKey;
   Future<Set<Marker>>? _markersFuture;
+  GoogleMapController? _mapController;
 
   // Friends without a visible check-in are simply left off the map, rather
   // than given a fake position — same rule as FriendsScreen's map. Friend
@@ -135,6 +137,79 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     );
   }
 
+  void _showCityPicker() {
+    final selectedCity = ref.read(selectedCityProvider);
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.cream(context),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Text(
+                'Shaharni tanlang',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.darkText(context),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.my_location, color: AppColors.orange),
+                      title: const Text('Joriy joylashuvim (GPS)'),
+                      trailing: selectedCity == null
+                          ? const Icon(Icons.check, color: AppColors.orange)
+                          : null,
+                      onTap: () {
+                        ref.read(selectedCityProvider.notifier).state = null;
+                        Navigator.of(sheetContext).pop();
+                        final myPosition = ref.read(currentPositionProvider).value;
+                        if (myPosition != null) {
+                          _mapController?.animateCamera(
+                            CameraUpdate.newLatLngZoom(
+                              LatLng(myPosition.latitude, myPosition.longitude),
+                              14.5,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    const Divider(height: 1),
+                    for (final city in uzbekistanCities)
+                      ListTile(
+                        leading: const Icon(Icons.location_city, color: AppColors.orange),
+                        title: Text(city.name),
+                        trailing: selectedCity?.name == city.name
+                            ? const Icon(Icons.check, color: AppColors.orange)
+                            : null,
+                        onTap: () {
+                          ref.read(selectedCityProvider.notifier).state = city;
+                          Navigator.of(sheetContext).pop();
+                          _mapController?.animateCamera(
+                            CameraUpdate.newLatLngZoom(city.center, 14.5),
+                          );
+                        },
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _openChat(Friend friend) async {
     try {
       final conversation = await ref
@@ -187,6 +262,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   Widget _buildHeader() {
     final avatarUrl = ref.watch(authControllerProvider).value?.user?.avatarUrl;
+    final selectedCity = ref.watch(selectedCityProvider);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
@@ -195,16 +271,25 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
           const Icon(Icons.location_on, color: AppColors.orange, size: 20),
           const SizedBox(width: 4),
           Expanded(
-            child: Text(
-              'Tashkent, Uzbekistan',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: AppColors.darkText(context),
+            child: GestureDetector(
+              onTap: _showCityPicker,
+              child: Text(
+                selectedCity?.name ?? uzbekistanCities.first.name,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.darkText(context),
+                ),
               ),
             ),
           ),
-          Icon(Icons.keyboard_arrow_down, color: AppColors.darkText(context)),
+          GestureDetector(
+            onTap: _showCityPicker,
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              color: AppColors.darkText(context),
+            ),
+          ),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () {
@@ -395,6 +480,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
+              onMapCreated: (controller) => _mapController = controller,
             );
           },
         ),
