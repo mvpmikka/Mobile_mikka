@@ -37,6 +37,13 @@ const _categories = [
   (label: 'More', icon: Icons.more_horiz),
 ];
 
+// Mirrors ListPlacesDto.RADIUS_METERS_OPTIONS on the backend.
+const _radiusOptions = [
+  (label: '1 km', meters: 1000),
+  (label: '3 km', meters: 3000),
+  (label: '15 km', meters: 15000),
+];
+
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
 
@@ -486,6 +493,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         ),
         Positioned(
           top: 16,
+          left: 16,
+          child: _buildRadiusSelector(),
+        ),
+        Positioned(
+          top: 16,
           right: 16,
           child: _RoundIconButton(
             icon: Icons.my_location,
@@ -498,6 +510,50 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             child: _buildNearbyPanel(filteredPlaces),
           ),
       ],
+    );
+  }
+
+  Widget _buildRadiusSelector() {
+    final selected = ref.watch(selectedRadiusMetersProvider);
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: AppColors.surface(context),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 6),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final option in _radiusOptions)
+            GestureDetector(
+              onTap: () => ref
+                  .read(selectedRadiusMetersProvider.notifier)
+                  .state = option.meters,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: selected == option.meters
+                      ? AppColors.orange
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  option.label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: selected == option.meters
+                        ? Colors.white
+                        : AppColors.darkText(context),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 

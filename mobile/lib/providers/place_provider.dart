@@ -13,6 +13,10 @@ import 'auth_provider.dart';
 // actual location permission/GPS state.
 final selectedCityProvider = StateProvider<UzbekistanCity?>((ref) => null);
 
+// Backend only accepts 1000/3000/15000 (see ListPlacesDto.radiusMeters) —
+// keep this in sync with those fixed presets.
+final selectedRadiusMetersProvider = StateProvider<int>((ref) => 3000);
+
 final placeServiceProvider = Provider<PlaceService>((ref) {
   return PlaceService(apiClient: ref.watch(apiClientProvider));
 });
@@ -30,10 +34,12 @@ final currentPositionProvider = FutureProvider<Position?>((ref) async {
 
 final nearbyPlacesProvider = FutureProvider<List<Place>>((ref) async {
   final selectedCity = ref.watch(selectedCityProvider);
+  final radiusMeters = ref.watch(selectedRadiusMetersProvider);
   if (selectedCity != null) {
     return ref.watch(placeServiceProvider).listNearby(
           lat: selectedCity.center.latitude,
           lng: selectedCity.center.longitude,
+          radiusMeters: radiusMeters,
         );
   }
 
@@ -41,9 +47,11 @@ final nearbyPlacesProvider = FutureProvider<List<Place>>((ref) async {
   if (position == null) {
     throw const LocationUnavailableException();
   }
-  return ref
-      .watch(placeServiceProvider)
-      .listNearby(lat: position.latitude, lng: position.longitude);
+  return ref.watch(placeServiceProvider).listNearby(
+        lat: position.latitude,
+        lng: position.longitude,
+        radiusMeters: radiusMeters,
+      );
 });
 
 final myPlacesProvider = FutureProvider.autoDispose<List<BusinessPlace>>((
