@@ -4,6 +4,32 @@ Joy topish, do'stlar bilan bog'lanish va real-time video/audio qo'ng'iroq
 qiluvchi Flutter ilovasi. Backend sifatida [`../Backend`](../Backend)
 papkasidagi NestJS API'dan foydalanadi.
 
+## Mundarija
+
+- [Asosiy imkoniyatlar](#asosiy-imkoniyatlar)
+- [Texnologiyalar](#texnologiyalar)
+- [Loyihaning tuzilishi](#loyihaning-tuzilishi)
+- [Backend bilan ulanish](#backend-bilan-ulanish)
+- [Ishga tushirish](#ishga-tushirish)
+- [Muhim arxitektura qarorlari](#muhim-arxitektura-qarorlari)
+
+## Asosiy imkoniyatlar
+
+- **Xarita orqali joy topish** — yaqin-atrofdagi joylar, radius tanlash
+  (1/3/15 km) yoki O'zbekistonning 10 ta yirik shahridan birini tanlash
+- **Check-in** — GPS orqali joyda ekanligini tasdiqlash, muvaffaqiyatli/
+  allaqachon check-in qilingan holatlar uchun alohida ekranlar
+- **Ijtimoiy tarmoq** — do'stlar, obuna, shaxsiy suhbatlar, post/shorts,
+  faoliyat lentasi
+- **Audio/video qo'ng'iroq** — WebRTC orqali real-time qo'ng'iroq, kiruvchi
+  qo'ng'iroq ekrani bilan
+- **Profil va maxfiylik** — profilni tahrirlash, maxfiylik sozlamalari,
+  yordam/qo'llab-quvvatlash
+- **Biznes/admin panel** — super-admin dashboard hamda biznes egalari uchun
+  alohida panel (buyurtma, bron, mahsulot, mijoz va sharh boshqaruvi)
+- **Autentifikatsiya** — email/parol va Google orqali kirish, email
+  tasdiqlash, parolni tiklash (deep link orqali)
+
 ## Texnologiyalar
 
 | Qatlam | Texnologiya |

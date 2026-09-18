@@ -5,6 +5,37 @@ check-in, ijtimoiy tarmoq (do'stlar, chat, story/post), real-time
 audio/video qo'ng'iroqlar (WebRTC) va biznes-egalari uchun admin panelini
 bitta NestJS xizmatida birlashtiradi.
 
+## Mundarija
+
+- [Asosiy imkoniyatlar](#asosiy-imkoniyatlar)
+- [Texnologiyalar](#texnologiyalar)
+- [Loyihaning tuzilishi](#loyihaning-tuzilishi)
+- [API hujjatlari (Swagger)](#api-hujjatlari-swagger)
+- [Ishga tushirish (lokal)](#ishga-tushirish-lokal)
+- [Muhit o'zgaruvchilari](#muhit-ozgaruvchilari)
+- [Deploy](#deploy)
+
+## Asosiy imkoniyatlar
+
+- **Joy topish** — radius bo'yicha (1/3/15 km) qidiruv, natija bo'lmasa
+  region-fallback; kategoriya bo'yicha filtrlash
+- **Check-in** — foydalanuvchi joydan belgilangan masofa (standart 200m)
+  ichida ekanini tasdiqlagandan keyingina ruxsat beradi, qayta check-in
+  uchun sovutish vaqti (cooldown) bilan
+- **Sharh va reyting** — joylarga review qoldirish, avtomatik reyting
+  xulosasi (`PlaceRatingSummary`)
+- **Ijtimoiy tarmoq** — do'stlik so'rovlari, obuna (follow), shaxsiy
+  suhbatlar/xabarlar, post/story, bildirishnomalar, yutuq/nishonlar
+- **Real-time audio/video qo'ng'iroq** — WebRTC signalizatsiyasi, coturn
+  TURN server integratsiyasi, backendda bo'lmagan foydalanuvchi uchun push
+  orqali "uyg'otish"
+- **Biznes/admin panel** — joy va kategoriya boshqaruvi, biznes egaligini
+  tasdiqlash (hujjat yuklab tekshiruvdan o'tkazish), mahsulot/menyu,
+  buyurtma va bron qilishlar, mijozlarni bloklash
+- **Autentifikatsiya** — email/parol va Google OAuth, JWT access+refresh
+  token, email tasdiqlash va parolni tiklash oqimi
+- **Push xabarnoma** — Firebase Cloud Messaging (Android) va APNs (iOS)
+
 ## Texnologiyalar
 
 | Qatlam | Texnologiya |
@@ -72,6 +103,25 @@ o'zgarganda). Joy qidiruvi avval `ST_DWithin` bilan to'g'ridan-to'g'ri
 radius bo'yicha izlaydi; agar hech narsa topilmasa, foydalanuvchi
 joylashgan (seed qilingan poligon) `Region`ga tushib, o'sha region
 ichidagi barcha joylarni qaytaradi (`searchMode: 'radius' | 'region_fallback'`).
+
+## API hujjatlari (Swagger)
+
+Server ishga tushgach, barcha endpoint'lar interaktiv Swagger UI orqali
+ko'rinadi:
+
+```
+http://localhost:3112/api-docs        # lokal
+https://mobile-mikka.onrender.com/api-docs   # production
+```
+
+Xom OpenAPI JSON (masalan, klient generatsiya qilish yoki Postman'ga
+import qilish uchun) — `/api-docs-json`.
+
+> Endpoint'lar Zod orqali validatsiya qilinadi (class-validator DTO'lari
+> emas), shuning uchun Swagger hozircha har bir so'rov/javob tanasining
+> to'liq maydon-darajasidagi sxemasini emas, balki barcha yo'l (path),
+> metod va qaysi auth (Bearer JWT) kerakligini ko'rsatadi — bu ham API
+> bilan tanishish uchun amaliy jihatdan yetarli.
 
 ## Ishga tushirish (lokal)
 
