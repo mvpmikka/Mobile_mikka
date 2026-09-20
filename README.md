@@ -49,7 +49,7 @@ buyruqlari va arxitektura tafsilotlari uchun o'sha fayllarga qarang:
 ```
 ┌─────────────────┐        HTTPS / WebSocket        ┌──────────────────────┐
 │  Flutter mobil   │ ───────────────────────────────▶│   NestJS backend      │
-│  ilova (Android/ │◀─────────────────────────────── │   (Render'da deploy)  │
+│  ilova (Android/ │◀─────────────────────────────── │   (AWS EC2, mkka.uz)  │
 │  iOS)            │                                  └──────────┬───────────┘
 └─────────┬────────┘                                             │
           │ WebRTC (P2P audio/video,                              │ Prisma

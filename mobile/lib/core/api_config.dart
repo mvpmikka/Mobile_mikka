@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 /// Base URL for the Mikka backend.
 ///
 /// Release builds (the APKs that actually get installed on real devices)
-/// default to the production backend on Render. Debug/profile runs keep
+/// default to the production backend at mkka.uz (AWS EC2). Debug/profile runs keep
 /// talking to a local backend: Android emulators can't reach the host
 /// machine via `localhost` — they need the special `10.0.2.2` alias
 /// instead — while iOS simulators and desktop runs use `localhost`
@@ -13,7 +13,7 @@ import 'package:flutter/foundation.dart';
 class ApiConfig {
   const ApiConfig._();
 
-  static const String productionUrl = 'https://mobile-mikka.onrender.com';
+  static const String productionUrl = 'https://mkka.uz';
 
   static String get baseUrl {
     const override = String.fromEnvironment('API_BASE_URL');

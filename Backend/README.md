@@ -111,7 +111,7 @@ ko'rinadi:
 
 ```
 http://localhost:3112/api-docs        # lokal
-https://mobile-mikka.onrender.com/api-docs   # production
+https://mkka.uz/api-docs              # production
 ```
 
 Xom OpenAPI JSON (masalan, klient generatsiya qilish yoki Postman'ga
@@ -145,7 +145,8 @@ npm run start:dev   # http://localhost:3112 (yoki .env'dagi PORT)
 > **Eslatma:** `docker-compose.yml` faqat lokal development uchun — u faqat
 > PostgreSQL/PostGIS'ni beradi, backend'ning o'zi native (`npm run start:dev`)
 > holda ishga tushadi. Production'da bazaga Supabase orqali ulaniladi,
-> backend esa Render'da `Dockerfile` orqali deploy qilinadi.
+> backend esa AWS EC2'da `Dockerfile` orqali konteyner sifatida (nginx
+> reverse proxy + HTTPS ortida, `https://mkka.uz`) deploy qilinadi.
 
 ### Foydali skriptlar
 
@@ -175,11 +176,21 @@ To'liq ro'yxat va izohlar `.env.example`'da. Muhimlari:
 
 ## Deploy
 
-Production Render'da ishlaydi, repo ildizidagi `Backend/Dockerfile` orqali
-build qilinadi. Muhit o'zgaruvchilari **git orqali emas**, Render
-dashboard'ining **Environment** bo'limida to'g'ridan-to'g'ri boshqariladi —
-u yerda saqlangan har qanday o'zgarish avtomatik qayta deploy'ni
-ishga tushiradi.
+Production AWS EC2'da ishlaydi (`https://mkka.uz`), repo ildizidagi
+`Backend/Dockerfile` orqali build qilingan konteyner sifatida, nginx
+reverse proxy (TLS/HTTPS terminatsiyasi) ortida. Muhit o'zgaruvchilari
+**git orqali emas** — serverdagi `.env` fayli orqali to'g'ridan-to'g'ri
+boshqariladi (Render'dagi kabi avtomatik dashboard yo'q, shuning uchun
+o'zgartirilgandan keyin konteynerni qo'lda qayta ishga tushirish kerak):
+
+```bash
+docker compose up -d --build   # yoki: docker restart <konteyner>
+```
+
+> **Muhim:** `FRONTEND_URL` production serverda `https://mkka.uz` bo'lishi
+> shart (email tasdiqlash/parol tiklash havolalari shu manzil asosida
+> yasaladi) va `JWT_ACCESS_SECRET` lokal `.env`dagi dev-qiymatdan farqli,
+> yangi tasodifiy qiymat bo'lishi kerak.
 
 ## Litsenziya
 
