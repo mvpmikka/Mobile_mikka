@@ -1,0 +1,58 @@
+[
+    {
+        "id":1,
+        "name": "Lavash",
+        "price": "45000 so'm",
+        "quantity": "1 dona"
+
+    },
+    {
+        "id":2,
+        "name": "Burger",
+        "price":"32000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":3,
+        "name": "Sandvich",
+        "price":"48000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":4,
+        "name": "Donar",
+        "price":"40000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":5,
+        "name": "Pitsa",
+        "price":"80000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":6,
+        "name": "Hot Dog",
+        "price":"22000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":7,
+        "name": "Shaurma",
+        "price":"33000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":8,
+        "name": "Ichimlik: Coca-Cola",
+        "price":"10000 so'm",
+        "quantity": "1 stakan"
+    },
+    {
+        "id":9,
+        "name": "Ichimlik: Maxito",
+        "price": "20000 so'm",
+        "quantity": "1 stakan"
+    }
+
+]

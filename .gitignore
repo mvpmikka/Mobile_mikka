@@ -16,6 +16,10 @@ coverage/
 *.log
 npm-debug.log*
 
+# Python
+__pycache__/
+*.pyc
+
 # OS
 .DS_Store
 

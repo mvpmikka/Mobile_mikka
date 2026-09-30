@@ -1,0 +1,58 @@
+[
+    {
+        "id":1,
+        "name": "Qaynatma Sho'rva",
+        "price": "45000 so'm",
+        "quantity": "1 kosa"
+
+    },
+    {
+        "id":2,
+        "name": "G'ijduvon Kabob",
+        "price":"23000 so'm",
+        "quantity": "1 six"
+    },
+    {
+        "id":3,
+        "name": "Zig'ir Osh",
+        "price":"70000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":4,
+        "name": "Somsa",
+        "price":"15000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":5,
+        "name": "Do'lma",
+        "price":"55000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":6,
+        "name": "Tandir Go'sht",
+        "price":"90000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":7,
+        "name": "Salad",
+        "price":"13000 so'm",
+        "quantity": "1 tarelka"
+    },
+    {
+        "id":8,
+        "name": "Ichimlik: Qahva",
+        "price":"11000 so'm",
+        "quantity": "1 stakan"
+    },
+    {
+        "id":9,
+        "name": "Ichimlik:Qora Choy",
+        "price":"10000 so'm",
+        "quantity": "1 stakan"
+    }
+
+]

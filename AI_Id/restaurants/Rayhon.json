@@ -1,0 +1,58 @@
+[
+    {
+        "id":1,
+        "name": "Sho'rva",
+        "price": "55000 so'm",
+        "quantity": "1 kosa"
+
+    },
+    {
+        "id":2,
+        "name": "Kabob",
+        "price":"20000 so'm",
+        "quantity": "1 six"
+    },
+    {
+        "id":3,
+        "name": "Osh",
+        "price":"40000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":4,
+        "name": "Somsa",
+        "price":"12000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":5,
+        "name": "Jizz",
+        "price":"75000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":6,
+        "name": "Qozon Kabob",
+        "price":"60000 so'm",
+        "quantity": "1 portse"
+    },
+    {
+        "id":7,
+        "name": "Manti",
+        "price":"10000 so'm",
+        "quantity": "1 dona"
+    },
+    {
+        "id":8,
+        "name": "Ichimlik: Limon Choy",
+        "price":"18000 so'm",
+        "quantity": "1 choynak"
+    },
+    {
+        "id":9,
+        "name": "Ichimlik: Sharbat",
+        "price":"30000 so'm",
+        "quantity": "1 grafin"
+    }
+
+]
