@@ -6,6 +6,7 @@ import '../models/place_filters.dart';
 import '../providers/place_provider.dart';
 import '../theme/app_colors.dart';
 import '../theme/place_category_icon.dart';
+import 'ai_search_screen.dart';
 import 'filters_screen.dart';
 import 'place_detail_screen.dart';
 
@@ -82,6 +83,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _AiSearchBanner(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const AiSearchScreen()),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     if (_query.isEmpty && _recentQueries.isNotEmpty) ...[
                       _buildRecentHeader(context),
                       const SizedBox(height: 12),
@@ -242,6 +249,53 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AiSearchBanner extends StatelessWidget {
+  const _AiSearchBanner({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.orange.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.orange.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.auto_awesome, color: AppColors.orange, size: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'AI orqali restoran topish',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.darkText(context),
+                    ),
+                  ),
+                  Text(
+                    "Byudjet va odam sonini yozing, mos taklif topamiz",
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: AppColors.mutedText(context)),
+          ],
+        ),
       ),
     );
   }
