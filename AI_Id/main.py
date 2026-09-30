@@ -83,4 +83,7 @@ def chat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # host="0.0.0.0" so a phone on the same Wi-Fi can reach this dev
+    # server too (default 127.0.0.1 only accepts connections from this
+    # machine) — needed for physical-device testing via AI_API_BASE_URL.
+    app.run(debug=True, host="0.0.0.0", port=5000)
