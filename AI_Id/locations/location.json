@@ -1,0 +1,20 @@
+[
+    {
+        "id":1,
+        "name": "Rayhon Milliy Taomlar",
+        "location": "Toshkent, Qatorltol ko'chasi, 1A",
+        "rating": 4.0
+    },
+    {
+        "id":2,
+        "name": "MarMar Cafe",
+        "location": "Toshkent, Kichik Mirobod ko'chasi 2",
+        "rating": 4.1
+    },
+    {
+        "id":3,
+        "name": "OqTepa Lavash",
+        "location": "Chilonzor metro, Bunyodkor 18",
+        "rating": 4.8
+    }
+]

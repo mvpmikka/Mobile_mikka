@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="mikkaGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7e5f"/>
+      <stop offset="1" stop-color="#feb47b"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#mikkaGradient)"
+        d="M12 2C7.58 2 4 5.58 4 10c0 5.25 6.72 11.34 7.39 11.94a1 1 0 0 0 1.22 0C13.28 21.34 20 15.25 20 10c0-4.42-3.58-8-8-8z"/>
+  <text x="12" y="13" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="8.5"
+        fill="#ffffff">M</text>
+</svg>

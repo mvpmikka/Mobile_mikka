@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mikka Bot 🍽️</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="emoji-bg" id="emojiBg" aria-hidden="true"></div>
+
+  <div class="app">
+    <header class="app-header">
+      <div class="header-avatar">
+        <img src="{{ url_for('static', filename='logo.svg') }}" alt="Mikka" width="30" height="30">
+      </div>
+      <div class="header-text">
+        <h1>Mikka Bot</h1>
+        <p>Byudjetingizga mos taom to'plamlarini tavsiya etamiz</p>
+      </div>
+    </header>
+
+    <main class="chat-window" id="chatWindow"></main>
+
+    <form class="composer" id="composerForm">
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="Type your message..."
+        autocomplete="off"
+        autofocus
+      />
+      <button type="submit" id="sendBtn" aria-label="Yuborish">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 2 11 13" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M22 2 15 22 11 13 2 9z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

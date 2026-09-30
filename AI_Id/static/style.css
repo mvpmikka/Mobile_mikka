@@ -1,0 +1,335 @@
+:root {
+  --bg-1: #0f0c29;
+  --bg-2: #302b63;
+  --bg-3: #24243e;
+  --accent: #ff7e5f;
+  --accent-2: #feb47b;
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --text: #f4f1ff;
+  --text-dim: rgba(244, 241, 255, 0.65);
+  --bubble-user: linear-gradient(135deg, #ff7e5f, #feb47b);
+  --bubble-bot: rgba(255, 255, 255, 0.1);
+  --radius-lg: 22px;
+  --radius-md: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+  color: var(--text);
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* ---------- Animated floating food emoji background ---------- */
+.emoji-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+.emoji-bg span {
+  position: absolute;
+  bottom: -10%;
+  opacity: 0.14;
+  will-change: transform;
+  animation-name: float-up;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-55vh) translateX(20px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(-115vh) translateX(-15px) rotate(360deg);
+  }
+}
+
+/* ---------- App shell ---------- */
+.app {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 16px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.header-avatar {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(255, 126, 95, 0.4);
+}
+
+.header-avatar img {
+  width: 30px;
+  height: 30px;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.header-text p {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Chat window ---------- */
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+
+.chat-window::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-window::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.bubble-row {
+  display: flex;
+  animation: bubble-in 0.35s ease both;
+}
+
+.bubble-row.user { justify-content: flex-end; }
+.bubble-row.bot { justify-content: flex-start; }
+
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  line-height: 1.45;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  white-space: pre-wrap;
+}
+
+.bubble-row.user .bubble {
+  background: var(--bubble-user);
+  color: #241503;
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+
+.bubble-row.bot .bubble {
+  background: var(--bubble-bot);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  border-bottom-left-radius: 4px;
+}
+
+.typing-dots {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+.typing-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* ---------- Restaurant set cards ---------- */
+.sets-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+  max-width: 92%;
+}
+
+.set-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: bubble-in 0.4s ease both;
+}
+
+.set-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(255, 126, 95, 0.25);
+}
+
+.set-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.set-card-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.set-card-rating {
+  font-size: 0.85rem;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
+
+.set-card-location {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.set-card-dishes {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.set-card-dishes li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.dish-name { color: var(--text); }
+.dish-qty { color: var(--text-dim); font-size: 0.78rem; margin-left: 6px; }
+.dish-price { font-weight: 600; white-space: nowrap; }
+
+.set-card-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  padding-top: 8px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.set-card-total .amount {
+  background: var(--bubble-user);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 1.05rem;
+}
+
+/* ---------- Composer ---------- */
+.composer {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+#messageInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  padding: 10px 14px;
+}
+
+#messageInput::placeholder {
+  color: var(--text-dim);
+}
+
+#sendBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bubble-user);
+  color: #241503;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 14px rgba(255, 126, 95, 0.4);
+}
+
+#sendBtn:hover { transform: scale(1.06); }
+#sendBtn:active { transform: scale(0.95); }
+#sendBtn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .app { padding: 10px; }
+  .bubble { max-width: 88%; }
+  .header-text h1 { font-size: 1rem; }
+  .header-text p { font-size: 0.75rem; }
+}
