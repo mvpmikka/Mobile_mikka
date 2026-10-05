@@ -50,9 +50,9 @@ class AppBottomNav extends StatelessWidget {
                       ? Container(
                           width: 44,
                           height: 44,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.orange,
-                            borderRadius: BorderRadius.circular(14),
+                            shape: BoxShape.circle,
                           ),
                           child: Icon(
                             item.iconFilled,
