@@ -52,15 +52,29 @@ class DirectionsService {
     final routes = <TransportMode, RouteInfo>{};
     if (driving != null) routes[TransportMode.car] = driving;
     if (walking != null) routes[TransportMode.walking] = walking;
-    if (bicycling != null) {
-      routes[TransportMode.bicycle] = bicycling;
+
+    // Google's "bicycling" mode has no route data for many cities (including
+    // Tashkent) and returns ZERO_RESULTS there — fall back to estimating
+    // bike/scooter time from the driving route's distance and road path
+    // instead of just hiding both chips.
+    final bikeBasis = bicycling ?? driving;
+    if (bikeBasis != null) {
+      routes[TransportMode.bicycle] = RouteInfo(
+        distanceKm: bikeBasis.distanceKm,
+        durationMinutes: bicycling != null
+            ? bikeBasis.durationMinutes
+            : _estimateMinutes(bikeBasis.distanceKm, kmPerHour: 15),
+        points: bikeBasis.points,
+      );
       routes[TransportMode.scooter] = RouteInfo(
-        distanceKm: bicycling.distanceKm,
+        distanceKm: bikeBasis.distanceKm,
         // Scooters cruise faster than a bicycle on the same route; 0.6x the
         // cycling time is a rough approximation, not a real routing profile
         // (Google Directions has no scooter mode to ask for one).
-        durationMinutes: (bicycling.durationMinutes * 0.6).round().clamp(1, 1 << 30),
-        points: bicycling.points,
+        durationMinutes: bicycling != null
+            ? (bicycling.durationMinutes * 0.6).round().clamp(1, 1 << 30)
+            : _estimateMinutes(bikeBasis.distanceKm, kmPerHour: 22),
+        points: bikeBasis.points,
       );
     }
     if (transit != null) {
@@ -74,6 +88,10 @@ class DirectionsService {
       throw const DirectionsException("Yo'nalish topilmadi.");
     }
     return routes;
+  }
+
+  int _estimateMinutes(double distanceKm, {required double kmPerHour}) {
+    return ((distanceKm / kmPerHour) * 60).round().clamp(1, 1 << 30);
   }
 
   Future<RouteInfo?> _tryFetchRoute(LatLng origin, LatLng destination, String googleMode) async {

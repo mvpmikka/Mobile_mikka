@@ -129,7 +129,7 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
           ),
         ),
       ),
-      body: _buildBody(context),
+      body: SafeArea(top: false, child: _buildBody(context)),
     );
   }
 
@@ -171,10 +171,10 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
           child: GoogleMap(
             initialCameraPosition: CameraPosition(target: origin, zoom: 13),
             markers: {
-              Marker(markerId: const MarkerId('origin'), position: origin),
               Marker(
                 markerId: const MarkerId('destination'),
                 position: destination,
+                infoWindow: InfoWindow(title: widget.destinationName),
                 icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
               ),
             },
@@ -187,6 +187,10 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
                   width: 4,
                 ),
             },
+            // The user's own position is shown with Google's native blue
+            // "my location" dot instead of a generic pin, so it's visually
+            // distinct from the orange destination marker above.
+            myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapToolbarEnabled: false,

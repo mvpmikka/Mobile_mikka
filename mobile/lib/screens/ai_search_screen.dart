@@ -210,7 +210,8 @@ class _AiSearchScreenState extends ConsumerState<AiSearchScreen> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
+              constraints: const BoxConstraints(minHeight: 46),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
                 color: AppColors.surface(context),
                 borderRadius: BorderRadius.circular(14),
@@ -220,6 +221,8 @@ class _AiSearchScreenState extends ConsumerState<AiSearchScreen> {
                 controller: _controller,
                 onSubmitted: (_) => _send(),
                 textInputAction: TextInputAction.send,
+                minLines: 1,
+                maxLines: 4,
                 style: TextStyle(color: AppColors.darkText(context), fontSize: 14),
                 decoration: InputDecoration(
                   isDense: true,
