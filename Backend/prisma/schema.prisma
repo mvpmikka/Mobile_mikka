@@ -88,6 +88,8 @@ model User {
   callsAsCallee          CallSession[]             @relation("CallCallee")
   deviceTokens           DeviceToken[]
   posts                  Post[]
+  shorts                 Short[]
+  shortLikes             ShortLike[]
   following              Follow[]                  @relation("FollowMade")
   followers              Follow[]                  @relation("FollowReceived")
   badges                 UserBadge[]
@@ -271,6 +273,7 @@ model Place {
   savedByUsers  SavedPlace[]
   stories       Story[]
   posts         Post[]
+  shorts        Short[]
   messages      Message[]
   products      Product[]
   orders        Order[]
@@ -687,6 +690,52 @@ model PostImage {
 
   @@unique([postId, position])
   @@map("post_images")
+}
+
+// Single vertical video, unlike Post's image carousel — kept as its own
+// model rather than folded into Post so the two feeds (profile grid vs.
+// TikTok-style Shorts feed) can evolve independently. No server-side video
+// processing exists (sharp can't read video, no ffmpeg installed), so
+// videoUrl/thumbnailUrl are both uploaded as-is by the mobile client
+// (thumbnail generated client-side, uploaded through the existing
+// POST /uploads/image pipeline; video through POST /uploads/video).
+model Short {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  caption      String?
+  videoUrl     String
+  thumbnailUrl String?
+  placeId      String?
+  place        Place?  @relation(fields: [placeId], references: [id], onDelete: SetNull)
+
+  visibility ContentVisibility @default(FRIENDS)
+  likes      ShortLike[]
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([userId])
+  @@index([deletedAt])
+  @@index([createdAt])
+  @@map("shorts")
+}
+
+// Idempotent like/unlike, same convention as SavedPlace: hard delete on
+// unlike, unique composite prevents duplicate likes from double-taps.
+model ShortLike {
+  id      String @id @default(uuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shortId String
+  short   Short  @relation(fields: [shortId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, shortId])
+  @@index([shortId])
+  @@map("short_likes")
 }
 
 enum ConversationType {
