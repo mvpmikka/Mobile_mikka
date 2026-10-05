@@ -46,39 +46,41 @@ class AppBottomNav extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onTap(index),
                 child: Center(
-                  child: selected
-                      ? Container(
-                          width: 44,
-                          height: 44,
-                          decoration: const BoxDecoration(
-                            color: AppColors.orange,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            item.iconFilled,
-                            size: 22,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      selected
+                          ? Container(
+                              width: 36,
+                              height: 36,
+                              decoration: const BoxDecoration(
+                                color: AppColors.orange,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                item.iconFilled,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Icon(
                               item.iconOutline,
                               size: 22,
                               color: AppColors.mutedText(context),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              item.label,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.mutedText(context),
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: 2),
+                      Text(
+                        item.label,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: selected
+                              ? AppColors.orange
+                              : AppColors.mutedText(context),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
