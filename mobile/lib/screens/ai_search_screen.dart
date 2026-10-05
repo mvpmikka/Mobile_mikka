@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../core/api_exception.dart';
 import '../models/ai_chat.dart';
@@ -37,8 +38,64 @@ class _AiSearchScreenState extends ConsumerState<AiSearchScreen> {
   ];
   bool _isSending = false;
 
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  bool _speechAvailable = false;
+  bool _isListening = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSpeech();
+  }
+
+  Future<void> _initSpeech() async {
+    final available = await _speech.initialize(
+      onStatus: (status) {
+        if ((status == 'done' || status == 'notListening') && mounted) {
+          setState(() => _isListening = false);
+        }
+      },
+      onError: (_) {
+        if (mounted) setState(() => _isListening = false);
+      },
+    );
+    if (mounted) setState(() => _speechAvailable = available);
+  }
+
+  Future<void> _toggleListening() async {
+    if (_isListening) {
+      await _speech.stop();
+      if (mounted) setState(() => _isListening = false);
+      return;
+    }
+
+    if (!_speechAvailable) {
+      await _initSpeech();
+      if (!_speechAvailable) {
+        setState(() {
+          _messages.add(
+            const _ChatMessage(
+              text: "Mikrofonga ruxsat berilmagan. Telefon sozlamalaridan "
+                  "ruxsat berib qayta urining.",
+              fromUser: false,
+            ),
+          );
+        });
+        return;
+      }
+    }
+
+    setState(() => _isListening = true);
+    await _speech.listen(
+      onResult: (result) {
+        setState(() => _controller.text = result.recognizedWords);
+      },
+    );
+  }
+
   @override
   void dispose() {
+    _speech.stop();
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -169,6 +226,26 @@ class _AiSearchScreenState extends ConsumerState<AiSearchScreen> {
                   hintText: "Masalan: 3 kishiga 200000 so'm",
                   hintStyle: TextStyle(color: AppColors.mutedText(context), fontSize: 14),
                 ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: _isSending ? null : _toggleListening,
+            child: Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: _isListening
+                    ? Colors.red.withValues(alpha: 0.12)
+                    : AppColors.surface(context),
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.fieldBorder(context)),
+              ),
+              child: Icon(
+                _isListening ? Icons.mic : Icons.mic_none,
+                color: _isListening ? Colors.red : AppColors.mutedText(context),
+                size: 20,
               ),
             ),
           ),
