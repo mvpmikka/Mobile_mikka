@@ -25,6 +25,7 @@ import { CallModule } from './call/call.module';
 import { BadgeModule } from './badge/badge.module';
 import { FollowModule } from './follow/follow.module';
 import { PostModule } from './post/post.module';
+import { ShortModule } from './short/short.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { BookingModule } from './booking/booking.module';
@@ -62,6 +63,7 @@ import { VerificationModule } from './verification/verification.module';
     BadgeModule,
     FollowModule,
     PostModule,
+    ShortModule,
     ProductModule,
     OrderModule,
     BookingModule,
