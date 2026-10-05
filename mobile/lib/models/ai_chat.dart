@@ -12,14 +12,16 @@ class AiDish {
     return AiDish(
       name: json['name'] as String,
       price: (json['price'] as num).toDouble(),
-      quantity: (json['quantity'] as num).toInt(),
+      // Free-text portion size from the restaurant data (e.g. "1 kosa",
+      // "1 dona"), not a count — the AI_Id backend never sends a number here.
+      quantity: json['quantity'] as String,
       unitPrice: (json['unit_price'] as num).toDouble(),
     );
   }
 
   final String name;
   final double price;
-  final int quantity;
+  final String quantity;
   final double unitPrice;
 }
 

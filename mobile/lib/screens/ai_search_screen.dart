@@ -75,6 +75,15 @@ class _AiSearchScreenState extends ConsumerState<AiSearchScreen> {
       setState(() {
         _messages.add(_ChatMessage(text: e.message, fromUser: false));
       });
+    } catch (_) {
+      setState(() {
+        _messages.add(
+          const _ChatMessage(
+            text: "Nimadir xato ketdi. Qayta urinib ko'ring.",
+            fromUser: false,
+          ),
+        );
+      });
     } finally {
       setState(() => _isSending = false);
       _scrollToBottom();
@@ -277,7 +286,7 @@ class _RestaurantSetCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      '${dish.quantity}x ${dish.name}',
+                      '${dish.name} (${dish.quantity})',
                       style: TextStyle(fontSize: 13, color: AppColors.darkText(context)),
                     ),
                   ),
