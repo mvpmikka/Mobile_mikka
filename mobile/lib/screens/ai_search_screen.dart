@@ -6,6 +6,7 @@ import '../core/api_exception.dart';
 import '../models/ai_chat.dart';
 import '../providers/ai_chat_provider.dart';
 import '../theme/app_colors.dart';
+import 'directions_screen.dart';
 
 class _ChatMessage {
   const _ChatMessage({required this.text, required this.fromUser, this.sets = const []});
@@ -345,15 +346,32 @@ class _RestaurantSetCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 2),
-          Row(
-            children: [
-              Icon(Icons.location_on_outlined, color: AppColors.mutedText(context), size: 14),
-              const SizedBox(width: 4),
-              Text(
-                set.location,
-                style: TextStyle(fontSize: 12, color: AppColors.mutedText(context)),
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => DirectionsScreen(
+                  destinationName: set.restaurant,
+                  destinationAddress: set.location,
+                ),
               ),
-            ],
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_outlined, color: AppColors.orange, size: 14),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    set.location,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.orange,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                Icon(Icons.chevron_right, color: AppColors.mutedText(context), size: 16),
+              ],
+            ),
           ),
           const SizedBox(height: 10),
           for (final dish in set.dishes)
