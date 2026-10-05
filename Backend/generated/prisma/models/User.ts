@@ -294,6 +294,8 @@ export type UserWhereInput = {
   callsAsCallee?: Prisma.CallSessionListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
   posts?: Prisma.PostListRelationFilter
+  shorts?: Prisma.ShortListRelationFilter
+  shortLikes?: Prisma.ShortLikeListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
   badges?: Prisma.UserBadgeListRelationFilter
@@ -340,6 +342,8 @@ export type UserOrderByWithRelationInput = {
   callsAsCallee?: Prisma.CallSessionOrderByRelationAggregateInput
   deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
   posts?: Prisma.PostOrderByRelationAggregateInput
+  shorts?: Prisma.ShortOrderByRelationAggregateInput
+  shortLikes?: Prisma.ShortLikeOrderByRelationAggregateInput
   following?: Prisma.FollowOrderByRelationAggregateInput
   followers?: Prisma.FollowOrderByRelationAggregateInput
   badges?: Prisma.UserBadgeOrderByRelationAggregateInput
@@ -389,6 +393,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   callsAsCallee?: Prisma.CallSessionListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
   posts?: Prisma.PostListRelationFilter
+  shorts?: Prisma.ShortListRelationFilter
+  shortLikes?: Prisma.ShortLikeListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
   badges?: Prisma.UserBadgeListRelationFilter
@@ -479,6 +485,8 @@ export type UserCreateInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -525,6 +533,8 @@ export type UserUncheckedCreateInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -571,6 +581,8 @@ export type UserUpdateInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -617,6 +629,8 @@ export type UserUncheckedUpdateInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -1021,6 +1035,34 @@ export type UserUpdateOneRequiredWithoutPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
 }
 
+export type UserCreateNestedOneWithoutShortsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortsInput, Prisma.UserUncheckedCreateWithoutShortsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutShortsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortsInput, Prisma.UserUncheckedCreateWithoutShortsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortsInput
+  upsert?: Prisma.UserUpsertWithoutShortsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShortsInput, Prisma.UserUpdateWithoutShortsInput>, Prisma.UserUncheckedUpdateWithoutShortsInput>
+}
+
+export type UserCreateNestedOneWithoutShortLikesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortLikesInput, Prisma.UserUncheckedCreateWithoutShortLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutShortLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutShortLikesInput, Prisma.UserUncheckedCreateWithoutShortLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutShortLikesInput
+  upsert?: Prisma.UserUpsertWithoutShortLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutShortLikesInput, Prisma.UserUpdateWithoutShortLikesInput>, Prisma.UserUncheckedUpdateWithoutShortLikesInput>
+}
+
 export type UserCreateNestedOneWithoutConversationsCreatedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutConversationsCreatedInput, Prisma.UserUncheckedCreateWithoutConversationsCreatedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutConversationsCreatedInput
@@ -1187,6 +1229,8 @@ export type UserCreateWithoutAuthIdentitiesInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -1232,6 +1276,8 @@ export type UserUncheckedCreateWithoutAuthIdentitiesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -1293,6 +1339,8 @@ export type UserUpdateWithoutAuthIdentitiesInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -1338,6 +1386,8 @@ export type UserUncheckedUpdateWithoutAuthIdentitiesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -1383,6 +1433,8 @@ export type UserCreateWithoutRefreshTokensInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -1428,6 +1480,8 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -1489,6 +1543,8 @@ export type UserUpdateWithoutRefreshTokensInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -1534,6 +1590,8 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -1579,6 +1637,8 @@ export type UserCreateWithoutVerificationTokensInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -1624,6 +1684,8 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -1685,6 +1747,8 @@ export type UserUpdateWithoutVerificationTokensInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -1730,6 +1794,8 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -1775,6 +1841,8 @@ export type UserCreateWithoutPlacesCreatedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -1820,6 +1888,8 @@ export type UserUncheckedCreateWithoutPlacesCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -1881,6 +1951,8 @@ export type UserUpdateWithoutPlacesCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -1926,6 +1998,8 @@ export type UserUncheckedUpdateWithoutPlacesCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -1971,6 +2045,8 @@ export type UserCreateWithoutReviewsInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2016,6 +2092,8 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2077,6 +2155,8 @@ export type UserUpdateWithoutReviewsInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -2122,6 +2202,8 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -2167,6 +2249,8 @@ export type UserCreateWithoutCheckInsInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2212,6 +2296,8 @@ export type UserUncheckedCreateWithoutCheckInsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2273,6 +2359,8 @@ export type UserUpdateWithoutCheckInsInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -2318,6 +2406,8 @@ export type UserUncheckedUpdateWithoutCheckInsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -2363,6 +2453,8 @@ export type UserCreateWithoutFriendRequestsSentInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2408,6 +2500,8 @@ export type UserUncheckedCreateWithoutFriendRequestsSentInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2458,6 +2552,8 @@ export type UserCreateWithoutFriendRequestsReceivedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2503,6 +2599,8 @@ export type UserUncheckedCreateWithoutFriendRequestsReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2564,6 +2662,8 @@ export type UserUpdateWithoutFriendRequestsSentInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -2609,6 +2709,8 @@ export type UserUncheckedUpdateWithoutFriendRequestsSentInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -2665,6 +2767,8 @@ export type UserUpdateWithoutFriendRequestsReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -2710,6 +2814,8 @@ export type UserUncheckedUpdateWithoutFriendRequestsReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -2755,6 +2861,8 @@ export type UserCreateWithoutFriendshipsOwnedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2800,6 +2908,8 @@ export type UserUncheckedCreateWithoutFriendshipsOwnedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2850,6 +2960,8 @@ export type UserCreateWithoutFriendshipsAsFriendInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -2895,6 +3007,8 @@ export type UserUncheckedCreateWithoutFriendshipsAsFriendInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -2956,6 +3070,8 @@ export type UserUpdateWithoutFriendshipsOwnedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -3001,6 +3117,8 @@ export type UserUncheckedUpdateWithoutFriendshipsOwnedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -3057,6 +3175,8 @@ export type UserUpdateWithoutFriendshipsAsFriendInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -3102,6 +3222,8 @@ export type UserUncheckedUpdateWithoutFriendshipsAsFriendInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -3147,6 +3269,8 @@ export type UserCreateWithoutBlocksMadeInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -3192,6 +3316,8 @@ export type UserUncheckedCreateWithoutBlocksMadeInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -3242,6 +3368,8 @@ export type UserCreateWithoutBlocksReceivedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -3287,6 +3415,8 @@ export type UserUncheckedCreateWithoutBlocksReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -3348,6 +3478,8 @@ export type UserUpdateWithoutBlocksMadeInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -3393,6 +3525,8 @@ export type UserUncheckedUpdateWithoutBlocksMadeInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -3449,6 +3583,8 @@ export type UserUpdateWithoutBlocksReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -3494,6 +3630,8 @@ export type UserUncheckedUpdateWithoutBlocksReceivedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -3540,6 +3678,8 @@ export type UserCreateWithoutFollowingInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
@@ -3585,6 +3725,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
@@ -3635,6 +3777,8 @@ export type UserCreateWithoutFollowersInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
 }
@@ -3680,6 +3824,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
 }
@@ -3741,6 +3887,8 @@ export type UserUpdateWithoutFollowingInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
@@ -3786,6 +3934,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -3842,6 +3992,8 @@ export type UserUpdateWithoutFollowersInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
 }
@@ -3887,6 +4039,8 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -3931,6 +4085,8 @@ export type UserCreateWithoutPrivacySettingsInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -3976,6 +4132,8 @@ export type UserUncheckedCreateWithoutPrivacySettingsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -4037,6 +4195,8 @@ export type UserUpdateWithoutPrivacySettingsInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -4082,6 +4242,8 @@ export type UserUncheckedUpdateWithoutPrivacySettingsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -4127,6 +4289,8 @@ export type UserCreateWithoutSavedPlacesInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -4172,6 +4336,8 @@ export type UserUncheckedCreateWithoutSavedPlacesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -4233,6 +4399,8 @@ export type UserUpdateWithoutSavedPlacesInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -4278,6 +4446,8 @@ export type UserUncheckedUpdateWithoutSavedPlacesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -4323,6 +4493,8 @@ export type UserCreateWithoutStoriesInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -4368,6 +4540,8 @@ export type UserUncheckedCreateWithoutStoriesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -4429,6 +4603,8 @@ export type UserUpdateWithoutStoriesInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -4474,6 +4650,8 @@ export type UserUncheckedUpdateWithoutStoriesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -4519,6 +4697,8 @@ export type UserCreateWithoutPostsInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -4564,6 +4744,8 @@ export type UserUncheckedCreateWithoutPostsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -4625,6 +4807,8 @@ export type UserUpdateWithoutPostsInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -4670,6 +4854,416 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutShortsInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutShortsInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutShortsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortsInput, Prisma.UserUncheckedCreateWithoutShortsInput>
+}
+
+export type UserUpsertWithoutShortsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutShortsInput, Prisma.UserUncheckedUpdateWithoutShortsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortsInput, Prisma.UserUncheckedCreateWithoutShortsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutShortsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutShortsInput, Prisma.UserUncheckedUpdateWithoutShortsInput>
+}
+
+export type UserUpdateWithoutShortsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutShortsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutShortLikesInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryCreateNestedManyWithoutUserInput
+  conversationsCreated?: Prisma.ConversationCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutShortLikesInput = {
+  id?: string
+  email: string
+  isEmailVerified?: boolean
+  username?: string | null
+  usernameUpdatedAt?: Date | string | null
+  fullName?: string | null
+  gender?: $Enums.Gender | null
+  birthDate?: Date | string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  profileCompleted?: boolean
+  role?: $Enums.Role
+  isBanned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  placesCreated?: Prisma.PlaceUncheckedCreateNestedManyWithoutCreatedByInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutRequesterInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedCreateNestedManyWithoutAddresseeInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedCreateNestedManyWithoutFriendInput
+  blocksMade?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blocksReceived?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedCreateNestedOneWithoutUserInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedCreateNestedManyWithoutUserInput
+  stories?: Prisma.StoryUncheckedCreateNestedManyWithoutUserInput
+  conversationsCreated?: Prisma.ConversationUncheckedCreateNestedManyWithoutCreatedByInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+  messagesSent?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  messageReactions?: Prisma.MessageReactionUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
+  callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutShortLikesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortLikesInput, Prisma.UserUncheckedCreateWithoutShortLikesInput>
+}
+
+export type UserUpsertWithoutShortLikesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutShortLikesInput, Prisma.UserUncheckedUpdateWithoutShortLikesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutShortLikesInput, Prisma.UserUncheckedCreateWithoutShortLikesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutShortLikesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutShortLikesInput, Prisma.UserUncheckedUpdateWithoutShortLikesInput>
+}
+
+export type UserUpdateWithoutShortLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUpdateManyWithoutUserNestedInput
+  conversationsCreated?: Prisma.ConversationUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutShortLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  usernameUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fullName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profileCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isBanned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  authIdentities?: Prisma.AuthIdentityUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  placesCreated?: Prisma.PlaceUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  friendRequestsSent?: Prisma.FriendRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  friendRequestsReceived?: Prisma.FriendRequestUncheckedUpdateManyWithoutAddresseeNestedInput
+  friendshipsOwned?: Prisma.FriendshipUncheckedUpdateManyWithoutUserNestedInput
+  friendshipsAsFriend?: Prisma.FriendshipUncheckedUpdateManyWithoutFriendNestedInput
+  blocksMade?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blocksReceived?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  privacySettings?: Prisma.PrivacySettingsUncheckedUpdateOneWithoutUserNestedInput
+  savedPlaces?: Prisma.SavedPlaceUncheckedUpdateManyWithoutUserNestedInput
+  stories?: Prisma.StoryUncheckedUpdateManyWithoutUserNestedInput
+  conversationsCreated?: Prisma.ConversationUncheckedUpdateManyWithoutCreatedByNestedInput
+  conversationsJoined?: Prisma.ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+  messagesSent?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  messageReactions?: Prisma.MessageReactionUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
+  callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -4715,6 +5309,8 @@ export type UserCreateWithoutConversationsCreatedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -4760,6 +5356,8 @@ export type UserUncheckedCreateWithoutConversationsCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -4821,6 +5419,8 @@ export type UserUpdateWithoutConversationsCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -4866,6 +5466,8 @@ export type UserUncheckedUpdateWithoutConversationsCreatedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -4911,6 +5513,8 @@ export type UserCreateWithoutConversationsJoinedInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -4956,6 +5560,8 @@ export type UserUncheckedCreateWithoutConversationsJoinedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5017,6 +5623,8 @@ export type UserUpdateWithoutConversationsJoinedInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -5062,6 +5670,8 @@ export type UserUncheckedUpdateWithoutConversationsJoinedInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -5107,6 +5717,8 @@ export type UserCreateWithoutMessagesSentInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -5152,6 +5764,8 @@ export type UserUncheckedCreateWithoutMessagesSentInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5213,6 +5827,8 @@ export type UserUpdateWithoutMessagesSentInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -5258,6 +5874,8 @@ export type UserUncheckedUpdateWithoutMessagesSentInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -5303,6 +5921,8 @@ export type UserCreateWithoutMessageReactionsInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -5348,6 +5968,8 @@ export type UserUncheckedCreateWithoutMessageReactionsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5409,6 +6031,8 @@ export type UserUpdateWithoutMessageReactionsInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -5454,6 +6078,8 @@ export type UserUncheckedUpdateWithoutMessageReactionsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -5499,6 +6125,8 @@ export type UserCreateWithoutNotificationsInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -5544,6 +6172,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5605,6 +6235,8 @@ export type UserUpdateWithoutNotificationsInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -5650,6 +6282,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -5695,6 +6329,8 @@ export type UserCreateWithoutCallsAsCallerInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -5740,6 +6376,8 @@ export type UserUncheckedCreateWithoutCallsAsCallerInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5790,6 +6428,8 @@ export type UserCreateWithoutCallsAsCalleeInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -5835,6 +6475,8 @@ export type UserUncheckedCreateWithoutCallsAsCalleeInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -5896,6 +6538,8 @@ export type UserUpdateWithoutCallsAsCallerInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -5941,6 +6585,8 @@ export type UserUncheckedUpdateWithoutCallsAsCallerInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -5997,6 +6643,8 @@ export type UserUpdateWithoutCallsAsCalleeInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -6042,6 +6690,8 @@ export type UserUncheckedUpdateWithoutCallsAsCalleeInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -6087,6 +6737,8 @@ export type UserCreateWithoutDeviceTokensInput = {
   callsAsCaller?: Prisma.CallSessionCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
@@ -6132,6 +6784,8 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCallerInput
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
@@ -6193,6 +6847,8 @@ export type UserUpdateWithoutDeviceTokensInput = {
   callsAsCaller?: Prisma.CallSessionUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
@@ -6238,6 +6894,8 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   callsAsCaller?: Prisma.CallSessionUncheckedUpdateManyWithoutCallerNestedInput
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
@@ -6284,6 +6942,8 @@ export type UserCreateWithoutBadgesInput = {
   callsAsCallee?: Prisma.CallSessionCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
 }
@@ -6329,6 +6989,8 @@ export type UserUncheckedCreateWithoutBadgesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCalleeInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutUserInput
+  shorts?: Prisma.ShortUncheckedCreateNestedManyWithoutUserInput
+  shortLikes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
 }
@@ -6390,6 +7052,8 @@ export type UserUpdateWithoutBadgesInput = {
   callsAsCallee?: Prisma.CallSessionUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
 }
@@ -6435,6 +7099,8 @@ export type UserUncheckedUpdateWithoutBadgesInput = {
   callsAsCallee?: Prisma.CallSessionUncheckedUpdateManyWithoutCalleeNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutUserNestedInput
+  shorts?: Prisma.ShortUncheckedUpdateManyWithoutUserNestedInput
+  shortLikes?: Prisma.ShortLikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
 }
@@ -6468,6 +7134,8 @@ export type UserCountOutputType = {
   callsAsCallee: number
   deviceTokens: number
   posts: number
+  shorts: number
+  shortLikes: number
   following: number
   followers: number
   badges: number
@@ -6497,6 +7165,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   callsAsCallee?: boolean | UserCountOutputTypeCountCallsAsCalleeArgs
   deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
   posts?: boolean | UserCountOutputTypeCountPostsArgs
+  shorts?: boolean | UserCountOutputTypeCountShortsArgs
+  shortLikes?: boolean | UserCountOutputTypeCountShortLikesArgs
   following?: boolean | UserCountOutputTypeCountFollowingArgs
   followers?: boolean | UserCountOutputTypeCountFollowersArgs
   badges?: boolean | UserCountOutputTypeCountBadgesArgs
@@ -6676,6 +7346,20 @@ export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Exte
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountShortsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShortWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountShortLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShortLikeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountFollowingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FollowWhereInput
 }
@@ -6736,6 +7420,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   callsAsCallee?: boolean | Prisma.User$callsAsCalleeArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  shorts?: boolean | Prisma.User$shortsArgs<ExtArgs>
+  shortLikes?: boolean | Prisma.User$shortLikesArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
@@ -6825,6 +7511,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   callsAsCallee?: boolean | Prisma.User$callsAsCalleeArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  shorts?: boolean | Prisma.User$shortsArgs<ExtArgs>
+  shortLikes?: boolean | Prisma.User$shortLikesArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
@@ -6860,6 +7548,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     callsAsCallee: Prisma.$CallSessionPayload<ExtArgs>[]
     deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
     posts: Prisma.$PostPayload<ExtArgs>[]
+    shorts: Prisma.$ShortPayload<ExtArgs>[]
+    shortLikes: Prisma.$ShortLikePayload<ExtArgs>[]
     following: Prisma.$FollowPayload<ExtArgs>[]
     followers: Prisma.$FollowPayload<ExtArgs>[]
     badges: Prisma.$UserBadgePayload<ExtArgs>[]
@@ -7299,6 +7989,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   callsAsCallee<T extends Prisma.User$callsAsCalleeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$callsAsCalleeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CallSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shorts<T extends Prisma.User$shortsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shortsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shortLikes<T extends Prisma.User$shortLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shortLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   following<T extends Prisma.User$followingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   followers<T extends Prisma.User$followersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   badges<T extends Prisma.User$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8308,6 +9000,54 @@ export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.shorts
+ */
+export type User$shortsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Short
+   */
+  select?: Prisma.ShortSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Short
+   */
+  omit?: Prisma.ShortOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShortInclude<ExtArgs> | null
+  where?: Prisma.ShortWhereInput
+  orderBy?: Prisma.ShortOrderByWithRelationInput | Prisma.ShortOrderByWithRelationInput[]
+  cursor?: Prisma.ShortWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShortScalarFieldEnum | Prisma.ShortScalarFieldEnum[]
+}
+
+/**
+ * User.shortLikes
+ */
+export type User$shortLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ShortLike
+   */
+  select?: Prisma.ShortLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ShortLike
+   */
+  omit?: Prisma.ShortLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShortLikeInclude<ExtArgs> | null
+  where?: Prisma.ShortLikeWhereInput
+  orderBy?: Prisma.ShortLikeOrderByWithRelationInput | Prisma.ShortLikeOrderByWithRelationInput[]
+  cursor?: Prisma.ShortLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShortLikeScalarFieldEnum | Prisma.ShortLikeScalarFieldEnum[]
 }
 
 /**

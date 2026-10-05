@@ -75,6 +75,8 @@ export const ModelName = {
   Story: 'Story',
   Post: 'Post',
   PostImage: 'PostImage',
+  Short: 'Short',
+  ShortLike: 'ShortLike',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
@@ -417,6 +419,31 @@ export const PostImageScalarFieldEnum = {
 } as const
 
 export type PostImageScalarFieldEnum = (typeof PostImageScalarFieldEnum)[keyof typeof PostImageScalarFieldEnum]
+
+
+export const ShortScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  caption: 'caption',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  placeId: 'placeId',
+  visibility: 'visibility',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type ShortScalarFieldEnum = (typeof ShortScalarFieldEnum)[keyof typeof ShortScalarFieldEnum]
+
+
+export const ShortLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  shortId: 'shortId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortLikeScalarFieldEnum = (typeof ShortLikeScalarFieldEnum)[keyof typeof ShortLikeScalarFieldEnum]
 
 
 export const ConversationScalarFieldEnum = {

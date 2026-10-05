@@ -160,6 +160,16 @@ export type Post = Prisma.PostModel
  */
 export type PostImage = Prisma.PostImageModel
 /**
+ * Model Short
+ * 
+ */
+export type Short = Prisma.ShortModel
+/**
+ * Model ShortLike
+ * 
+ */
+export type ShortLike = Prisma.ShortLikeModel
+/**
  * Model Conversation
  * 
  */

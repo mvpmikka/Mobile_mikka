@@ -408,6 +408,8 @@ export const ModelName = {
   Story: 'Story',
   Post: 'Post',
   PostImage: 'PostImage',
+  Short: 'Short',
+  ShortLike: 'ShortLike',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
@@ -432,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "booking" | "customerBlock" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "post" | "postImage" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
+    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "booking" | "customerBlock" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "post" | "postImage" | "short" | "shortLike" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2196,6 +2198,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Short: {
+      payload: Prisma.$ShortPayload<ExtArgs>
+      fields: Prisma.ShortFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShortFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShortFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        findFirst: {
+          args: Prisma.ShortFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShortFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        findMany: {
+          args: Prisma.ShortFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>[]
+        }
+        create: {
+          args: Prisma.ShortCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        createMany: {
+          args: Prisma.ShortCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShortCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>[]
+        }
+        delete: {
+          args: Prisma.ShortDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        update: {
+          args: Prisma.ShortUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        deleteMany: {
+          args: Prisma.ShortDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShortUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShortUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>[]
+        }
+        upsert: {
+          args: Prisma.ShortUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortPayload>
+        }
+        aggregate: {
+          args: Prisma.ShortAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShort>
+        }
+        groupBy: {
+          args: Prisma.ShortGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShortCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortCountAggregateOutputType> | number
+        }
+      }
+    }
+    ShortLike: {
+      payload: Prisma.$ShortLikePayload<ExtArgs>
+      fields: Prisma.ShortLikeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShortLikeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShortLikeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        findFirst: {
+          args: Prisma.ShortLikeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShortLikeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        findMany: {
+          args: Prisma.ShortLikeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>[]
+        }
+        create: {
+          args: Prisma.ShortLikeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        createMany: {
+          args: Prisma.ShortLikeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShortLikeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>[]
+        }
+        delete: {
+          args: Prisma.ShortLikeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        update: {
+          args: Prisma.ShortLikeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        deleteMany: {
+          args: Prisma.ShortLikeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShortLikeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShortLikeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>[]
+        }
+        upsert: {
+          args: Prisma.ShortLikeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortLikePayload>
+        }
+        aggregate: {
+          args: Prisma.ShortLikeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShortLike>
+        }
+        groupBy: {
+          args: Prisma.ShortLikeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortLikeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShortLikeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortLikeCountAggregateOutputType> | number
+        }
+      }
+    }
     Conversation: {
       payload: Prisma.$ConversationPayload<ExtArgs>
       fields: Prisma.ConversationFieldRefs
@@ -3218,6 +3368,31 @@ export const PostImageScalarFieldEnum = {
 export type PostImageScalarFieldEnum = (typeof PostImageScalarFieldEnum)[keyof typeof PostImageScalarFieldEnum]
 
 
+export const ShortScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  caption: 'caption',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  placeId: 'placeId',
+  visibility: 'visibility',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type ShortScalarFieldEnum = (typeof ShortScalarFieldEnum)[keyof typeof ShortScalarFieldEnum]
+
+
+export const ShortLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  shortId: 'shortId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortLikeScalarFieldEnum = (typeof ShortLikeScalarFieldEnum)[keyof typeof ShortLikeScalarFieldEnum]
+
+
 export const ConversationScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -3830,6 +4005,8 @@ export type GlobalOmitConfig = {
   story?: Prisma.StoryOmit
   post?: Prisma.PostOmit
   postImage?: Prisma.PostImageOmit
+  short?: Prisma.ShortOmit
+  shortLike?: Prisma.ShortLikeOmit
   conversation?: Prisma.ConversationOmit
   conversationParticipant?: Prisma.ConversationParticipantOmit
   message?: Prisma.MessageOmit

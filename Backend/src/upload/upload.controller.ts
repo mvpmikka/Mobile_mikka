@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UploadService } from './upload.service';
 
 const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
+const MAX_VIDEO_UPLOAD_SIZE_BYTES = 75 * 1024 * 1024;
 
 @Controller('uploads')
 export class UploadController {
@@ -38,5 +39,26 @@ export class UploadController {
       throw new BadRequestException('file is required and must be an image');
     }
     return this.uploadService.uploadImage(file.buffer);
+  }
+
+  @Post('video')
+  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: MAX_VIDEO_UPLOAD_SIZE_BYTES },
+      fileFilter: (_req, file, callback) => {
+        // Fast-path rejection only, same convention as uploadImage — the
+        // real check is the mimetype allowlist in UploadService.uploadVideo.
+        callback(null, file.mimetype.startsWith('video/'));
+      },
+    }),
+  )
+  uploadVideo(@UploadedFile() file?: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('file is required and must be a video');
+    }
+    return this.uploadService.uploadVideo(file.buffer, file.mimetype);
   }
 }
