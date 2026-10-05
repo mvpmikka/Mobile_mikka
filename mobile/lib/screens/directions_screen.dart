@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/route_info.dart';
+import '../providers/auth_provider.dart';
 import '../providers/directions_provider.dart';
 import '../providers/place_provider.dart';
 import '../services/directions_service.dart';
 import '../services/location_service.dart';
 import '../theme/app_colors.dart';
+import '../utils/avatar_marker.dart';
+import '../utils/flag_marker.dart';
 
 /// Shows the route from the user's current location to [destinationAddress]
 /// on a map, with distance/time chips for car, walking, bicycle, scooter,
@@ -35,6 +38,8 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
   LatLng? _destination;
   Map<TransportMode, RouteInfo> _routes = {};
   TransportMode? _selectedMode;
+  BitmapDescriptor? _originIcon;
+  BitmapDescriptor? _destinationIcon;
 
   @override
   void initState() {
@@ -64,11 +69,23 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
       final destination = await service.geocodeAddress(widget.destinationAddress);
       final routes = await service.fetchAllRoutes(origin: origin, destination: destination);
 
+      final currentUser = ref.read(authControllerProvider).value?.user;
+      final fallbackName = currentUser?.fullName ?? currentUser?.username ?? '';
+      final originIcon = await AvatarMarker.build(
+        avatarUrl: currentUser?.avatarUrl,
+        fallbackLabel: fallbackName.isEmpty ? '?' : fallbackName[0].toUpperCase(),
+        fallbackColor: AppColors.orange,
+      );
+      final destinationIcon = await FlagMarker.build();
+      if (!mounted) return;
+
       setState(() {
         _origin = origin;
         _destination = destination;
         _routes = routes;
         _selectedMode = routes.keys.first;
+        _originIcon = originIcon;
+        _destinationIcon = destinationIcon;
         _loading = false;
       });
       WidgetsBinding.instance.addPostFrameCallback((_) => _fitBounds());
@@ -175,8 +192,20 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
                 markerId: const MarkerId('destination'),
                 position: destination,
                 infoWindow: InfoWindow(title: widget.destinationName),
-                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+                icon: _destinationIcon ??
+                    BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
               ),
+              // The user's own position gets their profile photo (see
+              // AvatarMarker) instead of a generic pin, so it reads as
+              // clearly different from the flag destination marker above.
+              if (_originIcon != null)
+                Marker(
+                  markerId: const MarkerId('origin'),
+                  position: origin,
+                  icon: _originIcon!,
+                  anchor: const Offset(0.5, 0.5),
+                  zIndexInt: 1,
+                ),
             },
             polylines: {
               if (selectedRoute != null)
@@ -187,10 +216,7 @@ class _DirectionsScreenState extends ConsumerState<DirectionsScreen> {
                   width: 4,
                 ),
             },
-            // The user's own position is shown with Google's native blue
-            // "my location" dot instead of a generic pin, so it's visually
-            // distinct from the orange destination marker above.
-            myLocationEnabled: true,
+            myLocationEnabled: _originIcon == null,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapToolbarEnabled: false,
