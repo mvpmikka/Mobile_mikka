@@ -15,11 +15,7 @@ class AppBottomNav extends StatelessWidget {
   static const _items = [
     (label: 'Map', iconOutline: Icons.map_outlined, iconFilled: Icons.map),
     (label: 'Friends', iconOutline: Icons.people_outline, iconFilled: Icons.people),
-    (
-      label: 'Shorts',
-      iconOutline: Icons.play_circle_outline,
-      iconFilled: Icons.play_circle,
-    ),
+    (label: 'Create', iconOutline: Icons.add, iconFilled: Icons.add),
     (
       label: 'Chat',
       iconOutline: Icons.chat_bubble_outline,
@@ -27,6 +23,8 @@ class AppBottomNav extends StatelessWidget {
     ),
     (label: 'Profile', iconOutline: Icons.person_outline, iconFilled: Icons.person),
   ];
+
+  static const _createTabIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +40,7 @@ class AppBottomNav extends StatelessWidget {
           children: List.generate(_items.length, (index) {
             final item = _items[index];
             final selected = index == currentIndex;
+            final isCreateTab = index == _createTabIndex;
             return Expanded(
               child: GestureDetector(
                 onTap: () => onTap(index),
@@ -49,25 +48,40 @@ class AppBottomNav extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      selected
-                          ? Container(
-                              width: 36,
-                              height: 36,
-                              decoration: const BoxDecoration(
-                                color: AppColors.orange,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                item.iconFilled,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                            )
-                          : Icon(
-                              item.iconOutline,
-                              size: 22,
-                              color: AppColors.mutedText(context),
+                      if (isCreateTab)
+                        Transform.translate(
+                          offset: const Offset(0, -10),
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: AppColors.orange,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.surface(context), width: 3),
                             ),
+                            child: Icon(item.iconFilled, size: 24, color: Colors.white),
+                          ),
+                        )
+                      else if (selected)
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: const BoxDecoration(
+                            color: AppColors.orange,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            item.iconFilled,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                        )
+                      else
+                        Icon(
+                          item.iconOutline,
+                          size: 22,
+                          color: AppColors.mutedText(context),
+                        ),
                       const SizedBox(height: 2),
                       Text(
                         item.label,
