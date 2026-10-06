@@ -15,7 +15,7 @@ class AppBottomNav extends StatelessWidget {
   static const _items = [
     (label: 'Map', iconOutline: Icons.map_outlined, iconFilled: Icons.map),
     (label: 'Friends', iconOutline: Icons.people_outline, iconFilled: Icons.people),
-    (label: 'Create', iconOutline: Icons.add, iconFilled: Icons.add),
+    (label: 'Shorts', iconOutline: Icons.play_circle_outline, iconFilled: Icons.play_circle),
     (
       label: 'Chat',
       iconOutline: Icons.chat_bubble_outline,
@@ -41,6 +41,11 @@ class AppBottomNav extends StatelessWidget {
             final item = _items[index];
             final selected = index == currentIndex;
             final isCreateTab = index == _createTabIndex;
+            // Tapping the Shorts tab a second time (while already selected)
+            // opens the capture screen (see MainShellScreen._onTabTap), so
+            // only THEN does this slot read "Create" with the elevated "+"
+            // button — otherwise it's a normal "Shorts" tab like the rest.
+            final label = isCreateTab && selected ? 'Create' : item.label;
             return Expanded(
               child: GestureDetector(
                 onTap: () => onTap(index),
@@ -48,7 +53,7 @@ class AppBottomNav extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (isCreateTab)
+                      if (isCreateTab && selected)
                         Transform.translate(
                           offset: const Offset(0, -10),
                           child: Container(
@@ -59,7 +64,7 @@ class AppBottomNav extends StatelessWidget {
                               shape: BoxShape.circle,
                               border: Border.all(color: AppColors.surface(context), width: 3),
                             ),
-                            child: Icon(item.iconFilled, size: 24, color: Colors.white),
+                            child: const Icon(Icons.add, size: 24, color: Colors.white),
                           ),
                         )
                       else if (selected)
@@ -84,7 +89,7 @@ class AppBottomNav extends StatelessWidget {
                         ),
                       const SizedBox(height: 2),
                       Text(
-                        item.label,
+                        label,
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,

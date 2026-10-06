@@ -145,25 +145,32 @@ class _ShortsScreenState extends ConsumerState<ShortsScreen> {
   }
 
   Widget _buildMessage(BuildContext context, String text, {VoidCallback? onRetry}) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70, fontSize: 14),
-            ),
-            if (onRetry != null) ...[
-              const SizedBox(height: 12),
-              TextButton(
-                onPressed: onRetry,
-                child: const Text('Qayta urinish', style: TextStyle(color: AppColors.orange)),
+    // top: 100 keeps this clear of the floating Friends/Trending toggle +
+    // search button overlaid near the top of the screen (see build()),
+    // instead of Center()-ing over the whole stack and risking overlap on
+    // shorter screens.
+    return Positioned.fill(
+      top: 100,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
+              if (onRetry != null) ...[
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: onRetry,
+                  child: const Text('Qayta urinish', style: TextStyle(color: AppColors.orange)),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
