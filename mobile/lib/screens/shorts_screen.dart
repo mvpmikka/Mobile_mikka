@@ -85,16 +85,27 @@ class _ShortsScreenState extends ConsumerState<ShortsScreen> {
               );
             },
           ),
-          SafeArea(
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-              child: Row(
-                children: [
-                  _buildFeedToggle(context),
-                  const Spacer(),
-                  _RoundGlassButton(icon: Icons.search, onTap: _openSearch),
-                ],
+          // Positioned (not a plain Stack child) so it's pinned to the very
+          // top regardless of the outer Stack's fit: StackFit.expand, which
+          // would otherwise stretch an un-positioned child to the Stack's
+          // full height and vertically CENTER its Row inside that — pushing
+          // this bar down into the middle of the screen instead of under
+          // the status bar.
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                child: Row(
+                  children: [
+                    _buildFeedToggle(context),
+                    const Spacer(),
+                    _RoundGlassButton(icon: Icons.search, onTap: _openSearch),
+                  ],
+                ),
               ),
             ),
           ),
@@ -145,12 +156,10 @@ class _ShortsScreenState extends ConsumerState<ShortsScreen> {
   }
 
   Widget _buildMessage(BuildContext context, String text, {VoidCallback? onRetry}) {
-    // top: 100 keeps this clear of the floating Friends/Trending toggle +
-    // search button overlaid near the top of the screen (see build()),
-    // instead of Center()-ing over the whole stack and risking overlap on
-    // shorter screens.
+    // The floating Friends/Trending toggle + search button are pinned to
+    // the top via their own Positioned(top: 0, ...) (see build()), so a
+    // plain full-stack center here no longer risks overlapping them.
     return Positioned.fill(
-      top: 100,
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
