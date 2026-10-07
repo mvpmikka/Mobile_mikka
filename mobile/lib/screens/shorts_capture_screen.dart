@@ -102,12 +102,25 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
     }
   }
 
+  void _showCaptureError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: const Color(0xFFCB4B4B)),
+    );
+  }
+
   Future<void> _startRecording() async {
     final controller = _cameraController;
     if (controller == null || !controller.value.isInitialized || _isRecording) {
       return;
     }
-    await controller.startVideoRecording();
+    try {
+      await controller.startVideoRecording();
+    } catch (e) {
+      _showCaptureError("Yozishni boshlab bo'lmadi: $e");
+      return;
+    }
+    if (!mounted) return;
     setState(() {
       _isRecording = true;
       _recordProgress = 0;
@@ -130,24 +143,35 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
     _recordTimer?.cancel();
     _recordTimer = null;
 
-    final file = await controller.stopVideoRecording();
+    final XFile file;
+    try {
+      file = await controller.stopVideoRecording();
+    } catch (e) {
+      if (mounted) setState(() => _isRecording = false);
+      _showCaptureError("Yozishni tugatib bo'lmadi: $e");
+      return;
+    }
     setState(() {
       _isRecording = false;
       _recordProgress = 0;
     });
 
-    final videoController = VideoPlayerController.file(File(file.path));
-    await videoController.initialize();
-    await videoController.setLooping(true);
-    await videoController.play();
-    if (!mounted) {
-      await videoController.dispose();
-      return;
+    try {
+      final videoController = VideoPlayerController.file(File(file.path));
+      await videoController.initialize();
+      await videoController.setLooping(true);
+      await videoController.play();
+      if (!mounted) {
+        await videoController.dispose();
+        return;
+      }
+      setState(() {
+        _videoFile = file;
+        _videoController = videoController;
+      });
+    } catch (e) {
+      _showCaptureError("Videoni ko'rsatib bo'lmadi: $e");
     }
-    setState(() {
-      _videoFile = file;
-      _videoController = videoController;
-    });
   }
 
   void _retake() {
