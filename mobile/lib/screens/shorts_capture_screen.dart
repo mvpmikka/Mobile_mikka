@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
@@ -27,8 +28,10 @@ class ShortsCaptureScreen extends ConsumerStatefulWidget {
 
 class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
   CameraController? _cameraController;
+  List<CameraDescription> _cameras = [];
   bool _isInitializing = true;
   String? _setupError;
+  bool _flashOn = false;
 
   bool _isRecording = false;
   double _recordProgress = 0;
@@ -91,6 +94,7 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
         return;
       }
       setState(() {
+        _cameras = cameras;
         _cameraController = controller;
         _isInitializing = false;
       });
@@ -156,6 +160,10 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
       _recordProgress = 0;
     });
 
+    await _loadVideoForPreview(file);
+  }
+
+  Future<void> _loadVideoForPreview(XFile file) async {
     try {
       final videoController = VideoPlayerController.file(File(file.path));
       await videoController.initialize();
@@ -171,6 +179,68 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
       });
     } catch (e) {
       _showCaptureError("Videoni ko'rsatib bo'lmadi: $e");
+    }
+  }
+
+  Future<void> _pickFromGallery() async {
+    if (_isRecording) return;
+    final XFile? file;
+    try {
+      file = await ImagePicker().pickVideo(
+        source: ImageSource.gallery,
+        maxDuration: const Duration(seconds: _maxRecordSeconds),
+      );
+    } catch (e) {
+      _showCaptureError("Video tanlab bo'lmadi");
+      return;
+    }
+    if (file == null) return;
+    await _loadVideoForPreview(file);
+  }
+
+  Future<void> _toggleFlash() async {
+    final controller = _cameraController;
+    if (controller == null || _isRecording) return;
+    final next = !_flashOn;
+    try {
+      await controller.setFlashMode(next ? FlashMode.torch : FlashMode.off);
+      if (!mounted) return;
+      setState(() => _flashOn = next);
+    } catch (e) {
+      _showCaptureError("Chiroqni almashtirib bo'lmadi");
+    }
+  }
+
+  Future<void> _switchCamera() async {
+    if (_isRecording || _cameras.length < 2) return;
+    final current = _cameraController;
+    final currentDirection = current?.description.lensDirection;
+    final nextCamera = _cameras.firstWhere(
+      (c) => c.lensDirection != currentDirection,
+      orElse: () => _cameras.first,
+    );
+    setState(() => _isInitializing = true);
+    await current?.dispose();
+    final newController = CameraController(
+      nextCamera,
+      ResolutionPreset.high,
+      enableAudio: true,
+    );
+    try {
+      await newController.initialize();
+      if (!mounted) {
+        await newController.dispose();
+        return;
+      }
+      setState(() {
+        _cameraController = newController;
+        _isInitializing = false;
+        _flashOn = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isInitializing = false);
+      _showCaptureError("Kamerani almashtirib bo'lmadi");
     }
   }
 
@@ -281,13 +351,36 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
         CameraPreview(controller),
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: _RoundIconButton(
-                icon: Icons.close,
-                onTap: () => Navigator.of(context).pop(),
-              ),
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _RoundIconButton(
+                  icon: Icons.close,
+                  onTap: _isRecording ? null : () => Navigator.of(context).pop(),
+                ),
+                Expanded(
+                  child: Center(
+                    child: _TopLocationPill(
+                      label: _selectedPlace?.name ?? 'Joylashuvni belgilash',
+                      onTap: _isRecording ? null : _pickPlace,
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    _RoundIconButton(
+                      icon: _flashOn ? Icons.flash_on : Icons.flash_off,
+                      onTap: _isRecording ? null : _toggleFlash,
+                    ),
+                    const SizedBox(height: 10),
+                    _RoundIconButton(
+                      icon: Icons.more_horiz,
+                      onTap: () => showComingSoon(context),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -295,38 +388,104 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 28),
-              child: GestureDetector(
-                onLongPressStart: (_) => _startRecording(),
-                onLongPressEnd: (_) => _stopRecording(),
-                child: SizedBox(
-                  width: 82,
-                  height: 82,
-                  child: Stack(
-                    alignment: Alignment.center,
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    controller: _captionController,
+                    maxLines: 2,
+                    maxLength: 2000,
+                    enabled: !_isRecording,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    decoration: const InputDecoration(
+                      hintText: 'Bu lahzani tasvirlang...',
+                      hintStyle: TextStyle(color: Colors.white60, fontSize: 14),
+                      counterText: '',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      _CapturePillButton(
+                        icon: Icons.music_note_outlined,
+                        label: 'Musiqa qo\'shish',
+                        onTap: _isRecording ? null : () => showComingSoon(context),
+                      ),
+                      const SizedBox(width: 10),
+                      _CapturePillButton(
+                        icon: Icons.place_outlined,
+                        label: _selectedPlace?.name ?? 'Joyni belgilash',
+                        onTap: _isRecording ? null : _pickPlace,
+                      ),
+                      const SizedBox(width: 10),
+                      _CapturePillButton(
+                        icon: Icons.auto_fix_high_outlined,
+                        label: 'Effektlar',
+                        onTap: _isRecording ? null : () => showComingSoon(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 82,
-                        height: 82,
-                        child: CircularProgressIndicator(
-                          value: _isRecording ? _recordProgress : 0,
-                          strokeWidth: 4,
-                          backgroundColor: Colors.white24,
-                          valueColor: const AlwaysStoppedAnimation(AppColors.orange),
+                        width: 56,
+                        child: _RoundIconButton(
+                          icon: Icons.photo_library_outlined,
+                          size: 46,
+                          onTap: _isRecording ? null : _pickFromGallery,
                         ),
                       ),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        width: _isRecording ? 34 : 64,
-                        height: _isRecording ? 34 : 64,
-                        decoration: BoxDecoration(
-                          color: AppColors.orange,
-                          borderRadius: BorderRadius.circular(_isRecording ? 8 : 32),
+                      Expanded(
+                        child: Center(
+                          child: GestureDetector(
+                            onLongPressStart: (_) => _startRecording(),
+                            onLongPressEnd: (_) => _stopRecording(),
+                            child: SizedBox(
+                              width: 82,
+                              height: 82,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 82,
+                                    height: 82,
+                                    child: CircularProgressIndicator(
+                                      value: _isRecording ? _recordProgress : 0,
+                                      strokeWidth: 4,
+                                      backgroundColor: Colors.white24,
+                                      valueColor: const AlwaysStoppedAnimation(AppColors.orange),
+                                    ),
+                                  ),
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 150),
+                                    width: _isRecording ? 34 : 64,
+                                    height: _isRecording ? 34 : 64,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.orange,
+                                      borderRadius: BorderRadius.circular(_isRecording ? 8 : 32),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 56,
+                        child: _RoundIconButton(
+                          icon: Icons.cameraswitch_outlined,
+                          size: 46,
+                          onTap: (_isRecording || _cameras.length < 2) ? null : _switchCamera,
                         ),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -374,41 +533,19 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextField(
-                    controller: _captionController,
-                    maxLines: 2,
-                    maxLength: 2000,
-                    enabled: !_isSubmitting,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                    decoration: InputDecoration(
-                      hintText: 'Izoh yozing...',
-                      hintStyle: const TextStyle(color: Colors.white60, fontSize: 14),
-                      counterStyle: const TextStyle(color: Colors.white60),
-                      border: InputBorder.none,
+                  if (_captionController.text.trim().isNotEmpty) ...[
+                    Text(
+                      _captionController.text.trim(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      _CapturePillButton(
-                        icon: Icons.place_outlined,
-                        label: _selectedPlace?.name ?? 'Joy biriktirish',
-                        onTap: _isSubmitting ? null : _pickPlace,
-                      ),
-                      const SizedBox(width: 10),
-                      _CapturePillButton(
-                        icon: Icons.music_note_outlined,
-                        label: 'Musiqa',
-                        onTap: _isSubmitting ? null : () => showComingSoon(context),
-                      ),
-                      const SizedBox(width: 10),
-                      _CapturePillButton(
-                        icon: Icons.auto_fix_high_outlined,
-                        label: 'Effektlar',
-                        onTap: _isSubmitting ? null : () => showComingSoon(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
+                    const SizedBox(height: 10),
+                  ],
+                  if (_selectedPlace != null) ...[
+                    _TopLocationPill(label: _selectedPlace!.name, onTap: null),
+                    const SizedBox(height: 14),
+                  ],
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -450,9 +587,33 @@ class _ShortsCaptureScreenState extends ConsumerState<ShortsCaptureScreen> {
 }
 
 class _RoundIconButton extends StatelessWidget {
-  const _RoundIconButton({required this.icon, required this.onTap});
+  const _RoundIconButton({required this.icon, required this.onTap, this.size = 38});
 
   final IconData icon;
+  final VoidCallback? onTap;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Opacity(
+        opacity: onTap == null ? 0.4 : 1,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: const BoxDecoration(color: Colors.black45, shape: BoxShape.circle),
+          child: Icon(icon, color: Colors.white, size: size * 0.5),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopLocationPill extends StatelessWidget {
+  const _TopLocationPill({required this.label, required this.onTap});
+
+  final String label;
   final VoidCallback? onTap;
 
   @override
@@ -460,10 +621,27 @@ class _RoundIconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 38,
-        height: 38,
-        decoration: const BoxDecoration(color: Colors.black45, shape: BoxShape.circle),
-        child: Icon(icon, color: Colors.white, size: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        decoration: BoxDecoration(
+          color: Colors.black45,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.location_on, color: AppColors.orange, size: 14),
+            const SizedBox(width: 6),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 150),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

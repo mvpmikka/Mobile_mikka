@@ -13,6 +13,17 @@ import 'search_screen.dart';
 
 enum _FeedTab { friends, trending }
 
+// Compact count formatting to match the Figma action-rail labels (e.g. "1.2k").
+String _formatCount(int count) {
+  if (count < 1000) return '$count';
+  if (count < 1000000) {
+    final value = count / 1000;
+    return '${value.toStringAsFixed(value < 10 ? 1 : 0)}k';
+  }
+  final value = count / 1000000;
+  return '${value.toStringAsFixed(value < 10 ? 1 : 0)}m';
+}
+
 // Vertical TikTok/Reels-style feed matching the Figma reference screenshots
 // (mobile/assets/icon/Video Item 2-5.png) — backed by GET /shorts/feed via
 // shortFeedProvider. Like and Follow are wired to the backend; the
@@ -432,7 +443,7 @@ class _ShortPageState extends ConsumerState<_ShortPage> {
               _ActionButton(
                 icon: short.isLikedByMe ? Icons.favorite : Icons.favorite_border,
                 iconColor: short.isLikedByMe ? AppColors.orange : Colors.white,
-                label: '${short.likeCount}',
+                label: _formatCount(short.likeCount),
                 onTap: widget.onLike,
               ),
               const SizedBox(height: 18),
