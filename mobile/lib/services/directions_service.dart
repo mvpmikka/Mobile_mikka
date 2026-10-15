@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../core/api_client.dart';
 import '../core/directions_config.dart';
 import '../models/route_info.dart';
 
@@ -12,27 +13,32 @@ class DirectionsException implements Exception {
   final String message;
 }
 
-/// Calls Google's Geocoding and Directions HTTP APIs directly (no SDK —
-/// these aren't exposed by `google_maps_flutter`).
+/// Routing still goes straight to Google's Directions HTTP API (no free
+/// backend equivalent exists for turn-by-turn routes/polylines yet).
+/// Geocoding, however, goes through our own backend's `/places/geocode`
+/// (Nominatim-backed, no Google key needed) instead of Google directly.
 class DirectionsService {
-  DirectionsService()
-    : _dio = Dio(BaseOptions(baseUrl: 'https://maps.googleapis.com/maps/api'));
+  DirectionsService({required ApiClient apiClient})
+    : _apiClient = apiClient,
+      _dio = Dio(BaseOptions(baseUrl: 'https://maps.googleapis.com/maps/api'));
 
   final Dio _dio;
+  final ApiClient _apiClient;
 
   Future<LatLng> geocodeAddress(String address) async {
-    final response = await _dio.get(
-      '/geocode/json',
-      queryParameters: {'address': address, 'key': DirectionsConfig.apiKey},
-    );
-    final data = response.data as Map<String, dynamic>;
-    final results = data['results'] as List<dynamic>? ?? const [];
-    if (data['status'] != 'OK' || results.isEmpty) {
+    try {
+      final response = await _apiClient.dio.get(
+        '/places/geocode',
+        queryParameters: {'address': address},
+      );
+      final data = response.data as Map<String, dynamic>;
+      return LatLng(
+        (data['latitude'] as num).toDouble(),
+        (data['longitude'] as num).toDouble(),
+      );
+    } on DioException catch (_) {
       throw const DirectionsException("Manzil topilmadi.");
     }
-    final location =
-        (results.first as Map<String, dynamic>)['geometry']['location'] as Map<String, dynamic>;
-    return LatLng((location['lat'] as num).toDouble(), (location['lng'] as num).toDouble());
   }
 
   /// Fetches driving/walking/bicycling/transit routes and fills in
