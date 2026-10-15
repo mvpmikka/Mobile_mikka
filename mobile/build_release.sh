@@ -41,7 +41,8 @@ rm -f "$OUT_DIR"/*.apk "$OUT_DIR"/*.apk.sha1 2>/dev/null || true
 # shu arxitekturada ishlaydi — faqat juda eski (32-bit) telefonlar yoki
 # Intel emulyatorlar tushib qoladi, ular amalda deyarli yo'q.
 flutter build apk --release --target-platform android-arm64 \
-  --dart-define=API_BASE_URL=https://mobile-mikka.onrender.com
+  --dart-define=API_BASE_URL=https://mobile-mikka.onrender.com \
+  --dart-define=DIRECTIONS_API_KEY=AIzaSyDZTBOTKksQRU-JqI0MzrGejYu6o7DPIIs
 
 FINAL_NAME="${APP_NAME}-${NEW_VERSION_NAME}.apk"
 cp "$OUT_DIR/app-release.apk" "$RELEASE_DIR/$FINAL_NAME"
