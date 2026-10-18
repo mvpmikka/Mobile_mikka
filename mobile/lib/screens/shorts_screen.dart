@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 
 import '../core/api_exception.dart';
@@ -279,6 +280,18 @@ class _ShortPageState extends ConsumerState<_ShortPage> {
     }
   }
 
+  // No public web/deep-link page for a single short exists yet, so this
+  // shares the raw video URL (+ caption) rather than a link that would just
+  // 404 for whoever opens it.
+  Future<void> _share() async {
+    final short = widget.short;
+    final caption = short.caption;
+    final text = caption == null || caption.isEmpty
+        ? short.videoUrl
+        : '$caption\n${short.videoUrl}';
+    await SharePlus.instance.share(ShareParams(text: text));
+  }
+
   Future<void> _toggleFollow() async {
     final username = widget.short.user.username;
     if (username == null || _followBusy) return;
@@ -462,7 +475,7 @@ class _ShortPageState extends ConsumerState<_ShortPage> {
               _ActionButton(
                 icon: Icons.share_outlined,
                 label: null,
-                onTap: () => showComingSoon(context),
+                onTap: _share,
               ),
             ],
           ),

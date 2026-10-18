@@ -36,16 +36,20 @@ mkdir -p "$RELEASE_DIR"
 # fayllar bilan aralashib, "qaysi biri oxirgisi" deb chalkashtirib yuboradi.
 rm -f "$OUT_DIR"/*.apk "$OUT_DIR"/*.apk.sha1 2>/dev/null || true
 
-# Faqat arm64 arxitekturasi uchun quramiz: hajmi ~3 baravar kichik bo'ladi.
+# Faqat arm64 arxitekturasi uchun quramiz. --target-platform o'zi faqat
+# Flutter dvigatelining o'z fayllarini cheklaydi — uchinchi tomon plaginlar
+# (Google Maps, WebRTC, kamera) esa --split-per-abi bo'lmasa HAMMA
+# arxitektura (armeabi-v7a, x86_64) uchun kutubxonalarini qo'shib yuboradi,
+# bu ~18MB behuda hajm edi. --split-per-abi shuni ham arm64ga cheklaydi.
 # So'nggi ~8 yilda chiqqan haqiqiy Android telefonlarning deyarli barchasi
 # shu arxitekturada ishlaydi — faqat juda eski (32-bit) telefonlar yoki
 # Intel emulyatorlar tushib qoladi, ular amalda deyarli yo'q.
-flutter build apk --release --target-platform android-arm64 \
+flutter build apk --release --target-platform android-arm64 --split-per-abi \
   --dart-define=API_BASE_URL=https://mobile-mikka.onrender.com \
   --dart-define=DIRECTIONS_API_KEY=AIzaSyDZTBOTKksQRU-JqI0MzrGejYu6o7DPIIs
 
 FINAL_NAME="${APP_NAME}-${NEW_VERSION_NAME}.apk"
-cp "$OUT_DIR/app-release.apk" "$RELEASE_DIR/$FINAL_NAME"
+cp "$OUT_DIR/app-arm64-v8a-release.apk" "$RELEASE_DIR/$FINAL_NAME"
 SIZE=$(du -h "$RELEASE_DIR/$FINAL_NAME" | cut -f1)
 
 echo ""
