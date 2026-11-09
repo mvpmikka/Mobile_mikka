@@ -104,6 +104,22 @@ class ShortService {
     }
   }
 
+  Future<void> save(String id) async {
+    try {
+      await _apiClient.dio.post('/shorts/$id/save');
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<void> unsave(String id) async {
+    try {
+      await _apiClient.dio.delete('/shorts/$id/save');
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
   Future<void> remove(String id) async {
     try {
       await _apiClient.dio.delete('/shorts/$id');

@@ -12,6 +12,7 @@ class Short {
     required this.thumbnailUrl,
     required this.likeCount,
     required this.isLikedByMe,
+    required this.isSavedByMe,
     required this.createdAt,
   });
 
@@ -23,9 +24,10 @@ class Short {
   final String? thumbnailUrl;
   final int likeCount;
   final bool isLikedByMe;
+  final bool isSavedByMe;
   final DateTime createdAt;
 
-  Short copyWith({int? likeCount, bool? isLikedByMe}) {
+  Short copyWith({int? likeCount, bool? isLikedByMe, bool? isSavedByMe}) {
     return Short(
       id: id,
       user: user,
@@ -35,6 +37,7 @@ class Short {
       thumbnailUrl: thumbnailUrl,
       likeCount: likeCount ?? this.likeCount,
       isLikedByMe: isLikedByMe ?? this.isLikedByMe,
+      isSavedByMe: isSavedByMe ?? this.isSavedByMe,
       createdAt: createdAt,
     );
   }
@@ -51,6 +54,7 @@ class Short {
       thumbnailUrl: json['thumbnailUrl'] as String?,
       likeCount: json['likeCount'] as int,
       isLikedByMe: json['isLikedByMe'] as bool,
+      isSavedByMe: json['isSavedByMe'] as bool? ?? false,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }

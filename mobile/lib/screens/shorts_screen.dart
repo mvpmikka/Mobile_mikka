@@ -92,6 +92,7 @@ class _ShortsScreenState extends ConsumerState<ShortsScreen> {
                     isActive: index == _currentIndex,
                     showScrollHint: index == 0,
                     onLike: () => ref.read(shortFeedProvider.notifier).toggleLike(shorts[index].id),
+                    onSave: () => ref.read(shortFeedProvider.notifier).toggleSave(shorts[index].id),
                   );
                 },
               );
@@ -227,6 +228,7 @@ class _ShortPage extends ConsumerStatefulWidget {
     required this.short,
     required this.isActive,
     required this.onLike,
+    required this.onSave,
     required this.showScrollHint,
   });
 
@@ -234,6 +236,7 @@ class _ShortPage extends ConsumerStatefulWidget {
   final bool isActive;
   final bool showScrollHint;
   final VoidCallback onLike;
+  final VoidCallback onSave;
 
   @override
   ConsumerState<_ShortPage> createState() => _ShortPageState();

@@ -87,6 +87,41 @@ class ShortFeedNotifier extends AsyncNotifier<List<Short>> {
       rethrow;
     }
   }
+
+  Future<void> toggleSave(String id) async {
+    final current = state.value;
+    if (current == null) return;
+
+    final index = current.indexWhere((short) => short.id == id);
+    if (index == -1) return;
+    final short = current[index];
+    final optimistic = short.copyWith(isSavedByMe: !short.isSavedByMe);
+    state = AsyncData([
+      ...current.sublist(0, index),
+      optimistic,
+      ...current.sublist(index + 1),
+    ]);
+
+    try {
+      final service = ref.read(shortServiceProvider);
+      if (optimistic.isSavedByMe) {
+        await service.save(id);
+      } else {
+        await service.unsave(id);
+      }
+    } catch (_) {
+      final reverted = state.value;
+      if (reverted == null) return;
+      final revertIndex = reverted.indexWhere((s) => s.id == id);
+      if (revertIndex == -1) return;
+      state = AsyncData([
+        ...reverted.sublist(0, revertIndex),
+        short,
+        ...reverted.sublist(revertIndex + 1),
+      ]);
+      rethrow;
+    }
+  }
 }
 
 final shortFeedProvider = AsyncNotifierProvider<ShortFeedNotifier, List<Short>>(
