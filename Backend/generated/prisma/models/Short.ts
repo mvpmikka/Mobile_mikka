@@ -217,6 +217,7 @@ export type ShortWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   place?: Prisma.XOR<Prisma.PlaceNullableScalarRelationFilter, Prisma.PlaceWhereInput> | null
   likes?: Prisma.ShortLikeListRelationFilter
+  saves?: Prisma.ShortSaveListRelationFilter
 }
 
 export type ShortOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type ShortOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   place?: Prisma.PlaceOrderByWithRelationInput
   likes?: Prisma.ShortLikeOrderByRelationAggregateInput
+  saves?: Prisma.ShortSaveOrderByRelationAggregateInput
 }
 
 export type ShortWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type ShortWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   place?: Prisma.XOR<Prisma.PlaceNullableScalarRelationFilter, Prisma.PlaceWhereInput> | null
   likes?: Prisma.ShortLikeListRelationFilter
+  saves?: Prisma.ShortSaveListRelationFilter
 }, "id">
 
 export type ShortOrderByWithAggregationInput = {
@@ -293,6 +296,7 @@ export type ShortCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutShortsInput
   place?: Prisma.PlaceCreateNestedOneWithoutShortsInput
   likes?: Prisma.ShortLikeCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveCreateNestedManyWithoutShortInput
 }
 
 export type ShortUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type ShortUncheckedCreateInput = {
   createdAt?: Date | string
   deletedAt?: Date | string | null
   likes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveUncheckedCreateNestedManyWithoutShortInput
 }
 
 export type ShortUpdateInput = {
@@ -319,6 +324,7 @@ export type ShortUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutShortsNestedInput
   place?: Prisma.PlaceUpdateOneWithoutShortsNestedInput
   likes?: Prisma.ShortLikeUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateInput = {
@@ -332,6 +338,7 @@ export type ShortUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.ShortLikeUncheckedUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUncheckedUpdateManyWithoutShortNestedInput
 }
 
 export type ShortCreateManyInput = {
@@ -517,6 +524,20 @@ export type ShortUpdateOneRequiredWithoutLikesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ShortUpdateToOneWithWhereWithoutLikesInput, Prisma.ShortUpdateWithoutLikesInput>, Prisma.ShortUncheckedUpdateWithoutLikesInput>
 }
 
+export type ShortCreateNestedOneWithoutSavesInput = {
+  create?: Prisma.XOR<Prisma.ShortCreateWithoutSavesInput, Prisma.ShortUncheckedCreateWithoutSavesInput>
+  connectOrCreate?: Prisma.ShortCreateOrConnectWithoutSavesInput
+  connect?: Prisma.ShortWhereUniqueInput
+}
+
+export type ShortUpdateOneRequiredWithoutSavesNestedInput = {
+  create?: Prisma.XOR<Prisma.ShortCreateWithoutSavesInput, Prisma.ShortUncheckedCreateWithoutSavesInput>
+  connectOrCreate?: Prisma.ShortCreateOrConnectWithoutSavesInput
+  upsert?: Prisma.ShortUpsertWithoutSavesInput
+  connect?: Prisma.ShortWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ShortUpdateToOneWithWhereWithoutSavesInput, Prisma.ShortUpdateWithoutSavesInput>, Prisma.ShortUncheckedUpdateWithoutSavesInput>
+}
+
 export type ShortCreateWithoutUserInput = {
   id?: string
   caption?: string | null
@@ -527,6 +548,7 @@ export type ShortCreateWithoutUserInput = {
   deletedAt?: Date | string | null
   place?: Prisma.PlaceCreateNestedOneWithoutShortsInput
   likes?: Prisma.ShortLikeCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveCreateNestedManyWithoutShortInput
 }
 
 export type ShortUncheckedCreateWithoutUserInput = {
@@ -539,6 +561,7 @@ export type ShortUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   deletedAt?: Date | string | null
   likes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveUncheckedCreateNestedManyWithoutShortInput
 }
 
 export type ShortCreateOrConnectWithoutUserInput = {
@@ -592,6 +615,7 @@ export type ShortCreateWithoutPlaceInput = {
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutShortsInput
   likes?: Prisma.ShortLikeCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveCreateNestedManyWithoutShortInput
 }
 
 export type ShortUncheckedCreateWithoutPlaceInput = {
@@ -604,6 +628,7 @@ export type ShortUncheckedCreateWithoutPlaceInput = {
   createdAt?: Date | string
   deletedAt?: Date | string | null
   likes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutShortInput
+  saves?: Prisma.ShortSaveUncheckedCreateNestedManyWithoutShortInput
 }
 
 export type ShortCreateOrConnectWithoutPlaceInput = {
@@ -642,6 +667,7 @@ export type ShortCreateWithoutLikesInput = {
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutShortsInput
   place?: Prisma.PlaceCreateNestedOneWithoutShortsInput
+  saves?: Prisma.ShortSaveCreateNestedManyWithoutShortInput
 }
 
 export type ShortUncheckedCreateWithoutLikesInput = {
@@ -654,6 +680,7 @@ export type ShortUncheckedCreateWithoutLikesInput = {
   visibility?: $Enums.ContentVisibility
   createdAt?: Date | string
   deletedAt?: Date | string | null
+  saves?: Prisma.ShortSaveUncheckedCreateNestedManyWithoutShortInput
 }
 
 export type ShortCreateOrConnectWithoutLikesInput = {
@@ -682,6 +709,7 @@ export type ShortUpdateWithoutLikesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutShortsNestedInput
   place?: Prisma.PlaceUpdateOneWithoutShortsNestedInput
+  saves?: Prisma.ShortSaveUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateWithoutLikesInput = {
@@ -694,6 +722,75 @@ export type ShortUncheckedUpdateWithoutLikesInput = {
   visibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  saves?: Prisma.ShortSaveUncheckedUpdateManyWithoutShortNestedInput
+}
+
+export type ShortCreateWithoutSavesInput = {
+  id?: string
+  caption?: string | null
+  videoUrl: string
+  thumbnailUrl?: string | null
+  visibility?: $Enums.ContentVisibility
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutShortsInput
+  place?: Prisma.PlaceCreateNestedOneWithoutShortsInput
+  likes?: Prisma.ShortLikeCreateNestedManyWithoutShortInput
+}
+
+export type ShortUncheckedCreateWithoutSavesInput = {
+  id?: string
+  userId: string
+  caption?: string | null
+  videoUrl: string
+  thumbnailUrl?: string | null
+  placeId?: string | null
+  visibility?: $Enums.ContentVisibility
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+  likes?: Prisma.ShortLikeUncheckedCreateNestedManyWithoutShortInput
+}
+
+export type ShortCreateOrConnectWithoutSavesInput = {
+  where: Prisma.ShortWhereUniqueInput
+  create: Prisma.XOR<Prisma.ShortCreateWithoutSavesInput, Prisma.ShortUncheckedCreateWithoutSavesInput>
+}
+
+export type ShortUpsertWithoutSavesInput = {
+  update: Prisma.XOR<Prisma.ShortUpdateWithoutSavesInput, Prisma.ShortUncheckedUpdateWithoutSavesInput>
+  create: Prisma.XOR<Prisma.ShortCreateWithoutSavesInput, Prisma.ShortUncheckedCreateWithoutSavesInput>
+  where?: Prisma.ShortWhereInput
+}
+
+export type ShortUpdateToOneWithWhereWithoutSavesInput = {
+  where?: Prisma.ShortWhereInput
+  data: Prisma.XOR<Prisma.ShortUpdateWithoutSavesInput, Prisma.ShortUncheckedUpdateWithoutSavesInput>
+}
+
+export type ShortUpdateWithoutSavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutShortsNestedInput
+  place?: Prisma.PlaceUpdateOneWithoutShortsNestedInput
+  likes?: Prisma.ShortLikeUpdateManyWithoutShortNestedInput
+}
+
+export type ShortUncheckedUpdateWithoutSavesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visibility?: Prisma.EnumContentVisibilityFieldUpdateOperationsInput | $Enums.ContentVisibility
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  likes?: Prisma.ShortLikeUncheckedUpdateManyWithoutShortNestedInput
 }
 
 export type ShortCreateManyUserInput = {
@@ -717,6 +814,7 @@ export type ShortUpdateWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   place?: Prisma.PlaceUpdateOneWithoutShortsNestedInput
   likes?: Prisma.ShortLikeUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateWithoutUserInput = {
@@ -729,6 +827,7 @@ export type ShortUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.ShortLikeUncheckedUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUncheckedUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateManyWithoutUserInput = {
@@ -763,6 +862,7 @@ export type ShortUpdateWithoutPlaceInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutShortsNestedInput
   likes?: Prisma.ShortLikeUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateWithoutPlaceInput = {
@@ -775,6 +875,7 @@ export type ShortUncheckedUpdateWithoutPlaceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.ShortLikeUncheckedUpdateManyWithoutShortNestedInput
+  saves?: Prisma.ShortSaveUncheckedUpdateManyWithoutShortNestedInput
 }
 
 export type ShortUncheckedUpdateManyWithoutPlaceInput = {
@@ -795,10 +896,12 @@ export type ShortUncheckedUpdateManyWithoutPlaceInput = {
 
 export type ShortCountOutputType = {
   likes: number
+  saves: number
 }
 
 export type ShortCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   likes?: boolean | ShortCountOutputTypeCountLikesArgs
+  saves?: boolean | ShortCountOutputTypeCountSavesArgs
 }
 
 /**
@@ -818,6 +921,13 @@ export type ShortCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.ShortLikeWhereInput
 }
 
+/**
+ * ShortCountOutputType without action
+ */
+export type ShortCountOutputTypeCountSavesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ShortSaveWhereInput
+}
+
 
 export type ShortSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -832,6 +942,7 @@ export type ShortSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   place?: boolean | Prisma.Short$placeArgs<ExtArgs>
   likes?: boolean | Prisma.Short$likesArgs<ExtArgs>
+  saves?: boolean | Prisma.Short$savesArgs<ExtArgs>
   _count?: boolean | Prisma.ShortCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["short"]>
 
@@ -880,6 +991,7 @@ export type ShortInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   place?: boolean | Prisma.Short$placeArgs<ExtArgs>
   likes?: boolean | Prisma.Short$likesArgs<ExtArgs>
+  saves?: boolean | Prisma.Short$savesArgs<ExtArgs>
   _count?: boolean | Prisma.ShortCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ShortIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -897,6 +1009,7 @@ export type $ShortPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user: Prisma.$UserPayload<ExtArgs>
     place: Prisma.$PlacePayload<ExtArgs> | null
     likes: Prisma.$ShortLikePayload<ExtArgs>[]
+    saves: Prisma.$ShortSavePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1305,6 +1418,7 @@ export interface Prisma__ShortClient<T, Null = never, ExtArgs extends runtime.Ty
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   place<T extends Prisma.Short$placeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Short$placeArgs<ExtArgs>>): Prisma.Prisma__PlaceClient<runtime.Types.Result.GetResult<Prisma.$PlacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   likes<T extends Prisma.Short$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Short$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  saves<T extends Prisma.Short$savesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Short$savesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShortSavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1784,6 +1898,30 @@ export type Short$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.ShortLikeScalarFieldEnum | Prisma.ShortLikeScalarFieldEnum[]
+}
+
+/**
+ * Short.saves
+ */
+export type Short$savesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ShortSave
+   */
+  select?: Prisma.ShortSaveSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ShortSave
+   */
+  omit?: Prisma.ShortSaveOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShortSaveInclude<ExtArgs> | null
+  where?: Prisma.ShortSaveWhereInput
+  orderBy?: Prisma.ShortSaveOrderByWithRelationInput | Prisma.ShortSaveOrderByWithRelationInput[]
+  cursor?: Prisma.ShortSaveWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ShortSaveScalarFieldEnum | Prisma.ShortSaveScalarFieldEnum[]
 }
 
 /**

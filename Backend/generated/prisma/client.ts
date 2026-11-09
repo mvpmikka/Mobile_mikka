@@ -170,6 +170,11 @@ export type Short = Prisma.ShortModel
  */
 export type ShortLike = Prisma.ShortLikeModel
 /**
+ * Model ShortSave
+ * 
+ */
+export type ShortSave = Prisma.ShortSaveModel
+/**
  * Model Conversation
  * 
  */

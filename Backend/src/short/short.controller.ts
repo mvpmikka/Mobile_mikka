@@ -80,4 +80,20 @@ export class ShortController {
   ) {
     return this.shortService.unlike(id, currentUser.id);
   }
+
+  @Post(':id/save')
+  @UseGuards(JwtAuthGuard)
+  save(@Param('id') id: string, @CurrentUser() currentUser: AuthenticatedUser) {
+    return this.shortService.save(id, currentUser.id);
+  }
+
+  @Delete(':id/save')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  unsave(
+    @Param('id') id: string,
+    @CurrentUser() currentUser: AuthenticatedUser,
+  ) {
+    return this.shortService.unsave(id, currentUser.id);
+  }
 }

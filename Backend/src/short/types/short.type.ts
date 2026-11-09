@@ -29,5 +29,6 @@ export interface ShortFeedItem {
   thumbnailUrl: string | null;
   likeCount: number;
   isLikedByMe: boolean;
+  isSavedByMe: boolean;
   createdAt: Date;
 }

@@ -14,7 +14,11 @@ const shortInclude = {
 
 type ShortRow = Prisma.ShortGetPayload<{ include: typeof shortInclude }>;
 
-function toFeedItem(row: ShortRow, likedShortIds: Set<string>): ShortFeedItem {
+function toFeedItem(
+  row: ShortRow,
+  likedShortIds: Set<string>,
+  savedShortIds: Set<string>,
+): ShortFeedItem {
   return {
     id: row.id,
     user: row.user,
@@ -25,6 +29,7 @@ function toFeedItem(row: ShortRow, likedShortIds: Set<string>): ShortFeedItem {
     thumbnailUrl: row.thumbnailUrl,
     likeCount: row._count.likes,
     isLikedByMe: likedShortIds.has(row.id),
+    isSavedByMe: savedShortIds.has(row.id),
     createdAt: row.createdAt,
   };
 }
@@ -50,7 +55,7 @@ export class ShortRepository {
         },
         include: shortInclude,
       })
-      .then((row) => toFeedItem(row, new Set()));
+      .then((row) => toFeedItem(row, new Set(), new Set()));
   }
 
   softDelete(id: string): Promise<Short> {
@@ -92,18 +97,28 @@ export class ShortRepository {
     ]);
 
     // Batched per page, not per row, to avoid an N+1 query.
-    const likedShortIds = viewerId
-      ? new Set(
-          (
-            await this.prisma.shortLike.findMany({
-              where: { userId: viewerId, shortId: { in: rows.map((r) => r.id) } },
+    const shortIds = rows.map((r) => r.id);
+    const [likedShortIds, savedShortIds] = viewerId
+      ? await Promise.all([
+          this.prisma.shortLike
+            .findMany({
+              where: { userId: viewerId, shortId: { in: shortIds } },
               select: { shortId: true },
             })
-          ).map((like) => like.shortId),
-        )
-      : new Set<string>();
+            .then((likes) => new Set(likes.map((like) => like.shortId))),
+          this.prisma.shortSave
+            .findMany({
+              where: { userId: viewerId, shortId: { in: shortIds } },
+              select: { shortId: true },
+            })
+            .then((saves) => new Set(saves.map((save) => save.shortId))),
+        ])
+      : [new Set<string>(), new Set<string>()];
 
-    return { items: rows.map((row) => toFeedItem(row, likedShortIds)), total };
+    return {
+      items: rows.map((row) => toFeedItem(row, likedShortIds, savedShortIds)),
+      total,
+    };
   }
 
   // Upsert, not create — like() is idempotent by design (same convention as
@@ -122,6 +137,22 @@ export class ShortRepository {
 
   async unlike(userId: string, shortId: string): Promise<void> {
     await this.prisma.shortLike.deleteMany({ where: { userId, shortId } });
+  }
+
+  // Idempotent save/unsave, same convention as like/unlike above.
+  async save(userId: string, shortId: string): Promise<void> {
+    await this.prisma.shortSave.upsert({
+      where: { userId_shortId: { userId, shortId } },
+      create: {
+        user: { connect: { id: userId } },
+        short: { connect: { id: shortId } },
+      },
+      update: {},
+    });
+  }
+
+  async unsave(userId: string, shortId: string): Promise<void> {
+    await this.prisma.shortSave.deleteMany({ where: { userId, shortId } });
   }
 
   // Read-only against `places` — kept minimal and local to this module

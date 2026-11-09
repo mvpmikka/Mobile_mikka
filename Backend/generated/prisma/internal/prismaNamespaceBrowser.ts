@@ -77,6 +77,7 @@ export const ModelName = {
   PostImage: 'PostImage',
   Short: 'Short',
   ShortLike: 'ShortLike',
+  ShortSave: 'ShortSave',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
@@ -444,6 +445,16 @@ export const ShortLikeScalarFieldEnum = {
 } as const
 
 export type ShortLikeScalarFieldEnum = (typeof ShortLikeScalarFieldEnum)[keyof typeof ShortLikeScalarFieldEnum]
+
+
+export const ShortSaveScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  shortId: 'shortId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortSaveScalarFieldEnum = (typeof ShortSaveScalarFieldEnum)[keyof typeof ShortSaveScalarFieldEnum]
 
 
 export const ConversationScalarFieldEnum = {

@@ -410,6 +410,7 @@ export const ModelName = {
   PostImage: 'PostImage',
   Short: 'Short',
   ShortLike: 'ShortLike',
+  ShortSave: 'ShortSave',
   Conversation: 'Conversation',
   ConversationParticipant: 'ConversationParticipant',
   Message: 'Message',
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "booking" | "customerBlock" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "post" | "postImage" | "short" | "shortLike" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
+    modelProps: "user" | "authIdentity" | "refreshToken" | "verificationToken" | "placeCategory" | "place" | "product" | "order" | "orderItem" | "booking" | "customerBlock" | "region" | "review" | "placeRatingSummary" | "checkIn" | "friendRequest" | "friendship" | "block" | "follow" | "privacySettings" | "savedPlace" | "story" | "post" | "postImage" | "short" | "shortLike" | "shortSave" | "conversation" | "conversationParticipant" | "message" | "messageReaction" | "notification" | "callSession" | "deviceToken" | "badgeDefinition" | "userBadge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2346,6 +2347,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ShortSave: {
+      payload: Prisma.$ShortSavePayload<ExtArgs>
+      fields: Prisma.ShortSaveFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ShortSaveFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ShortSaveFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        findFirst: {
+          args: Prisma.ShortSaveFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ShortSaveFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        findMany: {
+          args: Prisma.ShortSaveFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>[]
+        }
+        create: {
+          args: Prisma.ShortSaveCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        createMany: {
+          args: Prisma.ShortSaveCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ShortSaveCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>[]
+        }
+        delete: {
+          args: Prisma.ShortSaveDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        update: {
+          args: Prisma.ShortSaveUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        deleteMany: {
+          args: Prisma.ShortSaveDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ShortSaveUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ShortSaveUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>[]
+        }
+        upsert: {
+          args: Prisma.ShortSaveUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ShortSavePayload>
+        }
+        aggregate: {
+          args: Prisma.ShortSaveAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateShortSave>
+        }
+        groupBy: {
+          args: Prisma.ShortSaveGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortSaveGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ShortSaveCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ShortSaveCountAggregateOutputType> | number
+        }
+      }
+    }
     Conversation: {
       payload: Prisma.$ConversationPayload<ExtArgs>
       fields: Prisma.ConversationFieldRefs
@@ -3393,6 +3468,16 @@ export const ShortLikeScalarFieldEnum = {
 export type ShortLikeScalarFieldEnum = (typeof ShortLikeScalarFieldEnum)[keyof typeof ShortLikeScalarFieldEnum]
 
 
+export const ShortSaveScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  shortId: 'shortId',
+  createdAt: 'createdAt'
+} as const
+
+export type ShortSaveScalarFieldEnum = (typeof ShortSaveScalarFieldEnum)[keyof typeof ShortSaveScalarFieldEnum]
+
+
 export const ConversationScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -4007,6 +4092,7 @@ export type GlobalOmitConfig = {
   postImage?: Prisma.PostImageOmit
   short?: Prisma.ShortOmit
   shortLike?: Prisma.ShortLikeOmit
+  shortSave?: Prisma.ShortSaveOmit
   conversation?: Prisma.ConversationOmit
   conversationParticipant?: Prisma.ConversationParticipantOmit
   message?: Prisma.MessageOmit

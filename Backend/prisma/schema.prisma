@@ -90,6 +90,7 @@ model User {
   posts                  Post[]
   shorts                 Short[]
   shortLikes             ShortLike[]
+  shortSaves             ShortSave[]
   following              Follow[]                  @relation("FollowMade")
   followers              Follow[]                  @relation("FollowReceived")
   badges                 UserBadge[]
@@ -712,6 +713,7 @@ model Short {
 
   visibility ContentVisibility @default(FRIENDS)
   likes      ShortLike[]
+  saves      ShortSave[]
 
   createdAt DateTime  @default(now())
   deletedAt DateTime?
@@ -736,6 +738,22 @@ model ShortLike {
   @@unique([userId, shortId])
   @@index([shortId])
   @@map("short_likes")
+}
+
+// Bookmark on a Short — same shape/convention as SavedPlace (flat list, hard
+// delete on unsave, idempotent save/unsave at the service layer).
+model ShortSave {
+  id      String @id @default(uuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shortId String
+  short   Short  @relation(fields: [shortId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, shortId])
+  @@index([shortId])
+  @@map("short_saves")
 }
 
 enum ConversationType {

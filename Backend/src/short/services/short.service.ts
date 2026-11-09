@@ -65,6 +65,16 @@ export class ShortService {
     await this.shortRepository.unlike(userId, id);
   }
 
+  async save(id: string, userId: string): Promise<void> {
+    await this.requireShort(id);
+    await this.shortRepository.save(userId, id);
+  }
+
+  async unsave(id: string, userId: string): Promise<void> {
+    await this.requireShort(id);
+    await this.shortRepository.unsave(userId, id);
+  }
+
   private async requireShort(id: string): Promise<Short> {
     const short = await this.shortRepository.findById(id);
     if (!short) {
