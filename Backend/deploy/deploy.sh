@@ -8,10 +8,13 @@
 #   ./deploy/deploy.sh --quick    -> code update only (skips server setup)
 set -euo pipefail
 
-SERVER="${SERVER:-root@63.189.197.251}"
+SERVER="${SERVER:-ubuntu@63.189.197.251}"
 DOMAIN="${DOMAIN:-mikka.jamshiddin.uz}"
 EMAIL="${EMAIL:-jbm050690@gmail.com}"
 MIKKA_PORT="${MIKKA_PORT:-4112}"
+SSH_KEY="${SSH_KEY:-$HOME/Desktop/My_projects/keys/Keys.pem}"
+export RSYNC_RSH="ssh -i $SSH_KEY"
+ssh() { command ssh -i "$SSH_KEY" "$@"; }
 APP_DIR=/opt/mikka
 MODE="${1:-}"
 
@@ -19,14 +22,15 @@ cd "$(dirname "$0")/.."
 
 if [ "$MODE" = "--check" ]; then
   echo ">> Serverdagi holat (hech narsa o'zgartirilmaydi):"
-  ssh "$SERVER" "
-    echo '--- /opt va /var/www:'; ls /opt /var/www 2>/dev/null
-    echo '--- Band portlar:'; ss -tlnp | awk 'NR>1{print \$4, \$6}' | sort -u
-    echo '--- Nginx saytlari:'; ls -l /etc/nginx/sites-enabled/ 2>/dev/null; ls /etc/nginx/conf.d/ 2>/dev/null
-    echo '--- server_name lar:'; grep -rh 'server_name' /etc/nginx/ 2>/dev/null | sort -u
-    echo '--- Docker konteynerlar:'; docker ps --format '{{.Names}}  {{.Ports}}' 2>/dev/null
-    echo \"--- $MIKKA_PORT-port:\"; ss -tln 'sport = :$MIKKA_PORT' | awk 'NR>1' | grep -q . && echo BAND || echo BO\\'SH
-  "
+  ssh "$SERVER" "sudo MIKKA_PORT=$MIKKA_PORT bash -s" <<'REMOTE'
+echo '--- /opt, /var/www, ~ubuntu:'; ls /opt /var/www /home/ubuntu 2>/dev/null
+echo '--- Band portlar:'; ss -tlnp | awk 'NR>1{print $4, $6}' | sort -u
+echo '--- Nginx saytlari:'; ls -l /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null
+echo '--- server_name lar:'; grep -rh 'server_name' /etc/nginx/ 2>/dev/null | sort -u
+echo '--- Docker konteynerlar:'; docker ps --format '{{.Names}}  {{.Ports}}' 2>/dev/null
+echo '--- PM2:'; sudo -u ubuntu pm2 ls 2>/dev/null || true
+echo "--- $MIKKA_PORT-port:"; ss -tln "sport = :$MIKKA_PORT" | awk 'NR>1' | grep -q . && echo BAND || echo BOSH
+REMOTE
   exit 0
 fi
 
@@ -44,7 +48,7 @@ if [ "$RESOLVED" != "${SERVER#*@}" ]; then
 fi
 
 echo ">> 2. Fayllar $APP_DIR ga yuborilmoqda..."
-ssh "$SERVER" "mkdir -p $APP_DIR"
+ssh "$SERVER" "sudo mkdir -p $APP_DIR && sudo chown \$(id -u):\$(id -g) $APP_DIR"
 # --delete is scoped to $APP_DIR only — it can't reach other projects.
 rsync -az --delete \
   --exclude node_modules --exclude dist --exclude generated \
@@ -53,17 +57,17 @@ rsync -az --delete \
 
 if [ "$MODE" != "--quick" ]; then
   echo ">> 3. Server sozlanmoqda (faqat Mikka qismlari)..."
-  ssh "$SERVER" "bash $APP_DIR/deploy/server-setup.sh '$DOMAIN' '$EMAIL' '$MIKKA_PORT'"
+  ssh "$SERVER" "sudo bash $APP_DIR/deploy/server-setup.sh '$DOMAIN' '$EMAIL' '$MIKKA_PORT'"
 fi
 
 echo ">> 4. Mikka konteyneri build qilinib ishga tushirilmoqda..."
 # Prune only Mikka's own dangling images, never RoyalVIP's.
-ssh "$SERVER" "cd $APP_DIR/deploy && MIKKA_PORT=$MIKKA_PORT docker compose -p mikka -f docker-compose.prod.yml up -d --build \
-  && docker image prune -f --filter label=com.docker.compose.project=mikka"
+ssh "$SERVER" "cd $APP_DIR/deploy && sudo MIKKA_PORT=$MIKKA_PORT docker compose -p mikka -f docker-compose.prod.yml up -d --build \
+  && sudo docker image prune -f --filter label=com.docker.compose.project=mikka"
 
 echo ">> 5. Tekshiruv..."
 sleep 8
-ssh "$SERVER" "docker logs --tail 30 mikka-api"
+ssh "$SERVER" "sudo docker logs --tail 30 mikka-api"
 curl -fsS -o /dev/null -w "HTTPS status: %{http_code}\n" "https://$DOMAIN/api-docs" || true
 
 echo ""
