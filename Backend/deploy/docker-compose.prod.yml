@@ -1,6 +1,10 @@
-# Production: runs the API container on the VPS (63.189.197.251).
+# Production: runs the Mikka API on the shared VPS (63.189.197.251), which
+# also hosts RoyalVIP. Everything here is namespaced "mikka" — project,
+# container, image, network — so it never collides with the other project.
 # Postgres lives on Supabase, so only the app itself runs here. The port is
 # bound to 127.0.0.1 — the outside world reaches it only through Nginx.
+name: mikka
+
 services:
   api:
     build:
@@ -15,9 +19,15 @@ services:
       NODE_ENV: production
       PORT: 3000
     ports:
-      - '127.0.0.1:3112:3000'
+      - '127.0.0.1:${MIKKA_PORT:-4112}:3000'
+    networks:
+      - mikka-net
     logging:
       driver: json-file
       options:
         max-size: '10m'
         max-file: '3'
+
+networks:
+  mikka-net:
+    name: mikka-net
