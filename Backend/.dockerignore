@@ -5,4 +5,5 @@ coverage
 .git
 .env
 .env.*.local
-*.md
+*.md.env.*
+!.env.production.example

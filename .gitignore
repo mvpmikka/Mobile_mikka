@@ -31,3 +31,5 @@ __pycache__/
 CLAUDE.md
 
 .claude
+# Production secrets
+.env.production

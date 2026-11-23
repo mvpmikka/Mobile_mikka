@@ -1,0 +1,23 @@
+# Production: runs the API container on the VPS (63.189.197.251).
+# Postgres lives on Supabase, so only the app itself runs here. The port is
+# bound to 127.0.0.1 — the outside world reaches it only through Nginx.
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: mikka-api:latest
+    container_name: mikka-api
+    restart: unless-stopped
+    env_file:
+      - ../.env.production
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - '127.0.0.1:3112:3000'
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
