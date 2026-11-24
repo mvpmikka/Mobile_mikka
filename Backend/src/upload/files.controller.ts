@@ -1,6 +1,9 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import type { Response } from 'express';
-import { PRIVATE_FILES_ROUTE, StorageService } from './services/storage.service';
+import {
+  PRIVATE_FILES_ROUTE,
+  StorageService,
+} from './services/storage.service';
 
 // Serves private files (verification documents) behind the signed URLs
 // StorageService.getSignedUrl issues. No JWT here on purpose: the link is

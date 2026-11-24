@@ -119,7 +119,6 @@ export class VerificationService {
     const path = await this.storageService.uploadPrivate(
       this.docPath(placeId),
       processed.full,
-      'image/webp',
     );
 
     const place = await this.verificationRepository.submit(placeId, path);

@@ -39,13 +39,8 @@ export class StorageService {
       configService.get<string>('JWT_ACCESS_SECRET', '');
   }
 
-  async upload(
-    path: string,
-    buffer: Buffer,
-    // Kept for interface compatibility — the content type is derived from
-    // the file extension when the file is served.
-    _contentType: string,
-  ): Promise<string> {
+  // The content type is derived from the file extension when served.
+  async upload(path: string, buffer: Buffer): Promise<string> {
     const target = this.resolveInside(this.publicDir, path);
     // flag 'wx' = fail if the file exists, same as the old upsert:false.
     await this.write(target, buffer, 'wx', 'Failed to upload image');
@@ -56,11 +51,7 @@ export class StorageService {
   // a path alone is safe to keep in the database). Overwrites because a
   // rejected submission must be re-uploadable at the same stable path (see
   // VerificationService).
-  async uploadPrivate(
-    path: string,
-    buffer: Buffer,
-    _contentType: string,
-  ): Promise<string> {
+  async uploadPrivate(path: string, buffer: Buffer): Promise<string> {
     const target = this.resolveInside(this.privateDir, path);
     await this.write(target, buffer, 'w', 'Failed to upload document');
     return path;

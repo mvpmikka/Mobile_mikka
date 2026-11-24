@@ -34,15 +34,10 @@ export class UploadService {
 
     const id = randomUUID();
     const [url, thumbnailUrl] = await Promise.all([
-      this.storageService.upload(
-        `uploads/${id}.webp`,
-        processed.full,
-        'image/webp',
-      ),
+      this.storageService.upload(`uploads/${id}.webp`, processed.full),
       this.storageService.upload(
         `uploads/${id}-thumb.webp`,
         processed.thumbnail,
-        'image/webp',
       ),
     ]);
 
@@ -66,7 +61,6 @@ export class UploadService {
     const url = await this.storageService.upload(
       `uploads/${id}.${extension}`,
       buffer,
-      mimetype,
     );
 
     return { url };
