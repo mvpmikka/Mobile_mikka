@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Deploys the Mikka backend from this Mac to the shared VPS (also hosts
-# RoyalVIP). Mikka lives only in /opt/mikka, its own Nginx site file and
-# its own "mikka" Docker project — nothing of RoyalVIP's is touched.
+# Deploys the Mikka backend from this Mac to the VPS (also hosts RoyalVIP,
+# dorixona, kidstv). Everything Mikka owns lives in /home/ubuntu/mikka:
+#   backend/ (code + .env), nginx/mikka.conf, logs/
+# plus its own "mikka" Docker project — other projects are never touched.
 #
 #   ./deploy/deploy.sh --check    -> read-only: show what's on the server
 #   ./deploy/deploy.sh            -> full deploy (first time / config change)
@@ -15,7 +16,8 @@ MIKKA_PORT="${MIKKA_PORT:-4112}"
 SSH_KEY="${SSH_KEY:-$HOME/Desktop/My_projects/keys/Keys.pem}"
 export RSYNC_RSH="ssh -i $SSH_KEY"
 ssh() { command ssh -i "$SSH_KEY" "$@"; }
-APP_DIR=/opt/mikka
+ROOT_DIR=/home/ubuntu/mikka
+APP_DIR=$ROOT_DIR/backend
 MODE="${1:-}"
 
 cd "$(dirname "$0")/.."
@@ -48,12 +50,17 @@ if [ "$RESOLVED" != "${SERVER#*@}" ]; then
 fi
 
 echo ">> 2. Fayllar $APP_DIR ga yuborilmoqda..."
-ssh "$SERVER" "sudo mkdir -p $APP_DIR && sudo chown \$(id -u):\$(id -g) $APP_DIR"
+ssh "$SERVER" "mkdir -p $APP_DIR"
 # --delete is scoped to $APP_DIR only — it can't reach other projects.
+# .env is excluded from --delete so the server copy survives; the local
+# .env.production is uploaded as the server's backend/.env.
 rsync -az --delete \
   --exclude node_modules --exclude dist --exclude generated \
-  --exclude coverage --exclude .git --exclude '.env' --exclude '.DS_Store' \
+  --exclude coverage --exclude .git --exclude '.env' --exclude '.env.production' \
+  --exclude '.DS_Store' \
   ./ "$SERVER:$APP_DIR/"
+scp -q -i "$SSH_KEY" .env.production "$SERVER:$APP_DIR/.env"
+ssh "$SERVER" "chmod 600 $APP_DIR/.env"
 
 if [ "$MODE" != "--quick" ]; then
   echo ">> 3. Server sozlanmoqda (faqat Mikka qismlari)..."
@@ -72,4 +79,4 @@ curl -fsS -o /dev/null -w "HTTPS status: %{http_code}\n" "https://$DOMAIN/api-do
 
 echo ""
 echo "Tayyor: https://$DOMAIN  (Swagger: https://$DOMAIN/api-docs)"
-echo "Mikka: $APP_DIR | port 127.0.0.1:$MIKKA_PORT | nginx: /etc/nginx/sites-available/mikka.conf"
+echo "Mikka: $ROOT_DIR | port 127.0.0.1:$MIKKA_PORT | nginx: $ROOT_DIR/nginx/mikka.conf"
