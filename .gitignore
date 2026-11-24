@@ -33,3 +33,6 @@ CLAUDE.md
 .claude
 # Production secrets
 .env.production
+
+# Local uploaded files
+Backend/storage/

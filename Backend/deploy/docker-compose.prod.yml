@@ -23,6 +23,11 @@ services:
     environment:
       NODE_ENV: production
       PORT: ${MIKKA_PORT:-4112}
+      STORAGE_DIR: /app/storage
+    # Uploaded files live on the host, inside the Mikka folder, so they
+    # survive container rebuilds: /home/ubuntu/mikka/uploads.
+    volumes:
+      - ../../uploads:/app/storage
     # Keeps a crash-looping or leaking API from starving RoyalVIP on this
     # 2 GB box.
     mem_limit: 512m
