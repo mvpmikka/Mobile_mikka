@@ -57,7 +57,7 @@ ssh "$SERVER" "mkdir -p $APP_DIR"
 rsync -az --delete \
   --exclude node_modules --exclude dist --exclude generated \
   --exclude coverage --exclude .git --exclude '.env' --exclude '.env.production' \
-  --exclude '.DS_Store' \
+  --exclude '.DS_Store' --exclude storage \
   ./ "$SERVER:$APP_DIR/"
 scp -q -i "$SSH_KEY" .env.production "$SERVER:$APP_DIR/.env"
 ssh "$SERVER" "chmod 600 $APP_DIR/.env"
