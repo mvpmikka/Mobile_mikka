@@ -2,7 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
+import express from 'express';
 import { AppModule } from './app.module';
+import {
+  PUBLIC_FILES_ROUTE,
+  StorageService,
+} from './upload/services/storage.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +27,20 @@ async function bootstrap() {
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-docs', app, swaggerDocument);
+
+  // Public uploads (photos, avatars, shorts) straight off the disk. File
+  // names are random UUIDs that never change, so they can be cached hard.
+  // express.static also handles Range requests, which video playback needs.
+  app.use(
+    PUBLIC_FILES_ROUTE,
+    express.static(app.get(StorageService).publicDir, {
+      index: false,
+      dotfiles: 'deny',
+      immutable: true,
+      maxAge: '30d',
+      fallthrough: false,
+    }),
+  );
 
   const configService = app.get(ConfigService);
   await app.listen(configService.get<number>('PORT', 3000));

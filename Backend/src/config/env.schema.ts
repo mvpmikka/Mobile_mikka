@@ -65,16 +65,13 @@ export const envSchema = z.object({
   NOMINATIM_USER_AGENT: z.string().default(''),
   NOMINATIM_BASE_URL: z.string().default('https://nominatim.openstreetmap.org'),
 
-  // Left empty until a real Supabase project exists — same graceful
-  // pattern as Mail/Google/Nominatim. StorageService rejects uploads with
-  // a clear error while unset, rather than the app failing to boot.
-  SUPABASE_URL: z.string().default(''),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().default(''),
-  SUPABASE_STORAGE_BUCKET: z.string().default(''),
-  // Separate, non-public bucket for business-verification documents
-  // (ID/license). Never given a public URL — only short-lived signed URLs
-  // are issued, and only to the place owner or a SUPER_ADMIN reviewer.
-  SUPABASE_PRIVATE_STORAGE_BUCKET: z.string().default(''),
+  // Uploaded files are stored on the server's own disk (see StorageService).
+  // STORAGE_DIR is a Docker volume in production; PUBLIC_BASE_URL is the
+  // public origin baked into returned file URLs.
+  STORAGE_DIR: z.string().default('./storage'),
+  PUBLIC_BASE_URL: z.string().default('http://localhost:3000'),
+  // Signs short-lived private-file URLs; falls back to JWT_ACCESS_SECRET.
+  STORAGE_SIGNING_SECRET: z.string().default(''),
 
   CHECK_IN_MAX_DISTANCE_METERS: z.coerce.number().positive().default(200),
   CHECK_IN_COOLDOWN_MINUTES: z.coerce.number().positive().default(15),
